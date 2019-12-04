@@ -1,0 +1,1 @@
+<view><button type="primary" data-event-opts="{{[['tap',[['goPage']]]]}}" bindtap="__e">带参数跳转</button></view>

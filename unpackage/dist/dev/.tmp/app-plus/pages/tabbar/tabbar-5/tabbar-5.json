@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "我的",
+  "usingComponents": {
+    "q-s-tabs": "/components/QS-tabs/QS-tabs"
+  }
+}

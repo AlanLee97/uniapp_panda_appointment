@@ -1,0 +1,6 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "q-s-tabs": "/components/QS-tabs/QS-tabs"
+  }
+}

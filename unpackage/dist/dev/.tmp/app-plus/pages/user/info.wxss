@@ -1,0 +1,29 @@
+
+.btn-logout {
+    margin-top: 100rpx;
+    width: 80%;
+    border-radius: 50rpx;
+    font-size: 16px;
+    color: #fff;
+    background: -webkit-gradient(linear, left top, right top, from(#365fff), to(#36bbff));
+    background: -o-linear-gradient(left, #365fff, #36bbff);
+    background: linear-gradient(to right, #365fff, #36bbff);
+}
+.btn-logout-hover {
+    background: -webkit-gradient(linear, left top, right top, from(#365fdd), to(#36bbfa));
+    background: -o-linear-gradient(left, #365fdd, #36bbfa);
+    background: linear-gradient(to right, #365fdd, #36bbfa);
+}
+.row{
+	  line-height: 2.0rem;
+	  padding: 10rpx 40rpx 10rpx 40rpx;
+}
+.row-tx{
+	 line-height: 3.0rem;
+	 padding: 10rpx 40rpx 10rpx 40rpx;
+}
+.float-right{
+	  display: inline-block;
+	  float: right;
+}
+

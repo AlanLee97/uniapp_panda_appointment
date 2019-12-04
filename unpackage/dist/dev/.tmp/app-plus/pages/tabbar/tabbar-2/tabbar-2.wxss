@@ -1,0 +1,151 @@
+
+@font-face {
+	font-family: texticons;
+	font-weight: normal;
+	font-style: normal;
+	src: url('https://at.alicdn.com/t/font_702773_g9f89om4v3j.ttf') format('truetype');
+}
+.index {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+    width: 750rpx;
+    min-height: 100vh;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	background-color: #f1f1f1;
+}
+.row {
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+}
+.column {
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.card {
+	position: relative;
+	width: 710rpx;
+	margin: 20rpx 20rpx 20rpx 20rpx;
+	border-radius: 10rpx;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	background-color: #FFFFFF;
+}
+.card-container{
+	margin: 20rpx;
+	border-radius: 10rpx;
+	-webkit-box-shadow: 1px 1px 8px #c1c1c1;
+	        box-shadow: 1px 1px 8px #c1c1c1;
+}
+.card-img {
+	width: 710rpx;
+	height: 1065rpx;
+}
+.card-num {
+	color: #FFFFFF;
+	font-size: 13px;
+	text-align: center;
+}
+.card-num-view {
+	background-color: #FF80AB;
+    line-height: 1;
+    display: inline-block;
+	padding: 3px 6px;
+    color: #FFFFFF;
+    font-size: 12px;
+    text-align: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+	border-radius: 15px;
+	position: absolute;
+	top: 20rpx;
+	right: 20rpx;
+}
+.card-bottm {
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+}
+.card-share-view {
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	padding: 14rpx 0;
+	color: #FF80AB;
+	margin: 20rpx 20rpx 20rpx;
+	font-size: 30rpx;
+	font-family: texticons;
+}
+.card-share-view:before {
+	content: '\E62D';
+}
+.car-title-view {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+	padding: 14rpx 0rpx 14rpx 20rpx;
+}
+.card-title {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+	font-size: 30rpx;
+	text-align: left;
+	color: #555555;
+	-o-text-overflow: ellipsis;
+	   text-overflow: ellipsis;
+	lines: 2;
+	display: -webkit-box;
+	white-space: normal;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+
+
+
+
+
+

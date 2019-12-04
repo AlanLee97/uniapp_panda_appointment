@@ -1,0 +1,185 @@
+{
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/tabbar/tabbar-1/tabbar-1",
+			"style": {
+				"navigationBarTitleText": "熊猫约拍"
+			}
+		},
+		{
+			"path": "pages/tabbar/tabbar-2/tabbar-2",
+			"style": {
+				// "navigationStyle":"custom"
+				"navigationBarTitleText": "约拍"
+			}
+		},
+		{
+			"path": "pages/tabbar/tabbar-3/tabbar-3",
+			"style": {}
+		},
+		{
+			"path": "pages/tabbar/tabbar-4/tabbar-4",
+			"style": {
+				// "navigationStyle":"custom"
+				"navigationBarTitleText": "发现"
+			}
+		},
+		{
+			"path": "pages/tabbar/tabbar-5/tabbar-5",
+			"style": {
+				// "navigationStyle":"custom"
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release",
+			"style": {}
+		},
+		{
+			"path": "pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video",
+			"style": {}
+		},
+		{
+			"path": "pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa",
+			"style": {}
+		},
+		{
+			"path": "pages/user/login",
+			"style": {}
+		},
+		{
+			"path": "pages/user/register",
+			"style": {}
+		},
+		{
+			"path": "pages/user/forget",
+			"style": {}
+		},
+		{
+			"path": "pages/user/personal",
+			"style": {}
+		},
+		{
+			"path": "pages/user/info",
+			"style": {}
+		},
+		{
+			"path": "pages/user/modify-pw",
+			"style": {}
+		},
+		{
+			"path": "pages/user/forgot-pw",
+			"style": {}
+		},
+		{
+            "path" : "pages/select/select",
+            "style" : {}
+        },
+		{
+		    "path" : "pages/publish/publish-appointment",
+		    "style" : {
+				"navigationBarTitleText":"发布约拍"
+			}
+		},
+		{
+		    "path" : "pages/publish/publish-works",
+		    "style" : {
+				"navigationBarTitleText":"发布作品"
+			}
+		},
+		{
+			"path":"pages/publish/publish-passage",
+			"style":{
+				
+			}
+		},
+        {
+            "path" : "pages/test/test",
+            "style" : {}
+        },
+		{
+		    "path" : "pages/test/my",
+		    "style" : {}
+		}
+        ,{
+            "path" : "pages/appointment/appointment-detail",
+            "style" : {
+				"navigationBarTitleText":"约拍详情"
+			}
+        }
+        ,{
+            "path" : "pages/test/test2",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/test/test3",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/order",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/my-order",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/appointment/appointment-personal",
+            "style" : {}
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#FbFbFb",
+		"backgroundColor": "#FbFbFb"
+	},
+	"tabBar": {
+		"borderStyle": "black",
+		"backgroundColor": "#FFFFFF",
+		"color": "#C0C0C0",
+		"selectedColor": "#000000",
+		"list": [
+			{
+				"pagePath": "pages/tabbar/tabbar-1/tabbar-1",
+				"iconPath": "static/img/tabbar/icon_index_1_unselected.png",
+				"selectedIconPath": "static/img/tabbar/icon_index_1_selected.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/tabbar/tabbar-2/tabbar-2",
+				"iconPath": "static/img/tabbar/icon_index_2_unselected.png",
+				"selectedIconPath": "static/img/tabbar/icon_index_2_selected.png",
+				"text": "约拍"
+			},
+			//#ifdef MP-WEIXIN
+			{
+				"pagePath": "pages/tabbar/tabbar-3/tabbar-3",
+				"iconPath": "static/img/tabbar/icon_index_add.png",
+				"selectedIconPath": "static/img/tabbar/icon_index_add.png",
+				"text": "发布"
+			},
+			//#endif
+			//#ifndef MP-WEIXIN
+			{
+				"pagePath": "pages/tabbar/tabbar-3/tabbar-3",
+				"iconPath": "static/img/tabbar/icon_index_add.png",
+				"selectedIconPath": "static/img/tabbar/icon_index_add.png"
+			},
+			//#endif
+			{
+				"pagePath": "pages/tabbar/tabbar-4/tabbar-4",
+				"iconPath": "static/img/tabbar/icon_index_3_unselected.png",
+				"selectedIconPath": "static/img/tabbar/icon_index_3_selected.png",
+				"text": "发现"
+			},
+			{
+				"pagePath": "pages/tabbar/tabbar-5/tabbar-5",
+				"iconPath": "static/img/tabbar/icon_index_4_unselected.png",
+				"selectedIconPath": "static/img/tabbar/icon_index_4_selected.png",
+				"text": "我的"
+			}
+		]
+	}
+}
