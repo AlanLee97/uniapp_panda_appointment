@@ -18,7 +18,7 @@
 	
 	<view class="row">
 		<text>联系方式</text>
-		<text class="float-right">15622282904</text>
+		<text class="float-right">{{userinfo.phone}}</text>
 	</view>
 	
 	<view class="row">
@@ -31,7 +31,7 @@
 		<text>修改密码</text>
 	</view>
 	
-	<button class="btn-logout">退出登录</button>
+	<button class="btn-logout" @tap="logout()">退出登录</button>
   </view>
 </template>
 
@@ -75,7 +75,24 @@
             url:'/pages/user/modify/modify'
           })
         }
-      }
+      },
+	  
+	  logout: function() {
+	  	uni.showModal({
+	  		title: '提示',
+	  		content: '确定退出登录？',
+	  		confirmColor: '#5677FC',
+	  		success: (res) => {
+	  			if (res.confirm) {
+	  				uni.clearStorage();
+	  				uni.clearStorageSync();
+	  				uni.reLaunch({
+	  					url: '/pages/user/login'
+	  				})
+	  			}
+	  		}
+	  	});
+	  },
     }
   }
 </script>

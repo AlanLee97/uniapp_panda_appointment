@@ -1,13 +1,9 @@
 <template>
 	<view class="content">
-
 		<view>
 			<view class='top-container'>
 				<image class='bg-img' src='https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/2LtQ2KZEDOUFAcWfLEzL49EKXsDPVjeOv2NtsWFLbZP.jpg'></image>
-				<view @tap='logout' class='logout' hover-class="opcity" :hover-stay-time="150">
-					<image class='logout-img' src='../../static/images/my/icon_out_3x.png' v-show='isLogin'></image>
-					<text class='logout-txt' v-show='isLogin'>退出</text>
-				</view>
+
 				<view v-show="!isLogin" class='user-wrapper'>
 					<navigator url='/pages/user/login' hover-class="opcity" :hover-stay-time="150" class='user'>
 						<!-- 头像：未登录 -->
@@ -63,89 +59,13 @@
 						<text class='item-name'>相册</text>
 					</view>
 				</view>
-				<view class='ul-item'>
-					<view @tap='previewReward' class='item' hover-class="opcity" :hover-stay-time="150">
-						<image class='item-img' src='../../static/images/my/reward.png'></image>
-						<text class='item-name'>动态</text>
-					</view>
-					<view class='item' hover-class="opcity" :hover-stay-time="150">
-						<button open-type="feedback" class="btn-feedback"> </button>
-						<image class='item-img' src='../../static/images/my/feedback.png'></image>
-						<text class='item-name'>作品</text>
-			
-					</view>
-					<view @tap='tapEvent' data-index="3" class='item' hover-class="opcity" :hover-stay-time="150">
-						<image class='item-img' src='../../static/images/my/log.png'></image>
-						<text class='item-name'>文章</text>
-					</view>
-				</view>
+
 			</view>
 		</view>
-			
-			
-<!-- 		<view class="user_top_box">
-			<image class="user_top_bg" 
-					src="https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/2LtQ2KZEDOUFAcWfLEzL49EKXsDPVjeOv2NtsWFLbZP.jpg" mode=""></image>
-		</view> -->
-		
-		
-<!-- 		
-		<view class="user_middle_content">
-			<view v-if="!isLogin()" id="btn" class="btn-box">
-				<navigator class="d-il-blk" url="../../user/register">
-					<button type="primary" class="btn-reg-login">注册</button>
-				</navigator>
-				
-				<navigator class="d-il-blk" url="../../user/login">
-					<button type="primary" class="btn-reg-login" >登录</button>
-				</navigator>
-			</view>
-			
-			<view v-if="isLogin()" class="user_middle_main">
-				<view class="cu-list menu-avatar">
-					<view class="cu-item">
-						<image :src="face" class="cu-avatar round lg" ></image>
-						
-						<view class="content flex-sub">
-							<view>{{nickname}}</view>
-							<view class="text-gray text-sm flex justify-between">
-								2019年12月3日
-							</view>
-						</view>
-						
-					</view>
-					
-					
-					<view class="show-info-box cu-item">
-						<view class="show-info d-il-blk">
-							<text>10</text>
-							<text>{{br}}</text>
-							<text>约拍</text>
-						</view>
-						
-						<view class="show-info d-il-blk">
-							<text>5</text>
-							<text>{{br}}</text>
-							<text>关注</text>
-						</view>
-						
-						<view class="show-info d-il-blk">
-							<text>12</text>
-							<text>{{br}}</text>
-							<text>粉丝</text>
-						</view>
-						
-						<view class="show-info d-il-blk">
-							<text>6</text>
-							<text>{{br}}</text>
-							<text>收藏</text>
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		 -->
+
 		<text>{{br}}</text>
+		
+		
 		
 
 		<view class="user_bottom_content">
@@ -169,21 +89,34 @@
 				<swiper-item class="swiper-item" v-for="(item, index) in tabs" :key="index">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" >
 						<view class="scroll-items">
-							<view class="scroll-item" v-for="(ite, ind) in 10" :key="ind">
-								<view class="scroll-item-image-box">
-									<image src="../../../static/panda.png" mode="aspectFill" class="scroll-item-image"></image>
-								</view>
+		
+							<view class="scroll-item" v-for="(item, windex) in works" :key='windex'>
+								
 								<view class="scroll-item-text-box">
-									<view>
-										小调皮
+									<view class="font-color-grey">
+										{{item.datetime}}
+										{{br}}
 									</view>
 									<view>
-										真可爱
+										{{item.introduction}}
 									</view>
+									
+									<view class="grid flex-sub " :class="item.images.length > 1 ?'col-3 grid-square':'col-1'">
+										<view class="" v-for="(imgurl, img_index)  in item.images" :key="img_index">
+											<view class="scroll-item-image-box">
+												<image :src="imgurl" mode="aspectFill" class="scroll-item-image"></image>
+											</view>
+										</view>
+									</view>
+									
+									
 								</view>
 							</view>
 						</view>
 					</scroll-view>
+					
+					
+						
 				</swiper-item>
 			</swiper>
 		</view>
@@ -217,6 +150,8 @@
 				uid:'',
 				// isLogin1:false,
 				
+				works:{},
+				
 				
 			}
 		},
@@ -233,6 +168,10 @@
 			this.nickname = userinfo.nickname;
 			this.face = userinfo.headPortraitImg;
 			this.uid = userinfo.id;
+			
+			this.getWorksByUserId();
+			
+			
 			
 		},
 		
@@ -260,26 +199,23 @@
 					return false;
 				}
 			},
-			
-			
-			
-			
-			logout: function() {
-				uni.showModal({
-					title: '提示',
-					content: '确定退出登录？',
-					confirmColor: '#5677FC',
+			getWorksByUserId:function(){
+				uni.request({
+					url:this.createApiUrl('/works/get/uid'),
+					data:{
+						uid:this.uid
+					},
 					success: (res) => {
-						if (res.confirm) {
-							uni.clearStorage();
-							uni.clearStorageSync();
-							uni.reLaunch({
-								url: '/pages/user/login'
-							})
-						}
+						this.works = res.data.data;
+						console.log(this.works);
 					}
-				});
+				})
 			},
+			
+			
+			
+			
+			
 			edit() {
 				this.tui.toast("功能开发中~")
 			},
@@ -312,13 +248,7 @@
 	}
 </script>
 
-<style>
-	.content {
-		text-align: center;
-		height: auto;
-		/* margin-top: 200upx; */
-	}
-	
+<style>	
 	
 	/*上半部分*/
 	.user_top_box{
@@ -395,7 +325,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		font-size: 28rpx;
-		font-weight: bold;
+		/* font-weight: bold; */
 		margin-left: 15rpx;
 	}
 	.scroll-item-image{
@@ -616,7 +546,7 @@
 	}
 	
 	.bottom-container {
-		height: 334rpx;
+		height: 180rpx;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;

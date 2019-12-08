@@ -22,8 +22,9 @@
 			
 		</view>
 		
-		<button type="primary" @tap="startUpload(imageList[0])">上传图片</button>
-		<button type="primary" @tap="startUploadMulti(imageList)">上传多张图片</button>
+		<!-- <button type="primary" @tap="startUpload()">上传图片</button> -->
+		<button type="primary" @tap="startUpload2()">上传图片</button>
+		<!-- <button type="primary" @tap="startUploadMulti(imageList)">上传多张图片</button> -->
 	</view>
 </template>
 
@@ -32,33 +33,89 @@
 		data() {
 			return {
 				imageList: [],
+				imgId:'',
+				imgArr:[],
+				count:-1,
+				sendData: {
+					uid:2,
+				    content:'哈哈',
+					imgIds:''
+				},
 			}
 		},
+		
 		methods: {
-			startUpload(image){
+			uploadFile2(imgPath, index, str){
 				
-				const uploadTask = uni.uploadFile({
-				    url: 'http://localhost:8083/testoss/upload-one', //上传地址
-				    filePath: image,
-				    name: 'file',
-				    formData: {
-				        'user': 'test'
-				    },
-				    success: (uploadFileRes) => {
-				        console.log(uploadFileRes.data);
-				    }
-				});
-								
-				uploadTask.onProgressUpdate((res) => {
-				    console.log('上传进度' + res.progress);
-				    console.log('已经上传的数据长度' + res.totalBytesSent);
-				    console.log('预期需要上传的数据总长度' + res.totalBytesExpectedToSend);
-								
-				    // 测试条件，取消上传任务。
-				    if (res.progress > 50) {
-				        uploadTask.abort();
-				    }
-				});
+				
+				
+				return str;
+			},
+			
+			
+			startUpload(){
+				for (var i = 0; i < this.imageList.length; i++) {
+					this.count++;
+					console.log("count:" + this.count);
+					// uni.uploadFile({
+					//     url: 'http://localhost:8083/upload/image/return-id', //上传地址
+					//     // url: 'https://jsonplaceholder.typicode.com/posts/', //上传地址
+					//     filePath: this.imageList[this.count],
+					// 	// files:imgs,
+					//     name: 'file',
+					// 	formData:{
+					// 		uid:2
+					// 	},
+					//     success:(res) => {
+					//     	console.log("上传成功的回调函数");
+					// 		// res = JSON.parse(res);
+					// 		console.log(res.data);
+					// 		res = this.imgArr.push(res.data);
+							
+					// 		if(this.count == this.imageList.length - 1){
+					// 			console.log("判断输出：count：" + this.count);
+					// 			this.sendData.imgIds = res;
+					// 			console.log(this.sendData);
+					// 		}
+					//     }
+					// });
+				}
+				
+			},
+			
+			startUpload2(){
+				let str = '';
+				for (var i = 0; i < this.imageList.length; i++) {
+					this.count++;
+					console.log("count:" + this.count);
+					uni.uploadFile({
+					    // url: 'http://localhost:8083/upload/image/return-id', //上传地址
+					    url: 'https://jsonplaceholder.typicode.com/posts/', //上传地址
+					    filePath: this.imageList[this.count],
+						// files:imgs,
+					    name: 'file',
+						formData:{
+							uid:2
+						},
+					    success:(res) => {
+					    	console.log("上传成功的回调函数");
+							console.log(JSON.parse(res.data));
+							res = JSON.parse(res.data);
+					
+							this.imgArr.push(res.id);
+							
+							
+					    }
+					});
+				}
+				
+				
+				setTimeout(function(){
+					str = this.imgArr;
+					console.log("imgIds:" + this.imgArr);
+					this.sendData.imgIds = str;
+				},2000);
+				
 			},
 			
 			startUploadMulti(imageList){

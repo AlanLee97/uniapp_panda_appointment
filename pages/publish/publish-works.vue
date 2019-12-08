@@ -26,7 +26,7 @@
             </view>
         </view>
 
-		<button type="primary" class="m-20upx" @tap="send">发表</button>
+		<button type="primary" class="m-20upx" @tap="startUpload()">发表</button>
         
 
     </view>
@@ -39,9 +39,12 @@
             return {
                 br:'\n',
                 imageList: [],
+				imgId:[],
+				strImgID:'',
                 sendData: {
 					uid:0,
                     content:'',
+					imgIds:''
                 },
 				
             }
@@ -49,6 +52,10 @@
         onLoad() {
             
         },
+		onShow() {
+			console.log(this.strImgID);
+		},
+		
         methods: {
             close(e){
                 this.imageList.splice(e,1);
@@ -57,7 +64,7 @@
             chooseImg() { //选择图片
                 uni.chooseImage({
                     sourceType: ["camera", "album"],
-                    sizeType: "compressed",
+                    
                     count: 9 - this.imageList.length,
                     success: (res) => {
                         this.imageList = this.imageList.concat(res.tempFilePaths);
@@ -70,19 +77,50 @@
                     urls: this.imageList
                 });
             },
-            send() { //发表作品
-				let userinfo = this.getUserInfo();
-				let _uid = userinfo.id;
-				this.sendData.uid = _uid;
 			
-                console.log(JSON.stringify(this.sendData));
-                let imgs = this.imageList.map((value, index) => {
-                    return {
-                        name: "image" + index,
-                        uri: value
-                    }
-                })
+			startUpload(){
+				let userinfo = this.getUserInfo();
+				this.sendData.uid = userinfo.id;
 				
+				let str = '';
+				uni.setStorageSync("imgIds", str);
+				for (var i = 0; i < this.imageList.length; i++) {
+					uni.uploadFile({
+					    url: 'http://localhost:8083/upload/image/return-id', //上传地址
+					    // url: 'https://jsonplaceholder.typicode.com/posts/', //上传地址
+					    filePath: this.imageList[i],
+					    name: 'file',
+						formData:{
+							uid:2
+						},
+					    success:(res) => {
+					    	console.log("上传成功的回调函数");
+							console.log(res.data);
+							str = str + res.data + ";";
+							uni.setStorageSync("imgIds", str);
+							str = uni.getStorageSync("imgIds");
+							console.log(str);
+							if(i == this.imageList.length){
+								this.sendData.imgIds = str;
+								console.log(this.sendData);
+								this.sendRequest();
+							}
+							
+					    }
+					});
+				}	
+											
+											
+				// setTimeout(function(){
+				// 	str = uni.getStorageSync("imgIds");
+				// 	console.log(str);
+				// 	this.sendData.imgIds = uni.getStorageSync("imgIds");
+				// }, 2000);
+				
+			},
+			
+            sendRequest() { //发表作品
+				console.log(this.sendData);
 				uni.request({
 					url: this.createApiUrl('works/add'),
 					method: 'POST',
@@ -97,9 +135,9 @@
 							uni.showToast({
 								title:'发表成功',
 								success:function(){
-									uni.switchTab({
-										url:'../tabbar/tabbar-1/tabbar-1',
-									})
+									// uni.switchTab({
+									// 	url:'../tabbar/tabbar-1/tabbar-1',
+									// })
 								}
 							});
 							
@@ -114,31 +152,7 @@
 				});
 				
 				
-                // uni.uploadFile({
-                //     url: this.createApiUrl('/works/add'),
-                //     files: imgs,
-                //     formData: this.sendData,
-                //     success: (res) => {
-                //         if (res.statusCode === 200) {
-                //             uni.showToast({
-                //                 title: "反馈成功!"
-                //             });
-                //             this.imageList = [];
-                //             this.sendDate = {
-                //                 score: 0,
-                //                 content: "",
-                //                 contact: ""
-                //             }
-                //         }
-                //     },
-                //     fail: (res) => {
-                //         uni.showToast({
-                //             title: "失败",
-                //             icon:"none"
-                //         });
-                //         console.log(res)
-                //     }
-                // });
+
             }
         }
     }

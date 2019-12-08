@@ -127,12 +127,7 @@
 				<view class="text-content">
 					{{item.introduction}}
 				</view>
-				<view class="grid flex-sub padding-lr" :class="item.images.length > 1?'col-3 grid-square':'col-1'">
-<!-- 					<view class="bg-img" :class="isCard?'':'only-img'" style="background-color:#fcfcfc"
-					 v-for="(item,index) in isCard?9:1" :key="index">
-					 
-					</view> -->
-					
+				<view class="grid flex-sub padding-lr" :class="item.images.length > 1 ?'col-3 grid-square':'col-1'">		
 					<view v-for="(imgurl, img_index)  in item.images" :key="img_index">
 						<image :src="imgurl" mode="aspectFill"></image>
 					</view>

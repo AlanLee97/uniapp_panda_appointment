@@ -50,7 +50,7 @@
 							
 							
 				<view class="image">
-					<image src="https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/2M9HRolQpJpPfWGeqgmajGkbbUF9kJUCDh3Bq58MUTH.jpg"
+					<image :src="item.image"
 					 mode="widthFix"></image>
 					<view class="cu-tag bg-blue">标签</view>
 					<view class="cu-bar bg-shadeBottom"> <text class="text-cut">{{item.title}}</text></view>

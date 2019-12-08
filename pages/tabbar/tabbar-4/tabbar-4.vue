@@ -1,6 +1,22 @@
 <template>
 	<view>
 		
+		<!-- #ifndef MP-ALIPAY -->
+		
+		<swiper class="card-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
+		 :autoplay="true" interval="5000" duration="500" @change="cardSwiper" indicator-color="#8799a3"
+		 indicator-active-color="#0081ff">
+			<swiper-item v-for="(item,index) in swiperList" :key="index" :class="cardCur==index?'cur':''">
+				<view class="swiper-item">
+					<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
+					<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
+				</view>
+			</swiper-item>
+		</swiper>
+		
+		<!-- #endif -->
+		
+		
 		<view>
 			<view class="QS-tabs-box">
 				<QSTabs 
@@ -121,11 +137,48 @@
 		},
 		data() {
 			return {
+				
+				background: ['color1', 'color2', 'color3'],
+				isCard: true,
+				cardCur: 0,
+				swiperList: [{
+					id: 0,
+					type: 'image',
+					url: 'https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/DTb3l563tdj4oLwmdj6soz0oUN0WiIi6HTayN4oa8B3.jpg'
+				}, {
+					id: 1,
+					type: 'image',
+					url: 'https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/IJMyc5AM3BV3KopTfIHaHF6nG56XGMJpcoZD9M5p2Gv.jpg',
+				}, {
+					id: 2,
+					type: 'image',
+					url: 'https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/QlOpWqTDznuWIOABg5djTreijHQs6WzUzsVu0rBHghN.jpg'
+				}, {
+					id: 3,
+					type: 'image',
+					url: 'https://qzonestyle.gtimg.cn/qzone/qzactStatics/imgs/20171122191532_f2975b.jpg'
+				}, {
+					id: 4,
+					type: 'image',
+					url: 'https://cdn-isux.qq.com/upload/detail/f57Y2wEryDwjWmTr2BypYaCA6CgSKjknAJtGRIR4FcR.jpeg'
+				}, {
+					id: 5,
+					type: 'image',
+					url: 'https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/2LtQ2KZEDOUFAcWfLEzL49EKXsDPVjeOv2NtsWFLbZP.jpg'
+				}, {
+					id: 6,
+					type: 'image',
+					url: 'https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/UlS5cEY2AksTMvw9EWUDEx5p6yqFrhnj6oYrkpBcglk.jpg'
+				}],
+				dotStyle: false,
+				towerStart: 0,
+				direction: '',
+				
 				imgurl:"https://hbimg.huabanimg.com/4cb5b23c18158e4021d3d87983a201187bf317353cef6-mO3Eim_fw658",
 				
 				//摄影技巧
 				
-				isCard: true,
+				
 				br:'\n',
 				tabs: ['作品展示','摄影技巧','其他'],
 				current: 0,
