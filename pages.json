@@ -131,6 +131,16 @@
             "path" : "pages/test/uni-feedback",
             "style" : {}
         }
+        ,{
+            "path" : "pages/commons/select-city",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        }
+        ,{
+            "path" : "pages/user/profile",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -43,6 +43,14 @@ Vue.prototype.gotoPage = function (pageUrl){
 	});
 }
 
+Vue.prototype.previewImage = function(index, urls){
+	uni.previewImage({
+		current:index,
+		urls:urls,
+		indicator:"default"
+	})
+}
+
 App.mpType = 'app'
 
 const app = new Vue({

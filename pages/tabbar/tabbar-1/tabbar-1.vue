@@ -30,7 +30,7 @@
 					v-for="(item, index) in newestApt" 
 					:key="index">
 					<view class="scroll-item-image-box">
-						<image src="../../../static/panda.png" mode="aspectFill" class="scroll-item-image"></image>
+						<image :src="item.image" mode="aspectFill" class="scroll-item-image"></image>
 					</view>
 					<view class="scroll-item-text-box">
 						<view>
@@ -67,7 +67,7 @@
 					<view class="recommend-box">
 						<image src="../../../static/panda.png" class="recommend-img"></image>
 						<text class="name">Alan</text>
-						<text class="desc">专业摄影师</text>
+						<text class="desc">专业模特</text>
 						<text class="btn">去约拍</text>
 					</view>
 				</view>
@@ -114,7 +114,7 @@
 				<view class="cu-list menu-avatar">
 					<view class="cu-item">
 						<view class="cu-avatar round lg" >
-							<image class="cu-avatar round lg" :src="item.tuser.headPortraitImg"></image>
+							<image class="cu-avatar round lg" :src="item.tuser.headPortraitImg" @tap="gotoPage('/pages/user/profile?uid=' + item.tuser.id)"></image>
 						</view>
 						<view class="content flex-sub">
 							<view>{{item.tuser.nickname}}</view>
@@ -129,7 +129,7 @@
 				</view>
 				<view class="grid flex-sub padding-lr" :class="item.images.length > 1 ?'col-3 grid-square':'col-1'">		
 					<view v-for="(imgurl, img_index)  in item.images" :key="img_index">
-						<image :src="imgurl" mode="aspectFill"></image>
+						<image @tap="previewImage(img_index, item.images)" :src="imgurl" mode="aspectFill"></image>
 					</view>
 					
 				</view>

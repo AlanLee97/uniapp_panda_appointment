@@ -26,7 +26,7 @@
             </view>
         </view>
 
-		<button type="primary" class="m-20upx" @tap="startUpload()">发表</button>
+		<button type="primary" class="m-20upx" @tap="publishWorks()">发表</button>
         
 
     </view>
@@ -39,8 +39,10 @@
             return {
                 br:'\n',
                 imageList: [],
-				imgId:[],
+				imgId:'',
 				strImgID:'',
+				imgArr:[],
+				count:0,
                 sendData: {
 					uid:0,
                     content:'',
@@ -68,6 +70,8 @@
                     count: 9 - this.imageList.length,
                     success: (res) => {
                         this.imageList = this.imageList.concat(res.tempFilePaths);
+						console.log(this.imageList);
+						console.log(res);
                     }
                 })
             },
@@ -78,48 +82,32 @@
                 });
             },
 			
-			startUpload(){
+			startUpload(index){
 				let userinfo = this.getUserInfo();
 				this.sendData.uid = userinfo.id;
 				
-				let str = '';
-				uni.setStorageSync("imgIds", str);
-				for (var i = 0; i < this.imageList.length; i++) {
-					uni.uploadFile({
-					    url: 'http://localhost:8083/upload/image/return-id', //上传地址
-					    // url: 'https://jsonplaceholder.typicode.com/posts/', //上传地址
-					    filePath: this.imageList[i],
-					    name: 'file',
-						formData:{
-							uid:2
-						},
-					    success:(res) => {
-					    	console.log("上传成功的回调函数");
-							console.log(res.data);
-							str = str + res.data + ";";
-							uni.setStorageSync("imgIds", str);
-							str = uni.getStorageSync("imgIds");
-							console.log(str);
-							if(i == this.imageList.length){
-								this.sendData.imgIds = str;
-								console.log(this.sendData);
-								this.sendRequest();
-							}
-							
-					    }
-					});
-				}	
-											
-											
-				// setTimeout(function(){
-				// 	str = uni.getStorageSync("imgIds");
-				// 	console.log(str);
-				// 	this.sendData.imgIds = uni.getStorageSync("imgIds");
-				// }, 2000);
-				
+				uni.uploadFile({
+				    url: 'http://localhost:8083/upload/image/return-id', //上传地址
+				    filePath: this.imageList[index],
+				    name: 'file',
+					formData:{
+						uid:this.sendData.uid
+					},
+				    success:res => {
+						this.count++;
+				    	console.log("上传成功的回调函数");
+						console.log(res);
+						this.imgArr.push(res.data);
+						this.imgId = this.imgId + res.data + ";";
+						this.startUpload(this.count);
+						
+				    }
+				});
+	
 			},
 			
-            sendRequest() { //发表作品
+            sendRequest() { //发表添加作品请求
+			
 				console.log(this.sendData);
 				uni.request({
 					url: this.createApiUrl('works/add'),
@@ -131,13 +119,15 @@
 					success: res => {
 						console.log(res);
 						res = res.data;
+						uni.hideLoading();
 						if(res.code == 200){
 							uni.showToast({
 								title:'发表成功',
+								duration:1000,
 								success:function(){
-									// uni.switchTab({
-									// 	url:'../tabbar/tabbar-1/tabbar-1',
-									// })
+									uni.switchTab({
+										url:'../tabbar/tabbar-1/tabbar-1',
+									})
 								}
 							});
 							
@@ -153,8 +143,28 @@
 				
 				
 
-            }
-        }
+            },
+        
+			publishWorks:function(){	
+				uni.showLoading({
+					title:'发送请求中...',
+				})
+				this.startUpload(this.count);
+				let that = this;
+				
+				
+				setTimeout(function(){
+					that.imgId = that.imgArr.join(";");
+					console.log(that.imgId);
+					that.sendData.imgIds = that.imgId;
+					console.log(that.sendData);
+					that.sendRequest();
+				},2000);
+				
+				
+			}
+		
+		}
     }
 </script>
 

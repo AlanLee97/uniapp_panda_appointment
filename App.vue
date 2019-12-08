@@ -1,16 +1,7 @@
 <script>
 export default {
 
-
-	
 	onLaunch: function() {
-		// console.log('App Launch');
-
-		
-		// uni.clearStorageSync();
-		// uni.removeStorageSync('userinfo');
-		
-
 		setTimeout(() => {
 			uni.setTabBarBadge({
 				index: 1,
@@ -24,17 +15,12 @@ export default {
 	onShow: function() {
 		console.log('App Show');
 		getApp().globalData = true;
-		
-		// uni.getStorage({
-		// 	key:'userinfo',
-		// 	success:function(res){
-		// 		console.log('app ======== getStorage:');
-		// 		console.log(res);
-		// 	},
-		// });
 	},
 	onHide: function() {
 		// console.log('App Hide');
+	},
+	methods:{
+
 	}
 };
 </script>
@@ -79,6 +65,8 @@ export default {
 		background-color: #EFEFEF;
 }
 
+
+/*================BEGIN 显示================*/
 /* 显示为块状,让元素不会独占一行 */
 .d-il-blk{
 	display: inline-block;
@@ -93,12 +81,17 @@ export default {
 	border: red 1px solid;
 }
 
+/*================END 显示================*/
+
 /* 元素宽度为50% */
 .width-50{
 	width: 50%;
 	text-align: center;
 }
 
+
+/*================BEGIN 边距================*/
+/*---------- 外边距 ----------*/
 /* 距离左边20upx */
 .m-left-20upx{
 	margin-left: 20upx;
@@ -114,9 +107,41 @@ export default {
 	margin: 10upx;
 }
 
-/* 外边距10upx */
+/* 外边距20upx */
 .m-20upx{
 	margin: 20upx;
+}
+
+/* 外边距30upx */
+.m-30upx{
+	margin: 30upx;
+}
+
+/* 外边距40upx */
+.m-40upx{
+	margin: 40upx;
+}
+
+
+/*---------- 外边距 ----------*/
+/* 内边距10upx */
+.p-10upx{
+	padding: 10upx;
+}
+
+/* 内边距20upx */
+.p-20upx{
+	padding: 20upx;
+}
+
+/* 内边距30upx */
+.p-30upx{
+	padding: 30upx;
+}
+
+/* 内边距40upx */
+.p-40upx{
+	padding: 40upx;
 }
 
 /*内外边距组合*/
@@ -126,16 +151,16 @@ export default {
 		margin: 16upx;
 	}
 
-/* 内边距10upx */
-.p-10upx{
-	padding: 10upx;
-}
+/*================END 边距================*/
 
 
+
+/*================BEGIN 字体================*/
 /* 字体灰色 */
 .font-color-grey{
 	color: #bcbcbc;
 }
 
+/*================END 字体================*/
 
 </style>

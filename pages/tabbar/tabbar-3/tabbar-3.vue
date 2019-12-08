@@ -11,10 +11,6 @@
 					<image class="box-image" src="../../../static/img/video.png" mode="aspectFit"></image>
 					<text class="explain">作品</text>
 				</view>
-				<view class="tabbar-box-item" @click="goToPage('/pages/publish/publish-passage')">
-					<image class="box-image" src="../../../static/img/qa.png" mode="aspectFit"></image>
-					<text class="explain">文章</text>
-				</view>
 			</view>
 		</view>
 	</view>

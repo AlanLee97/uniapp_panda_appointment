@@ -1,6 +1,9 @@
 <template>
 	<view>
-		<text>图片上传</text>
+		<text>图片上传</text><br><br>
+		
+		<text>图片id：{{imgArr}}</text><br><br>
+		
 		<view class="uni-uploader">
 		    <view class="uni-uploader-head">
 		        <view class="m-10upx">点击预览图片</view>
@@ -20,10 +23,12 @@
 		        </view>
 		    </view>
 			
+			<br><br>
+			<text>2、图片id：{{imgId}}</text><br><br>
 		</view>
 		
 		<!-- <button type="primary" @tap="startUpload()">上传图片</button> -->
-		<button type="primary" @tap="startUpload2()">上传图片</button>
+		<button type="primary" @tap="sendRequest()">上传图片</button>
 		<!-- <button type="primary" @tap="startUploadMulti(imageList)">上传多张图片</button> -->
 	</view>
 </template>
@@ -35,7 +40,8 @@
 				imageList: [],
 				imgId:'',
 				imgArr:[],
-				count:-1,
+				imgArr2:[],
+				count:0,
 				sendData: {
 					uid:2,
 				    content:'哈哈',
@@ -45,84 +51,72 @@
 		},
 		
 		methods: {
-			uploadFile2(imgPath, index, str){
-				
-				
-				
-				return str;
-			},
 			
-			
-			startUpload(){
-				for (var i = 0; i < this.imageList.length; i++) {
-					this.count++;
-					console.log("count:" + this.count);
-					// uni.uploadFile({
-					//     url: 'http://localhost:8083/upload/image/return-id', //上传地址
-					//     // url: 'https://jsonplaceholder.typicode.com/posts/', //上传地址
-					//     filePath: this.imageList[this.count],
-					// 	// files:imgs,
-					//     name: 'file',
-					// 	formData:{
-					// 		uid:2
-					// 	},
-					//     success:(res) => {
-					//     	console.log("上传成功的回调函数");
-					// 		// res = JSON.parse(res);
-					// 		console.log(res.data);
-					// 		res = this.imgArr.push(res.data);
-							
-					// 		if(this.count == this.imageList.length - 1){
-					// 			console.log("判断输出：count：" + this.count);
-					// 			this.sendData.imgIds = res;
-					// 			console.log(this.sendData);
-					// 		}
-					//     }
-					// });
-				}
+			startUpload(index){
+				uni.uploadFile({
+				    url: 'http://localhost:8083/upload/image/return-id', //上传地址
+				    // url: 'https://jsonplaceholder.typicode.com/posts/', //上传地址
+				    filePath: this.imageList[index],
+					// files:imgs,
+				    name: 'file',
+					formData:{
+						uid:2
+					},
+				    success:(res) => {
+						this.count++;
+				    	console.log("上传成功的回调函数");
+						// res = JSON.parse(res);
+						console.log(res);
+						this.imgArr.push(res.data);
+						this.imgId = this.imgId + res.data + ";";
+				
+						this.startUpload(this.count);
+				    }
+				});
 				
 			},
 			
-			startUpload2(){
-				let str = '';
-				for (var i = 0; i < this.imageList.length; i++) {
-					this.count++;
-					console.log("count:" + this.count);
-					uni.uploadFile({
-					    // url: 'http://localhost:8083/upload/image/return-id', //上传地址
-					    url: 'https://jsonplaceholder.typicode.com/posts/', //上传地址
-					    filePath: this.imageList[this.count],
-						// files:imgs,
-					    name: 'file',
-						formData:{
-							uid:2
-						},
-					    success:(res) => {
-					    	console.log("上传成功的回调函数");
-							console.log(JSON.parse(res.data));
-							res = JSON.parse(res.data);
-					
-							this.imgArr.push(res.id);
-							
-							
-					    }
-					});
-				}
+			startUpload2(index){
+				uni.uploadFile({
+				    // url: 'http://localhost:8083/upload/image/return-id', //上传地址
+				    url: 'https://jsonplaceholder.typicode.com/posts/', //上传地址
+				    filePath: this.imageList[index],
+					// files:imgs,
+				    name: 'file',
+					formData:{
+						uid:2
+					},
+				    success: res => {
+						this.count++;
+				    	console.log("上传成功的回调函数");
+						console.log(JSON.parse(res.data));
+						res = JSON.parse(res.data);
+						this.imgArr.push(res.id);
+						this.imgId = this.imgId + res.id + ";";
+						this.startUpload2(this.count);
+						
+				    }
+				});
 				
 				
+			},
+			
+			sendRequest:function(){
+				this.startUpload(this.count);
+				let that = this;
 				setTimeout(function(){
-					str = this.imgArr;
-					console.log("imgIds:" + this.imgArr);
-					this.sendData.imgIds = str;
+
+					
+					that.imgId = that.imgArr.join(";");
+					console.log(that.imgId);
+					that.sendData.imgIds = that.imgId;
+					
+					console.log(that.sendData);
 				},2000);
 				
 			},
 			
-			startUploadMulti(imageList){
-				for (let i = 0; i < imageList.length; i++) {
-					this.startUpload(imageList[i]);
-				}
-			},
+
 			
 			chooseImg(){
 				// let startUploadVar = startUpload();
@@ -151,8 +145,7 @@
 			
 		},
 		onLoad:function(option){
-			console.log('test3-->option:');
-			console.log(option.id);
+
 		}
 	}
 </script>

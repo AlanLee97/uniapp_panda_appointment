@@ -1,31 +1,17 @@
 <template>
 	<view class="index">
-		<text>{{br}}</text>
-		<text>{{br}}</text>
-		<text>{{br}}</text>
-		<text>{{br}}</text>
+
 		
 		<!-- 顶部导航栏 -->
-		<view v-if="showHeader" class="header">
+		<view >
 			<!-- 定位城市 -->
-			<view class="addr">
-				<view class="icon location"></view>
-				{{ city }}
+			<view class="box-shadow-raduis m-20upx p-20upx" @tap="goPage('/pages/commons/select-city')">
+				<view class="m-20upx p-20upx">
+					{{ city }}
+				</view>
+				
 			</view>
-			<!-- 搜索框 -->
-			<view class="input-box">
-				<input
-					placeholder="默认关键字"
-					placeholder-style="color:#c0c0c0;"
-					
-				/>
-				<view class="icon search"></view>
-			</view>
-			<!-- 右侧图标按钮 -->
-			<view class="icon-btn">
-				<view class="icon yuyin-home"></view>
-				<view class="icon tongzhi" ></view>
-			</view>
+		
 		</view>
 		
 		
@@ -71,31 +57,11 @@
 <script>
 	//高德SDK
 	import amap from '@/common/SDK/amap-wx.js';
-	
+
 	var loginResult;
 	
 	export default {
-		data() {
-			return {
-				br:'\n',
-				refreshing: false,
-				lists: [],
-				fetchPageNum: 1,
-				
-				showHeader:true,
-				afterHeaderOpacity: 1,//不透明度
-				headerPosition: '',
-				
-				
-				statusTop:null,
-				nVueTitle:null,
-				city: '北京',
-				currentSwiper: 0,
-				
-				jsonArr:[]
-			}
-		},
-		onLoad() {
+		onLoad(options) {
 			loginResult = this.checkLogin('/pages/tabbar-2/tabbar-2', 0);
 			if(!loginResult){return;}
 			
@@ -113,10 +79,9 @@
 					// #endif
 				}
 			}); 
-			
-			
-			
+			console.log(options);
 		},
+		
 		onShow() {
 			uni.showLoading({
 				title: '加载数据中...',
@@ -129,15 +94,17 @@
 				success: res => {
 					console.log(res);
 					this.jsonArr = res.data.data;
-					
 					uni.hideLoading();
-					
 				},
 				fail: () => {
 					uni.hideLoading();
 				},
 				complete: () => {}
 			});
+			
+			let city = uni.getStorageSync('apt-city');
+			console.log(city);
+			this.city = city;
 		},
 		
 		onPullDownRefresh() {
@@ -148,6 +115,30 @@
 		onReachBottom() {
 			
 		},
+		
+		data() {
+			return {
+				br:'\n',
+				refreshing: false,
+				lists: [],
+				fetchPageNum: 1,
+				
+				showHeader:true,
+				afterHeaderOpacity: 1,//不透明度
+				headerPosition: '',
+				
+				
+				statusTop:null,
+				nVueTitle:null,
+				city: '北京',
+				currentSwiper: 0,
+				
+				jsonArr:[],
+				
+				
+			}
+		},
+		
 		methods: {
 			goPage:function(url){
 				uni.navigateTo({
@@ -159,7 +150,9 @@
 					fail: () => {},
 					complete: () => {}
 				});
-			}
+			},
+			
+			
 			
 		}
 	}
@@ -180,7 +173,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: #f1f1f1;
+	background-color: #fcfcfc;
 }
 
 .row {
