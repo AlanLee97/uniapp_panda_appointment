@@ -14,11 +14,12 @@
 			<textarea placeholder="约拍说明" v-model="sendData.ask" class="input-content m-10upx p-10upx" />
 		</view>
 
+		<!-- 选择图片 -->
         <view class="box-margin-padding box-raduis">
             <view class="uni-uploader">
                 <view class="uni-uploader-head">
                     <view class="m-10upx">点击预览图片</view>
-                    <view class="uni-uploader-info m-10upx">{{imageList.length}}/8</view>
+                    <view class="uni-uploader-info m-10upx">{{imageList.length}}/1</view>
                 </view>
                 <view class="uni-uploader-body">
                     <view class="uni-uploader__files">
@@ -28,7 +29,7 @@
                                 <view class="close-view" @click="close(index)">x</view>
                             </view>
                         </block>
-                        <view class="uni-uploader__input-box" v-show="imageList.length < 8">
+                        <view class="uni-uploader__input-box" v-show="imageList.length < 1">
                         	<view class="uni-uploader__input" @tap="chooseImg"></view>
                         </view>
                     </view>
@@ -36,7 +37,7 @@
             </view>
         </view>
 		
-		<!-- picker -->
+		<!-- 选择约拍类型 -->
 		<view class="box-margin-padding2 box-raduis m-10upx p-10upx">
 			<view class="">
 				<view class="d-il-blk">
@@ -49,9 +50,8 @@
 				</view>
 			</view>
 		</view>
-		
-		
-		
+
+		<!-- 选择约拍日期、地点 -->
 		<view 
 			class="box-margin-padding2 box-raduis m-10upx p-10upx" 
 			:class="{'active':index==tabIndex}" 
@@ -82,7 +82,7 @@
 		
 		<w-picker 
 			mode="region"
-			:defaultVal="['浙江省','杭州市','滨江区']"
+			:defaultVal="['广东省','广州市','天河区']"
 			:areaCode="['33','3301','330108']"
 			:hideArea="false"
 			@confirm="onConfirm" 
@@ -90,20 +90,21 @@
 		></w-picker>
 		
 
-		
 		<view class="box-raduis box-margin-padding2 ">
 			
-			<span class="">费用</span>
-			
-			<view class="d-il-blk m-left-20upx">
-				<input type="text" value=""
-						v-model="sendData.apt_fee"
-					   class="p-10upx input-money"/>
+			<view class=" ">
+				<view class=" d-il-blk">费用</view>
+				
+				<view class=" width-20 d-il-blk p-left-20upx">
+					<input type="text" value=""
+							v-model="sendData.apt_fee"
+						   class="input-money"/>
+				</view>
 			</view>
 			   
 		</view>
 
-		<button type="primary" class="feedback-submit" @tap="send">发布</button>
+		<button type="primary" class="feedback-submit" @tap="publishAppointment()">发布</button>
         
 
     </view>
@@ -133,6 +134,7 @@
 					apt_type:'',
 					apt_date:'',
 					apt_site:'',
+					apt_image:'',
 					apt_fee:0
 				},
 				
@@ -230,7 +232,10 @@
 
         },
 		onShow:function(){
+			let res = this.getUserInfo();
 			
+			let uid = res.id;
+			this.sendData.userId = uid;
 		},
         methods: {
 			bindPickerChange: function(e) {
@@ -250,38 +255,49 @@
                 uni.chooseImage({
                     sourceType: ["camera", "album"],
                     
-                    count: 8 - this.imageList.length,
+                    count: 1 - this.imageList.length,
                     success: (res) => {
                         this.imageList = this.imageList.concat(res.tempFilePaths);
 						console.log(this.imageList);
                     }
                 })
             },
+			
+			uploadImage:function(){
+				uni.uploadFile({
+					url:this.createApiUrl('/upload/return-url'),
+					filePath: this.imageList[0],
+					name: 'file',
+					formData:{
+						uid:this.sendData.userId
+					},
+					success:res => {
+						console.log("上传成功的回调函数");
+						console.log(res);
+						this.sendData.apt_image = res.data;
+						
+						//发送请求
+						this.sendRequest();
+						
+					}
+				});
+			},
             
             previewImage() { //预览图片
                 uni.previewImage({
                     urls: this.imageList
                 });
             },
-            send() { //发送请求
-				let res = this.getUserInfo();
-				
-				let uid = res.id;
-				this.sendData.userId = uid;
-				
-				console.log(res);
-				
-				console.log('sendData:');
-                console.log(JSON.stringify(this.sendData));
-                let imgs = this.imageList.map((value, index) => {
-                    return {
-                        name: "image" + index,
-                        uri: value
-                    }
-                });
+			
+			publishAppointment:function(){
+				this.uploadImage();
+			},
+			
+            sendRequest:function() { //发送请求
 				
 				uni.showLoading({
-					title:'正在发布'
+					title:'正在发布',
+					
 				})
 				
 				uni.request({
@@ -293,7 +309,8 @@
 					data: this.sendData,
 					success: res => {
 						console.log(res);
-						if(res.data.data.code == 200){
+						
+						if(res.data.code == 200){
 							uni.hideLoading();
 							uni.showToast({
 								title:'发布成功'
@@ -301,35 +318,10 @@
 						}
 					},
 					fail: () => {},
-					complete: () => {}
+					complete: () => {
+						uni.hideLoading();
+					}
 				});
-				
-				
-                // uni.uploadFile({
-                //     url: "https://service.dcloud.net.cn/feedback",
-                //     files: imgs,
-                //     formData: this.sendDate,
-                //     success: (res) => {
-                //         if (res.statusCode === 200) {
-                //             uni.showToast({
-                //                 title: "反馈成功!"
-                //             });
-                //             this.imageList = [];
-                //             this.sendDate = {
-                //                 score: 0,
-                //                 content: "",
-                //                 contact: ""
-                //             }
-                //         }
-                //     },
-                //     fail: (res) => {
-                //         uni.showToast({
-                //             title: "失败",
-                //             icon:"none"
-                //         });
-                //         console.log(res)
-                //     }
-                // });
             },
 			
 			
@@ -381,152 +373,7 @@
     .close-view{
         text-align: center;line-height:14px;height: 16px;width: 16px;border-radius: 50%;background: #FF5053;color: #FFFFFF;position: absolute;top: -6px;right: -4px;font-size: 12px;
     }
-    /* 上传 */
-    .uni-uploader {
-    	flex: 1;
-    	flex-direction: column;
-    }
-    .uni-uploader-head {
-    	display: flex;
-    	flex-direction: row;
-    	justify-content: space-between;
-    }
-    .uni-uploader-info {
-    	color: #B2B2B2;
-    }
-    .uni-uploader-body {
-    	margin-top: 16upx;
-    }
-    .uni-uploader__files {
-    	display: flex;
-    	flex-direction: row;
-    	flex-wrap: wrap;
-    }
-    .uni-uploader__file {
-    	margin: 10upx;
-    	width: 210upx;
-    	height: 210upx;
-    }
-    .uni-uploader__img {
-    	display: block;
-    	width: 210upx;
-    	height: 210upx;
-    }
-    .uni-uploader__input-box {
-    	position: relative;
-    	margin:10upx;
-    	width: 208upx;
-    	height: 208upx;
-    	border: 2upx solid #D9D9D9;
-    }
-    .uni-uploader__input-box:before,
-    .uni-uploader__input-box:after {
-    	content: " ";
-    	position: absolute;
-    	top: 50%;
-    	left: 50%;
-    	-webkit-transform: translate(-50%, -50%);
-    	transform: translate(-50%, -50%);
-    	background-color: #D9D9D9;
-    }
-    .uni-uploader__input-box:before {
-    	width: 4upx;
-    	height: 79upx;
-    }
-    .uni-uploader__input-box:after {
-    	width: 79upx;
-    	height: 4upx;
-    }
-    .uni-uploader__input-box:active {
-    	border-color: #999999;
-    }
-    .uni-uploader__input-box:active:before,
-    .uni-uploader__input-box:active:after {
-    	background-color: #999999;
-    }
-    .uni-uploader__input {
-    	position: absolute;
-    	z-index: 1;
-    	top: 0;
-    	left: 0;
-    	width: 100%;
-    	height: 100%;
-    	opacity: 0;
-    }
-    
-    /*问题反馈*/
-    .feedback-title {
-    	display: flex;
-    	flex-direction: row;
-    	justify-content: space-between;
-    	align-items: center;
-    	padding: 20upx;
-    	color: #8f8f94;
-    	font-size: 28upx;
-    }
-    .feedback-star-view.feedback-title {
-    	justify-content: flex-start;
-    	margin: 0;
-    }
-    .feedback-quick {
-    	position: relative;
-    	padding-right: 40upx;
-    }
-    .feedback-quick:after {
-    	font-family: uniicons;
-    	font-size: 40upx;
-    	content: '\e581';
-    	position: absolute;
-    	right: 0;
-    	top: 50%;
-    	color: #bbb;
-    	-webkit-transform: translateY(-50%);
-    	transform: translateY(-50%);
-    }
-    .feedback-body {
-    	background: #fff;
-    }
-    .feedback-textare {
-    	height: 200upx;
-    	font-size: 34upx;
-    	line-height: 50upx;
-    	width: 100%;
-    	box-sizing: border-box;
-    	padding: 20upx 30upx 0;
-    }
-    .feedback-input {
-    	font-size: 34upx;
-    	height: 50upx;
-    	min-height: 50upx;
-    	padding: 15upx 20upx;
-    	line-height: 50upx;
-    }
-    .feedback-uploader {
-    	padding: 22upx 20upx;
-    }
-    .feedback-star {
-    	font-family: uniicons;
-    	font-size: 40upx;
-    	margin-left: 6upx;
-    }
-    .feedback-star-view {
-    	margin-left: 20upx;
-    }
-    .feedback-star:after {
-    	content: '\e408';
-    }
-    .feedback-star.active {
-    	color: #FFB400;
-    }
-    .feedback-star.active:after {
-    	content: '\e438';
-    }
-    .feedback-submit {
-    	background: #007AFF;
-    	color: #FFFFFF;
-    	margin: 20upx;
-    }
-	
+
 	
 	
 	
@@ -555,22 +402,16 @@
 	
 	
 	
-	.box-margin-padding{
-		background-color: #FFFFFF;
-		padding: 10upx;
-		margin: 16upx;
-	}
-	
 	.box-margin-padding2{
 		padding: 20upx;
 		margin: 16upx;
 	}
 	
 	.input-money{
-		background-color: #F8F8F8;
+		/* background-color: #FCFCFC; */
 		font-size: 40upx;
-		margin-top: 10upx;
-		
+		border-bottom: #BBBBBB 1px solid;
+		margin-bottom: -10upx;
 	}
 	
 	

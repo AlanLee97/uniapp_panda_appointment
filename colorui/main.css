@@ -1213,7 +1213,7 @@ button.cuIcon.lg {
 	display: flex;
 	padding-right: 10upx;
 	height: 140upx;
-	background-color: #ffffff;
+	/* background-color: #ffffff; */
 	justify-content: flex-end;
 	align-items: center
 }
@@ -1282,7 +1282,7 @@ button.cuIcon.lg {
 	display: flex;
 	padding: 0 30upx;
 	min-height: 100upx;
-	background-color: #ffffff;
+	/* background-color: #ffffff; */
 	justify-content: space-between;
 	align-items: center
 }
@@ -2185,7 +2185,7 @@ button.cuIcon.lg {
 
 .cu-card>.cu-item {
 	display: block;
-	background-color: #ffffff;
+	/* background-color: #ffffff; */
 	overflow: hidden;
 	border-radius: 10upx;
 	margin: 50upx;
@@ -2239,7 +2239,7 @@ button.cuIcon.lg {
 
 .cu-card.dynamic>.cu-item {
 	display: block;
-	background-color: #ffffff;
+	/* background-color: #ffffff; */
 	overflow: hidden;
 }
 

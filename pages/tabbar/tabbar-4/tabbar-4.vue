@@ -196,6 +196,15 @@
 			IsCard(e) {
 				this.isCard = e.detail.value
 			},
+			DotStyle(e) {
+				this.dotStyle = e.detail.value
+			},
+			// cardSwiper
+			cardSwiper(e) {
+				this.cardCur = e.detail.current
+			},
+			
+
 			
 			//滑动tab栏的方法
 			change(index) {

@@ -104,7 +104,7 @@
 									<view class="grid flex-sub " :class="item.images.length > 1 ?'col-3 grid-square':'col-1'">
 										<view class="" v-for="(imgurl, img_index)  in item.images" :key="img_index">
 											<view class="scroll-item-image-box">
-												<image :src="imgurl" mode="aspectFill" class="scroll-item-image"></image>
+												<image :src="imgurl" @tap="previewImage(img_index, item.images)" mode="aspectFill" class="scroll-item-image"></image>
 											</view>
 										</view>
 									</view>
@@ -176,6 +176,7 @@
 		},
 		
 		methods: {
+			
 			_gotoPage:function(pageUrl){
 				this.gotoPage(pageUrl);
 			},

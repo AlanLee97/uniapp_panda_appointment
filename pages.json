@@ -88,12 +88,6 @@
 				"navigationBarTitleText":"发布作品"
 			}
 		},
-		{
-			"path":"pages/publish/publish-passage",
-			"style":{
-				
-			}
-		},
         {
             "path" : "pages/test/test",
             "style" : {}

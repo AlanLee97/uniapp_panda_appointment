@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- #ifndef MP-ALIPAY -->
-		
+		<!-- 顶部轮播图 -->
 		<swiper class="card-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
 		 :autoplay="true" interval="5000" duration="500" @change="cardSwiper" indicator-color="#8799a3"
 		 indicator-active-color="#0081ff">
@@ -23,6 +23,7 @@
 			</view>
 		</view>
 		
+		<!-- 最新约拍 -->
 		<scroll-view scroll-y style="height: 100%;width: 100%;" >
 			<view class="scroll-items">
 				<view class="scroll-item" 
@@ -33,7 +34,7 @@
 						<image :src="item.image" mode="aspectFill" class="scroll-item-image"></image>
 					</view>
 					<view class="scroll-item-text-box">
-						<view>
+						<view class="fontsize-50upx font-weight-200">
 							{{item.title}}
 						</view>
 						<view>
@@ -61,6 +62,7 @@
 			</view>
 		</view>
 		
+		<!-- 模特推荐 -->
 		<scroll-view class="slider" scroll-x="true">
 			<template v-for="(item,i) in 6">
 				<view :key="'item_'+i" class="s_item">
@@ -83,6 +85,7 @@
 			</view>
 		</view>
 		
+		<!-- 摄影师推荐 -->
 		<scroll-view class="slider" scroll-x="true">
 			<template v-for="(item,i) in 6">
 				<view :key="'item_'+i" class="s_item">
@@ -109,35 +112,60 @@
 	
 		
 		<!-- 动态 -->
-		<view class="cu-card dynamic no-card" v-for="(item, index) in worksAndUser" :key='index'>
-			<view class="cu-item shadow">
-				<view class="cu-list menu-avatar">
-					<view class="cu-item">
-						<view class="cu-avatar round lg" >
-							<image class="cu-avatar round lg" :src="item.tuser.headPortraitImg" @tap="gotoPage('/pages/user/profile?uid=' + item.tuser.id)"></image>
-						</view>
-						<view class="content flex-sub">
-							<view>{{item.tuser.nickname}}</view>
-							<view class="text-gray text-sm flex justify-between">
-								{{item.datetime}}
+		<view class="cu-card dynamic no-card " v-for="(item, index) in worksAndUser" :key='index'>
+			<view class="cu-item shadow ">
+				<view class="bgcolor-grey-fcfcfc ">
+					<view class="p-20upx mt-20upx bgcolor-white-ffffff box-raduis box-shadow">
+						<!-- 用户信息部分 -->
+						<view class="cu-list menu-avatar">
+							<view class="cu-item ">
+								<!-- 头像 -->
+								<view class="cu-avatar round lg" >
+									<image class="cu-avatar round lg" :src="item.tuser.headPortraitImg" @tap="gotoPage('/pages/user/profile?uid=' + item.tuser.id)"></image>
+								</view>
+								<!-- 昵称与时间 -->
+								<view class="content flex-sub">
+									<view>
+										<!-- 昵称 -->
+										<view class="width-50">
+											{{item.tuser.nickname}}
+										</view>
+										
+										<!-- 时间 -->
+										<view class="text-gray text-sm flex width-50">
+											
+											<view class="width-100 text-right">
+												{{item.datetime}}
+											</view>
+										</view>
+									</view>
+									<view>
+										<view v-if="item.tuser.identity == 0" class="text-gray text-sm flex justify-between">
+											摄影师
+										</view>
+										<view v-if="item.tuser.identity == 1" class="text-gray text-sm flex justify-between">
+											模特
+										</view>
+									</view>
+									
+								</view>
 							</view>
 						</view>
-					</view>
-				</view>
-				<view class="text-content">
-					{{item.introduction}}
-				</view>
-				<view class="grid flex-sub padding-lr" :class="item.images.length > 1 ?'col-3 grid-square':'col-1'">		
-					<view v-for="(imgurl, img_index)  in item.images" :key="img_index">
-						<image @tap="previewImage(img_index, item.images)" :src="imgurl" mode="aspectFill"></image>
-					</view>
-					
-				</view>
-				<view class="text-gray text-sm text-right padding">
-					<text class="cuIcon-attentionfill margin-lr-xs"></text> 10
-					<text class="cuIcon-appreciatefill margin-lr-xs"></text> 20
-					<text class="cuIcon-messagefill margin-lr-xs"></text> 30
-				</view>
+						
+						<!-- 发布的内容 -->
+						<view class="text-content m-20upx ">
+							{{item.introduction}}
+						</view>
+						
+						<!-- 配图 -->
+						<view class="grid flex-sub padding-lr" :class="item.images.length > 1 ?'col-3 grid-square':'col-1'">		
+							<view v-for="(imgurl, img_index)  in item.images" :key="img_index">
+								<image @tap="previewImage(img_index, item.images)" :src="imgurl" mode="aspectFill"></image>
+							</view>
+							
+						</view>
+					</view>		
+				</view>	
 			</view>
 		</view>
 			
@@ -195,34 +223,11 @@
 		},
 		onShow() {
 			//获取最新约拍
-			uni.request({
-				url: this.createApiUrl('appointment/get/newest'),
-				method: 'GET',
-				data: {},
-				success: res => {
-					console.log(res);
-					res = res.data.data;
-					this.newestApt = res;
-				},
-				fail: () => {},
-				complete: () => {}
-			});
+			this.getNewestApt();
 			
 			
 			//获取用户动态
-			uni.request({
-				url: this.createApiUrl('works/get/all-user'),
-				method: 'GET',
-				data: {},
-				success: res => {
-					
-					res = res.data.data;
-					this.worksAndUser = res;
-					console.log(res);
-				},
-				fail: () => {},
-				complete: () => {}
-			});
+			this.getWorksAndUser();
 		},
 		methods: {
 			IsCard(e) {
@@ -234,6 +239,39 @@
 			// cardSwiper
 			cardSwiper(e) {
 				this.cardCur = e.detail.current
+			},
+			
+			//获取最新约拍
+			getNewestApt:function(){
+				uni.request({
+					url: this.createApiUrl('appointment/get/newest'),
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log(res);
+						res = res.data.data;
+						this.newestApt = res;
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			
+			//获取用户动态
+			getWorksAndUser:function(){
+				uni.request({
+					url: this.createApiUrl('works/get/all-user'),
+					method: 'GET',
+					data: {},
+					success: res => {
+						
+						res = res.data.data;
+						this.worksAndUser = res;
+						console.log(res);
+					},
+					fail: () => {},
+					complete: () => {}
+				});
 			}
 			
 		}
