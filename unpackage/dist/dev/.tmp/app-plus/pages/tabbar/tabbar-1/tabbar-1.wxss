@@ -1,7 +1,6 @@
 
 .tower-swiper .tower-item {
 	-webkit-transform: scale(calc(0.5 + var(--index) / 10));
-	    -ms-transform: scale(calc(0.5 + var(--index) / 10));
 	        transform: scale(calc(0.5 + var(--index) / 10));
 	margin-left: calc(var(--left) * 100rpx - 150rpx);
 	z-index: var(--index);
@@ -24,26 +23,21 @@
 .recommend-box {
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 	-webkit-box-pack: center;
 	-webkit-justify-content: center;
-	    -ms-flex-pack: center;
 	        justify-content: center;
 	border-radius: 8px;
 	background: white;
 	margin-top: 5px;
-	-webkit-box-shadow: 0px 2px 6px 0px rgba(103, 103, 103, 0.2);
-	        box-shadow: 0px 2px 6px 0px rgba(103, 103, 103, 0.2);
+	box-shadow: 0px 2px 6px 0px rgba(103, 103, 103, 0.2);
 }
 
 
@@ -51,12 +45,10 @@
 .scroll-items{
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	width: 100%;
 	padding: 10rpx;
@@ -69,38 +61,31 @@
 	width: 100%;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
 	        flex-direction: row;
 	border: 1px solid #f8f8f8;
 }
 .scroll-item-image-box{
 	-webkit-box-flex: 0;
 	-webkit-flex-grow: 0;
-	    -ms-flex-positive: 0;
 	        flex-grow: 0;
 }
 .scroll-item-text-box{
 	-webkit-box-flex: 1;
 	-webkit-flex-grow: 1;
-	    -ms-flex-positive: 1;
 	        flex-grow: 1;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	-webkit-box-pack: justify;
 	-webkit-justify-content: space-between;
-	    -ms-flex-pack: justify;
 	        justify-content: space-between;
 	font-size: 28rpx;
 	

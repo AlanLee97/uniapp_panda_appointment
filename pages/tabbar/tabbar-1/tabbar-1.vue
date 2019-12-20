@@ -1,5 +1,9 @@
 <template>
 	<view>
+		
+		<!-- <button @tap="pay()">支付</button> -->
+		
+		
 		<!-- #ifndef MP-ALIPAY -->
 		<!-- 顶部轮播图 -->
 		<swiper class="card-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
@@ -31,22 +35,23 @@
 					v-for="(item, index) in newestApt" 
 					:key="index">
 					<view class="scroll-item-image-box">
-						<image :src="item.image" mode="aspectFill" class="scroll-item-image"></image>
+						<image :src="item.image" mode="aspectFill" class="scroll-item-image "></image>
 					</view>
-					<view class="scroll-item-text-box">
-						<view class="fontsize-50upx font-weight-200">
+					<view class="scroll-item-text-box ">
+						<view class="fontsize-40upx font-weight-100 p-left-20upx">
 							{{item.title}}
 						</view>
-						<view>
-							{{item.address}}
+						<view class="uni-flex uni-row  ">
+							<image src="../../../static/icon/location.png" mode="" class="icon-size-50upx p-10upx"></image>
+							<text class="uni-flex-item p-10upx">{{item.address}}</text>
 						</view>
-						<view>
-							约拍时间：{{item.startDatetime}}
+						<view class="uni-flex uni-row  ">
+							<image src="../../../static/icon/time.png" mode="" class="icon-size-50upx p-10upx"></image>
+							<view class="">
+								<text class="uni-flex-item p-10upx">{{item.startDatetime}}</text>
+							</view>
 						</view>
 						
-						<view>
-							发布于：{{item.date}}
-						</view>
 					</view>
 				</view>
 			</view>
@@ -64,13 +69,13 @@
 		
 		<!-- 模特推荐 -->
 		<scroll-view class="slider" scroll-x="true">
-			<template v-for="(item,i) in 6">
-				<view :key="'item_'+i" class="s_item">
-					<view class="recommend-box">
-						<image src="../../../static/panda.png" class="recommend-img"></image>
-						<text class="name">Alan</text>
-						<text class="desc">专业模特</text>
-						<text class="btn">去约拍</text>
+			<template >
+				<view v-for="(item,i) in recomendModel" :key="i" class="s_item ">
+					<view class="recommend-box p-20upx">
+						<image :src="item.headPortraitImg" class="cu-avatar round lg"></image>
+						<text class="text-gray fontsize-30upx p-10upx">{{item.nickname}}</text>
+						<!-- <text class="desc">专业模特</text> -->
+						<button type="primary" plain="true" size="mini">去约拍</button>
 					</view>
 				</view>
 			</template>
@@ -87,16 +92,16 @@
 		
 		<!-- 摄影师推荐 -->
 		<scroll-view class="slider" scroll-x="true">
-			<template v-for="(item,i) in 6">
-				<view :key="'item_'+i" class="s_item">
-					<view class="recommend-box">
-						<image src="../../../static/panda.png" class="recommend-img"></image>
-						<text class="name">Alan</text>
-						<text class="desc">专业摄影师</text>
-						<text class="btn">去约拍</text>
+				<template >
+					<view v-for="(item,i) in recomendPhotographer" :key="i" class="s_item">
+						<view class="recommend-box p-20upx">
+							<image :src="item.headPortraitImg" class="cu-avatar round lg"></image>
+							<text class="text-gray fontsize-30upx p-10upx">{{item.nickname}}</text>
+							<!-- <text class="desc">专业摄影师</text> -->
+							<button type="primary" plain="true" size="mini">去约拍</button>
+						</view>
 					</view>
-				</view>
-			</template>
+				</template>
 		</scroll-view>
 		
 	
@@ -213,6 +218,10 @@
 				direction: '',
 				worksAndUser:[],
 				newestApt:[],
+				//推荐模特
+				recomendModel:{},
+				//推荐摄影师
+				recomendPhotographer:{},
 				
 				
 			};
@@ -228,6 +237,12 @@
 			
 			//获取用户动态
 			this.getWorksAndUser();
+			
+			//获取推荐模特
+			this.getRecomendModel();
+			
+			//获取推荐摄影师
+			this.getRecomendPhotographer();
 		},
 		methods: {
 			IsCard(e) {
@@ -268,6 +283,54 @@
 						res = res.data.data;
 						this.worksAndUser = res;
 						console.log(res);
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			
+			//获取推荐模特
+			getRecomendModel:function(){
+				uni.request({
+					url: this.createApiUrl('/user/get/all/2'),
+					method: 'GET',
+					success: res => {
+						console.log(res);
+						this.recomendModel = res.data.data;
+						
+						console.log(this.recomendModel);
+					},
+					fail: (err) => {
+						console.log(err);
+					},
+					complete: () => {}
+				});
+			},
+			
+			//获取推荐摄影师
+			getRecomendPhotographer:function(){
+				uni.request({
+					url: this.createApiUrl('/user/get/all/1'),
+					method: 'GET',
+					success: res => {
+						console.log(res);
+						this.recomendPhotographer = res.data.data;
+						
+						console.log(this.recomendPhotographer);
+					},
+					fail: (err) => {
+						console.log(err);
+					},
+					complete: () => {}
+				});
+			},
+			
+			pay:function(){
+				uni.requestPayment({
+					provider: 'alipay',
+					orderInfo: 'test',
+					success: res => {
+						console.log('success:' + JSON.stringify(res));
 					},
 					fail: () => {},
 					complete: () => {}

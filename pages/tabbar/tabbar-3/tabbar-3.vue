@@ -3,7 +3,7 @@
 		<image class="logo" :class="{'active':active}" src="../../../static/logo.png"  mode="aspectFit"></image>
 		<view class="tabbar-box-wrap">
 			<view class="tabbar-box">
-				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release')">
+				<view class="tabbar-box-item" @click="goToPage('/pages/publish/publish-appointment')">
 					<image class="box-image" src="../../../static/img/release.png" mode="aspectFit"></image>
 					<text class="explain">约拍</text>
 				</view>

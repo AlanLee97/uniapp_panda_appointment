@@ -241,7 +241,7 @@ var promiseInterceptor = {
 
 
 var SYNC_API_RE =
-/^\$|getMenuButtonBoundingClientRect|^report|interceptors|Interceptor$|getSubNVueById|requireNativePlugin|upx2px|hideKeyboard|canIUse|^create|Sync$|Manager$|base64ToArrayBuffer|arrayBufferToBase64/;
+/^\$|restoreGlobal|getCurrentSubNVue|getMenuButtonBoundingClientRect|^report|interceptors|Interceptor$|getSubNVueById|requireNativePlugin|upx2px|hideKeyboard|canIUse|^create|Sync$|Manager$|base64ToArrayBuffer|arrayBufferToBase64/;
 
 var CONTEXT_API_RE = /^create|Manager$/;
 
@@ -1085,6 +1085,18 @@ function handleEvent(event) {var _this = this;
           {// mp-weixin,mp-toutiao 抽象节点模拟 scoped slots
             handlerCtx = handlerCtx.$parent.$parent;
           }
+          if (methodName === '$emit') {
+            handlerCtx.$emit.apply(handlerCtx,
+            processEventArgs(
+            _this.$vm,
+            event,
+            eventArray[1],
+            eventArray[2],
+            isCustom,
+            methodName));
+
+            return;
+          }
           var handler = handlerCtx[methodName];
           if (!isFn(handler)) {
             throw new Error(" _vm.".concat(methodName, " is not a function"));
@@ -1189,6 +1201,13 @@ function parseBaseApp(vm, _ref3)
 
   // 兼容旧版本 globalData
   appOptions.globalData = vm.$options.globalData || {};
+  // 将 methods 中的方法挂在 getApp() 中
+  var methods = vm.$options.methods;
+  if (methods) {
+    Object.keys(methods).forEach(function (name) {
+      appOptions[name] = methods[name];
+    });
+  }
 
   initHooks(appOptions, hooks);
 
@@ -1291,7 +1310,7 @@ function parseBaseComponent(vueComponentOptions)
 
 
   {
-    // 微信multipleSlots  部分情况有 bug，导致内容顺序错乱 如 u-list，提供覆盖选项
+    // 微信 multipleSlots 部分情况有 bug，导致内容顺序错乱 如 u-list，提供覆盖选项
     if (vueOptions['mp-weixin'] && vueOptions['mp-weixin']['options']) {
       Object.assign(options, vueOptions['mp-weixin']['options']);
     }
@@ -7579,7 +7598,19 @@ internalMixin(Vue);
 
 /***/ }),
 
-/***/ 201:
+/***/ 29:
+/*!*************************************************************************************************!*\
+  !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/common/SDK/amap-wx.js ***!
+  \*************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+function AMapWX(a) {this.key = a.key, this.requestConfig = { key: a.key, s: "rsx", platform: "WXJS", appname: a.key, sdkversion: "1.2.0", logversion: "2.0" };}AMapWX.prototype.getWxLocation = function (a, b) {wx.getLocation({ type: "gcj02", success: function success(a) {var c = a.longitude + "," + a.latitude;wx.setStorage({ key: "userLocation", data: c }), b(c);}, fail: function fail(c) {wx.getStorage({ key: "userLocation", success: function success(a) {a.data && b(a.data);} }), a.fail({ errCode: "0", errMsg: c.errMsg || "" });} });}, AMapWX.prototype.getRegeo = function (a) {function c(c) {var d = b.requestConfig;wx.request({ url: "https://restapi.amap.com/v3/geocode/regeo", data: { key: b.key, location: c, extensions: "all", s: d.s, platform: d.platform, appname: b.key, sdkversion: d.sdkversion, logversion: d.logversion }, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {var d, e, f, g, h, i, j, k, l;b.data.status && "1" == b.data.status ? (d = b.data.regeocode, e = d.addressComponent, f = [], g = "", d && d.roads[0] && d.roads[0].name && (g = d.roads[0].name + "附近"), h = c.split(",")[0], i = c.split(",")[1], d.pois && d.pois[0] && (g = d.pois[0].name + "附近", j = d.pois[0].location, j && (h = parseFloat(j.split(",")[0]), i = parseFloat(j.split(",")[1]))), e.provice && f.push(e.provice), e.city && f.push(e.city), e.district && f.push(e.district), e.streetNumber && e.streetNumber.street && e.streetNumber.number ? (f.push(e.streetNumber.street), f.push(e.streetNumber.number)) : (k = "", d && d.roads[0] && d.roads[0].name && (k = d.roads[0].name), f.push(k)), f = f.join(""), l = [{ iconPath: a.iconPath, width: a.iconWidth, height: a.iconHeight, name: f, desc: g, longitude: h, latitude: i, id: 0, regeocodeData: d }], a.success(l)) : a.fail({ errCode: b.data.infocode, errMsg: b.data.info });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}var b = this;a.location ? c(a.location) : b.getWxLocation(a, function (a) {c(a);});}, AMapWX.prototype.getWeather = function (a) {function d(d) {var e = "base";a.type && "forecast" == a.type && (e = "all"), wx.request({ url: "https://restapi.amap.com/v3/weather/weatherInfo", data: { key: b.key, city: d, extensions: e, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion }, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {function c(a) {var b = { city: { text: "城市", data: a.city }, weather: { text: "天气", data: a.weather }, temperature: { text: "温度", data: a.temperature }, winddirection: { text: "风向", data: a.winddirection + "风" }, windpower: { text: "风力", data: a.windpower + "级" }, humidity: { text: "湿度", data: a.humidity + "%" } };return b;}var d, e;b.data.status && "1" == b.data.status ? b.data.lives ? (d = b.data.lives, d && d.length > 0 && (d = d[0], e = c(d), e["liveData"] = d, a.success(e))) : b.data.forecasts && b.data.forecasts[0] && a.success({ forecast: b.data.forecasts[0] }) : a.fail({ errCode: b.data.infocode, errMsg: b.data.info });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}function e(e) {wx.request({ url: "https://restapi.amap.com/v3/geocode/regeo", data: { key: b.key, location: e, extensions: "all", s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion }, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {var c, e;b.data.status && "1" == b.data.status ? (e = b.data.regeocode, e.addressComponent ? c = e.addressComponent.adcode : e.aois && e.aois.length > 0 && (c = e.aois[0].adcode), d(c)) : a.fail({ errCode: b.data.infocode, errMsg: b.data.info });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}var b = this,c = b.requestConfig;a.city ? d(a.city) : b.getWxLocation(a, function (a) {e(a);});}, AMapWX.prototype.getPoiAround = function (a) {function d(d) {var e = { key: b.key, location: d, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.querytypes && (e["types"] = a.querytypes), a.querykeywords && (e["keywords"] = a.querykeywords), wx.request({ url: "https://restapi.amap.com/v3/place/around", data: e, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {var c, d, e, f;if (b.data.status && "1" == b.data.status) {if (b = b.data, b && b.pois) {for (c = [], d = 0; d < b.pois.length; d++) {e = 0 == d ? a.iconPathSelected : a.iconPath, c.push({ latitude: parseFloat(b.pois[d].location.split(",")[1]), longitude: parseFloat(b.pois[d].location.split(",")[0]), iconPath: e, width: 22, height: 32, id: d, name: b.pois[d].name, address: b.pois[d].address });}f = { markers: c, poisData: b.pois }, a.success(f);}} else a.fail({ errCode: b.data.infocode, errMsg: b.data.info });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}var b = this,c = b.requestConfig;a.location ? d(a.location) : b.getWxLocation(a, function (a) {d(a);});}, AMapWX.prototype.getStaticmap = function (a) {function f(b) {c.push("location=" + b), a.zoom && c.push("zoom=" + a.zoom), a.size && c.push("size=" + a.size), a.scale && c.push("scale=" + a.scale), a.markers && c.push("markers=" + a.markers), a.labels && c.push("labels=" + a.labels), a.paths && c.push("paths=" + a.paths), a.traffic && c.push("traffic=" + a.traffic);var e = d + c.join("&");a.success({ url: e });}var e,b = this,c = [],d = "https://restapi.amap.com/v3/staticmap?";c.push("key=" + b.key), e = b.requestConfig, c.push("s=" + e.s), c.push("platform=" + e.platform), c.push("appname=" + e.appname), c.push("sdkversion=" + e.sdkversion), c.push("logversion=" + e.logversion), a.location ? f(a.location) : b.getWxLocation(a, function (a) {f(a);});}, AMapWX.prototype.getInputtips = function (a) {var b = this,c = b.requestConfig,d = { key: b.key, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.location && (d["location"] = a.location), a.keywords && (d["keywords"] = a.keywords), a.type && (d["type"] = a.type), a.city && (d["city"] = a.city), a.citylimit && (d["citylimit"] = a.citylimit), wx.request({ url: "https://restapi.amap.com/v3/assistant/inputtips", data: d, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {b && b.data && b.data.tips && a.success({ tips: b.data.tips });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}, AMapWX.prototype.getDrivingRoute = function (a) {var b = this,c = b.requestConfig,d = { key: b.key, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.origin && (d["origin"] = a.origin), a.destination && (d["destination"] = a.destination), a.strategy && (d["strategy"] = a.strategy), a.waypoints && (d["waypoints"] = a.waypoints), a.avoidpolygons && (d["avoidpolygons"] = a.avoidpolygons), a.avoidroad && (d["avoidroad"] = a.avoidroad), wx.request({ url: "https://restapi.amap.com/v3/direction/driving", data: d, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {b && b.data && b.data.route && a.success({ paths: b.data.route.paths, taxi_cost: b.data.route.taxi_cost || "" });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}, AMapWX.prototype.getWalkingRoute = function (a) {var b = this,c = b.requestConfig,d = { key: b.key, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.origin && (d["origin"] = a.origin), a.destination && (d["destination"] = a.destination), wx.request({ url: "https://restapi.amap.com/v3/direction/walking", data: d, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {b && b.data && b.data.route && a.success({ paths: b.data.route.paths });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}, AMapWX.prototype.getTransitRoute = function (a) {var b = this,c = b.requestConfig,d = { key: b.key, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.origin && (d["origin"] = a.origin), a.destination && (d["destination"] = a.destination), a.strategy && (d["strategy"] = a.strategy), a.city && (d["city"] = a.city), a.cityd && (d["cityd"] = a.cityd), wx.request({ url: "https://restapi.amap.com/v3/direction/transit/integrated", data: d, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {if (b && b.data && b.data.route) {var c = b.data.route;a.success({ distance: c.distance || "", taxi_cost: c.taxi_cost || "", transits: c.transits });}}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}, AMapWX.prototype.getRidingRoute = function (a) {var b = this,c = b.requestConfig,d = { key: b.key, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.origin && (d["origin"] = a.origin), a.destination && (d["destination"] = a.destination), wx.request({ url: "https://restapi.amap.com/v4/direction/bicycling", data: d, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {b && b.data && b.data.data && a.success({ paths: b.data.data.paths });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}, module.exports.AMapWX = AMapWX;
+
+/***/ }),
+
+/***/ 299:
 /*!*********************************************************************************************************************!*\
   !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/components/w-picker/city-data/province.js ***!
   \*********************************************************************************************************************/
@@ -7729,7 +7760,38 @@ provinceData;exports.default = _default;
 
 /***/ }),
 
-/***/ 202:
+/***/ 3:
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
+/***/ 300:
 /*!*****************************************************************************************************************!*\
   !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/components/w-picker/city-data/city.js ***!
   \*****************************************************************************************************************/
@@ -9243,7 +9305,7 @@ cityData;exports.default = _default;
 
 /***/ }),
 
-/***/ 203:
+/***/ 301:
 /*!*****************************************************************************************************************!*\
   !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/components/w-picker/city-data/area.js ***!
   \*****************************************************************************************************************/
@@ -21796,7 +21858,7 @@ areaData;exports.default = _default;
 
 /***/ }),
 
-/***/ 204:
+/***/ 302:
 /*!***********************************************************************************************************!*\
   !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/components/w-picker/w-picker.js ***!
   \***********************************************************************************************************/
@@ -22394,1481 +22456,304 @@ initPicker;exports.default = _default;
 
 /***/ }),
 
-/***/ 212:
-/*!*******************************************************************************************************************!*\
-  !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/components/uParse/src/libs/html2json.js ***!
-  \*******************************************************************************************************************/
+/***/ 317:
+/*!**************************************************************************************************************!*\
+  !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/components/ss-select-city/citys.js ***!
+  \**************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var citys = [
+{
+  "letter": "A",
+  "list": [
+  "安远", "安义", "安溪", "安丘", "安宁", "安吉", "安福", "阿城", "安阳", "安顺", "鞍山", "安庆", "安康", "阿里",
+  "阿勒泰", "阿拉善盟", "阿克苏", "阿坝"] },
 
-
-
-
-
-
-
-
-
-
-
-
-
-var _wxDiscode = _interopRequireDefault(__webpack_require__(/*! ./wxDiscode */ 213));
-var _htmlparser = _interopRequireDefault(__webpack_require__(/*! ./htmlparser */ 214));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /**
-                                                                                                                                                                 * html2Json 改造来自: https://github.com/Jxck/html2json
-                                                                                                                                                                 *
-                                                                                                                                                                 *
-                                                                                                                                                                 * author: Di (微信小程序开发工程师)
-                                                                                                                                                                 * organization: WeAppDev(微信小程序开发论坛)(http://weappdev.com)
-                                                                                                                                                                 *               垂直微信小程序开发交流社区
-                                                                                                                                                                 *
-                                                                                                                                                                 * github地址: https://github.com/icindy/wxParse
-                                                                                                                                                                 *
-                                                                                                                                                                 * for: 微信小程序富文本解析
-                                                                                                                                                                 * detail : http://weappdev.com/t/wxparse-alpha0-1-html-markdown/184
-                                                                                                                                                                 */function makeMap(str) {var obj = {};var items = str.split(',');for (var i = 0; i < items.length; i += 1) {obj[items[i]] = true;}return obj;} // Block Elements - HTML 5
-var block = makeMap('br,code,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video'); // Inline Elements - HTML 5
-var inline = makeMap('a,abbr,acronym,applet,b,basefont,bdo,big,button,cite,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
-// Elements that you can, intentionally, leave open
-// (and which close themselves)
-var closeSelf = makeMap('colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr');
-
-function removeDOCTYPE(html) {
-  var isDocument = /<body.*>([^]*)<\/body>/.test(html);
-  return isDocument ? RegExp.$1 : html;
-}
-
-function trimHtml(html) {
-  return html.
-  replace(/<!--.*?-->/gi, '').
-  replace(/\/\*.*?\*\//gi, '').
-  replace(/[ ]+</gi, '<').
-  replace(/<script[^]*<\/script>/gi, '').
-  replace(/<style[^]*<\/style>/gi, '');
-}
-
-function getScreenInfo() {
-  var screen = {};
-  wx.getSystemInfo({
-    success: function success(res) {
-      screen.width = res.windowWidth;
-      screen.height = res.windowHeight;
-    } });
-
-  return screen;
-}
-
-function html2json(html, customHandler, imageProp, host) {
-  // 处理字符串
-  html = removeDOCTYPE(html);
-  html = trimHtml(html);
-  html = _wxDiscode.default.strDiscode(html);
-  // 生成node节点
-  var bufArray = [];
-  var results = {
-    nodes: [],
-    imageUrls: [] };
-
-
-  function Node(tag) {
-    this.node = 'element';
-    this.tag = tag;
-  }
-  Node.prototype.$screen = getScreenInfo();
-  Node.prototype.$host = host;
-
-  (0, _htmlparser.default)(html, {
-    start: function start(tag, attrs, unary) {
-      // node for this element
-      var node = new Node(tag);
-
-      if (bufArray.length !== 0) {
-        var parent = bufArray[0];
-        if (parent.nodes === undefined) {
-          parent.nodes = [];
-        }
-      }
-
-      if (block[tag]) {
-        node.tagType = 'block';
-      } else if (inline[tag]) {
-        node.tagType = 'inline';
-      } else if (closeSelf[tag]) {
-        node.tagType = 'closeSelf';
-      }
-
-      node.attr = attrs.reduce(function (pre, attr) {var
-        name = attr.name;var
-        value = attr.value;
-        if (name === 'class') {
-          node.classStr = value;
-        }
-        // has multi attibutes
-        // make it array of attribute
-        if (name === 'style') {
-          node.styleStr = value;
-        }
-        if (value.match(/ /)) {
-          value = value.split(' ');
-        }
-
-        // if attr already exists
-        // merge it
-        if (pre[name]) {
-          if (Array.isArray(pre[name])) {
-            // already array, push to last
-            pre[name].push(value);
-          } else {
-            // single value, make it array
-            pre[name] = [pre[name], value];
-          }
-        } else {
-          // not exist, put it
-          pre[name] = value;
-        }
-
-        return pre;
-      }, {});
-
-      // 优化样式相关属性
-      if (node.classStr) {
-        node.classStr += " ".concat(node.tag);
-      } else {
-        node.classStr = node.tag;
-      }
-      if (node.tagType === 'inline') {
-        node.classStr += ' inline';
-      }
-
-      // 对img添加额外数据
-      if (node.tag === 'img') {
-        var imgUrl = node.attr.src;
-        imgUrl = _wxDiscode.default.urlToHttpUrl(imgUrl, imageProp.domain);
-        Object.assign(node.attr, imageProp, {
-          src: imgUrl || '' });
-
-        if (imgUrl) {
-          results.imageUrls.push(imgUrl);
-        }
-      }
-
-      // 处理a标签属性
-      if (node.tag === 'a') {
-        node.attr.href = node.attr.href || '';
-      }
-
-      // 处理font标签样式属性
-      if (node.tag === 'font') {
-        var fontSize = [
-        'x-small',
-        'small',
-        'medium',
-        'large',
-        'x-large',
-        'xx-large',
-        '-webkit-xxx-large'];
-
-        var styleAttrs = {
-          color: 'color',
-          face: 'font-family',
-          size: 'font-size' };
-
-        if (!node.styleStr) node.styleStr = '';
-        Object.keys(styleAttrs).forEach(function (key) {
-          if (node.attr[key]) {
-            var value = key === 'size' ? fontSize[node.attr[key] - 1] : node.attr[key];
-            node.styleStr += "".concat(styleAttrs[key], ": ").concat(value, ";");
-          }
-        });
-      }
-
-      // 临时记录source资源
-      if (node.tag === 'source') {
-        results.source = node.attr.src;
-      }
-
-      if (customHandler.start) {
-        customHandler.start(node, results);
-      }
-
-      if (unary) {
-        // if this tag doesn't have end tag
-        // like <img src="hoge.png"/>
-        // add to parents
-        var _parent = bufArray[0] || results;
-        if (_parent.nodes === undefined) {
-          _parent.nodes = [];
-        }
-        _parent.nodes.push(node);
-      } else {
-        bufArray.unshift(node);
-      }
-    },
-    end: function end(tag) {
-      // merge into parent tag
-      var node = bufArray.shift();
-      if (node.tag !== tag) {
-        console.error('invalid state: mismatch end tag');
-      }
-
-      // 当有缓存source资源时于于video补上src资源
-      if (node.tag === 'video' && results.source) {
-        node.attr.src = results.source;
-        delete results.source;
-      }
-
-      if (customHandler.end) {
-        customHandler.end(node, results);
-      }
-
-      if (bufArray.length === 0) {
-        results.nodes.push(node);
-      } else {
-        var parent = bufArray[0];
-        if (!parent.nodes) {
-          parent.nodes = [];
-        }
-        parent.nodes.push(node);
-      }
-    },
-    chars: function chars(text) {
-      if (!text.trim()) return;
-
-      var node = {
-        node: 'text',
-        text: text };
-
-
-      if (customHandler.chars) {
-        customHandler.chars(node, results);
-      }
-
-      if (bufArray.length === 0) {
-        results.nodes.push(node);
-      } else {
-        var parent = bufArray[0];
-        if (parent.nodes === undefined) {
-          parent.nodes = [];
-        }
-        parent.nodes.push(node);
-      }
-    } });
-
-
-  return results;
-}var _default =
-
-html2json;exports.default = _default;
-
-/***/ }),
-
-/***/ 213:
-/*!*******************************************************************************************************************!*\
-  !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/components/uParse/src/libs/wxDiscode.js ***!
-  \*******************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // HTML 支持的数学符号
-function strNumDiscode(str) {
-  str = str.replace(/&forall;/g, '∀');
-  str = str.replace(/&part;/g, '∂');
-  str = str.replace(/&exist;/g, '∃');
-  str = str.replace(/&empty;/g, '∅');
-  str = str.replace(/&nabla;/g, '∇');
-  str = str.replace(/&isin;/g, '∈');
-  str = str.replace(/&notin;/g, '∉');
-  str = str.replace(/&ni;/g, '∋');
-  str = str.replace(/&prod;/g, '∏');
-  str = str.replace(/&sum;/g, '∑');
-  str = str.replace(/&minus;/g, '−');
-  str = str.replace(/&lowast;/g, '∗');
-  str = str.replace(/&radic;/g, '√');
-  str = str.replace(/&prop;/g, '∝');
-  str = str.replace(/&infin;/g, '∞');
-  str = str.replace(/&ang;/g, '∠');
-  str = str.replace(/&and;/g, '∧');
-  str = str.replace(/&or;/g, '∨');
-  str = str.replace(/&cap;/g, '∩');
-  str = str.replace(/&cup;/g, '∪');
-  str = str.replace(/&int;/g, '∫');
-  str = str.replace(/&there4;/g, '∴');
-  str = str.replace(/&sim;/g, '∼');
-  str = str.replace(/&cong;/g, '≅');
-  str = str.replace(/&asymp;/g, '≈');
-  str = str.replace(/&ne;/g, '≠');
-  str = str.replace(/&le;/g, '≤');
-  str = str.replace(/&ge;/g, '≥');
-  str = str.replace(/&sub;/g, '⊂');
-  str = str.replace(/&sup;/g, '⊃');
-  str = str.replace(/&nsub;/g, '⊄');
-  str = str.replace(/&sube;/g, '⊆');
-  str = str.replace(/&supe;/g, '⊇');
-  str = str.replace(/&oplus;/g, '⊕');
-  str = str.replace(/&otimes;/g, '⊗');
-  str = str.replace(/&perp;/g, '⊥');
-  str = str.replace(/&sdot;/g, '⋅');
-  return str;
-}
-
-// HTML 支持的希腊字母
-function strGreeceDiscode(str) {
-  str = str.replace(/&Alpha;/g, 'Α');
-  str = str.replace(/&Beta;/g, 'Β');
-  str = str.replace(/&Gamma;/g, 'Γ');
-  str = str.replace(/&Delta;/g, 'Δ');
-  str = str.replace(/&Epsilon;/g, 'Ε');
-  str = str.replace(/&Zeta;/g, 'Ζ');
-  str = str.replace(/&Eta;/g, 'Η');
-  str = str.replace(/&Theta;/g, 'Θ');
-  str = str.replace(/&Iota;/g, 'Ι');
-  str = str.replace(/&Kappa;/g, 'Κ');
-  str = str.replace(/&Lambda;/g, 'Λ');
-  str = str.replace(/&Mu;/g, 'Μ');
-  str = str.replace(/&Nu;/g, 'Ν');
-  str = str.replace(/&Xi;/g, 'Ν');
-  str = str.replace(/&Omicron;/g, 'Ο');
-  str = str.replace(/&Pi;/g, 'Π');
-  str = str.replace(/&Rho;/g, 'Ρ');
-  str = str.replace(/&Sigma;/g, 'Σ');
-  str = str.replace(/&Tau;/g, 'Τ');
-  str = str.replace(/&Upsilon;/g, 'Υ');
-  str = str.replace(/&Phi;/g, 'Φ');
-  str = str.replace(/&Chi;/g, 'Χ');
-  str = str.replace(/&Psi;/g, 'Ψ');
-  str = str.replace(/&Omega;/g, 'Ω');
-
-  str = str.replace(/&alpha;/g, 'α');
-  str = str.replace(/&beta;/g, 'β');
-  str = str.replace(/&gamma;/g, 'γ');
-  str = str.replace(/&delta;/g, 'δ');
-  str = str.replace(/&epsilon;/g, 'ε');
-  str = str.replace(/&zeta;/g, 'ζ');
-  str = str.replace(/&eta;/g, 'η');
-  str = str.replace(/&theta;/g, 'θ');
-  str = str.replace(/&iota;/g, 'ι');
-  str = str.replace(/&kappa;/g, 'κ');
-  str = str.replace(/&lambda;/g, 'λ');
-  str = str.replace(/&mu;/g, 'μ');
-  str = str.replace(/&nu;/g, 'ν');
-  str = str.replace(/&xi;/g, 'ξ');
-  str = str.replace(/&omicron;/g, 'ο');
-  str = str.replace(/&pi;/g, 'π');
-  str = str.replace(/&rho;/g, 'ρ');
-  str = str.replace(/&sigmaf;/g, 'ς');
-  str = str.replace(/&sigma;/g, 'σ');
-  str = str.replace(/&tau;/g, 'τ');
-  str = str.replace(/&upsilon;/g, 'υ');
-  str = str.replace(/&phi;/g, 'φ');
-  str = str.replace(/&chi;/g, 'χ');
-  str = str.replace(/&psi;/g, 'ψ');
-  str = str.replace(/&omega;/g, 'ω');
-  str = str.replace(/&thetasym;/g, 'ϑ');
-  str = str.replace(/&upsih;/g, 'ϒ');
-  str = str.replace(/&piv;/g, 'ϖ');
-  str = str.replace(/&middot;/g, '·');
-  return str;
-}
-
-function strcharacterDiscode(str) {
-  // 加入常用解析
-  str = str.replace(/&nbsp;/g, ' ');
-  str = str.replace(/&ensp;/g, ' ');
-  str = str.replace(/&emsp;/g, '　');
-  str = str.replace(/&quot;/g, "'");
-  str = str.replace(/&amp;/g, '&');
-  str = str.replace(/&lt;/g, '<');
-  str = str.replace(/&gt;/g, '>');
-  str = str.replace(/&#8226;/g, '•');
-
-  return str;
-}
-
-// HTML 支持的其他实体
-function strOtherDiscode(str) {
-  str = str.replace(/&OElig;/g, 'Œ');
-  str = str.replace(/&oelig;/g, 'œ');
-  str = str.replace(/&Scaron;/g, 'Š');
-  str = str.replace(/&scaron;/g, 'š');
-  str = str.replace(/&Yuml;/g, 'Ÿ');
-  str = str.replace(/&fnof;/g, 'ƒ');
-  str = str.replace(/&circ;/g, 'ˆ');
-  str = str.replace(/&tilde;/g, '˜');
-  str = str.replace(/&ensp;/g, '');
-  str = str.replace(/&emsp;/g, '');
-  str = str.replace(/&thinsp;/g, '');
-  str = str.replace(/&zwnj;/g, '');
-  str = str.replace(/&zwj;/g, '');
-  str = str.replace(/&lrm;/g, '');
-  str = str.replace(/&rlm;/g, '');
-  str = str.replace(/&ndash;/g, '–');
-  str = str.replace(/&mdash;/g, '—');
-  str = str.replace(/&lsquo;/g, '‘');
-  str = str.replace(/&rsquo;/g, '’');
-  str = str.replace(/&sbquo;/g, '‚');
-  str = str.replace(/&ldquo;/g, '“');
-  str = str.replace(/&rdquo;/g, '”');
-  str = str.replace(/&bdquo;/g, '„');
-  str = str.replace(/&dagger;/g, '†');
-  str = str.replace(/&Dagger;/g, '‡');
-  str = str.replace(/&bull;/g, '•');
-  str = str.replace(/&hellip;/g, '…');
-  str = str.replace(/&permil;/g, '‰');
-  str = str.replace(/&prime;/g, '′');
-  str = str.replace(/&Prime;/g, '″');
-  str = str.replace(/&lsaquo;/g, '‹');
-  str = str.replace(/&rsaquo;/g, '›');
-  str = str.replace(/&oline;/g, '‾');
-  str = str.replace(/&euro;/g, '€');
-  str = str.replace(/&trade;/g, '™');
-
-  str = str.replace(/&larr;/g, '←');
-  str = str.replace(/&uarr;/g, '↑');
-  str = str.replace(/&rarr;/g, '→');
-  str = str.replace(/&darr;/g, '↓');
-  str = str.replace(/&harr;/g, '↔');
-  str = str.replace(/&crarr;/g, '↵');
-  str = str.replace(/&lceil;/g, '⌈');
-  str = str.replace(/&rceil;/g, '⌉');
-
-  str = str.replace(/&lfloor;/g, '⌊');
-  str = str.replace(/&rfloor;/g, '⌋');
-  str = str.replace(/&loz;/g, '◊');
-  str = str.replace(/&spades;/g, '♠');
-  str = str.replace(/&clubs;/g, '♣');
-  str = str.replace(/&hearts;/g, '♥');
-
-  str = str.replace(/&diams;/g, '♦');
-  str = str.replace(/&#39;/g, "'");
-  return str;
-}
-
-function strDiscode(str) {
-  str = strNumDiscode(str);
-  str = strGreeceDiscode(str);
-  str = strcharacterDiscode(str);
-  str = strOtherDiscode(str);
-  return str;
-}
-
-function urlToHttpUrl(url, domain) {
-  if (/^\/\//.test(url)) {
-    return "https:".concat(url);
-  } else if (/^\//.test(url)) {
-    return "https://".concat(domain).concat(url);
-  }
-  return url;
-}var _default =
 
 {
-  strDiscode: strDiscode,
-  urlToHttpUrl: urlToHttpUrl };exports.default = _default;
+  "letter": "B",
+  "list": [
+  "北京", "博兴", "博罗", "博爱", "璧山", "宾阳", "宾县", "滨海", "巴彦", "宝应", "亳州", "博尔塔拉", "滨州", "毕节",
+  "本溪", "北海", "巴中", "巴音郭楞", "巴彦淖尔", "包头", "保山", "宝鸡", "保定", "蚌埠", "白银", "白山", "百色", "白城"] },
+
+
+{
+  "letter": "C",
+  "list": [
+  "成都", "常州", "长沙", "长春", "重庆", "朝阳", "巢湖", "长治", "昌吉", "昌都", "常德", "沧州", "郴州", "承德", "潮州",
+  "滁州", "楚雄", "崇左", "池州", "赤峰", "枞阳", "从化", "慈溪", "淳安", "崇州", "崇义", "崇仁", "茌平", "成武", "城口",
+  "呈贡", "潮安", "昌邑", "长兴", "长汀", "长泰", "常熟", "常山", "昌乐", "长乐", "长海", "长丰", "长岛", "曹县", "苍山",
+  "苍南"] },
+
+
+{
+  "letter": "D",
+  "list": [
+  "丹东", "大理", "东莞", "大连", "大兴安岭", "大同", "大庆", "德州", "德阳", "德宏", "达州", "大丰", "东营", "迪庆",
+  "定西", "单县", "当涂", "砀山", "岱山", "大邑", "大田", "大埔", "丹阳", "德化", "德安", "大足", "大余", "德庆", "德清",
+  "登封", "德惠", "定南", "垫江", "电白", "德兴", "东海", "东阿", "定远", "定陶", "东台", "东山", "东平", "东明", "东源",
+  "东阳", "东乡", "洞头", "都江堰", "都昌", "东至"] },
+
+
+{
+  "letter": "E",
+  "list": [
+  "鄂尔多斯", "恩施", "恩平", "鄂州"] },
+
+
+{
+  "letter": "F",
+  "list": [
+  "佛山", "福州", "防城港", "抚顺", "阜新", "阜阳", "抚州", "法库", "富阳", "福清", "阜宁", "阜南", "富民", "浮梁", "福鼎",
+  "福安", "佛冈", "分宜", "凤阳", "奉新", "丰县", "凤台", "丰顺", "封开", "奉节", "奉化", "丰都", "丰城", "费县", "肥西",
+  "肥东", "肥城", "方正", "繁昌"] },
+
+
+{
+  "letter": "G",
+  "list": [
+  "广州", "贵阳", "甘南", "赣州", "甘孜", "广安", "广元", "贵港", "桂林", "果洛", "固原", "赣县", "赣榆", "高安", "固镇",
+  "古田", "贵溪", "灌云", "冠县", "灌南", "光泽", "广饶", "广宁", "广丰", "广德", "广昌", "巩义", "高州", "高邮", "高邑",
+  "高要", "高唐", "高青", "高密", "高陵", "皋兰", "高淳", "藁城"] },
+
+
+{
+  "letter": "H",
+  "list": [
+  "杭州", "哈尔滨", "邯郸", "海口", "黑河", "合肥", "鹤岗", "河池", "鹤壁", "汉中", "哈密", "海西", "海南", "海东", "海北",
+  "惠州", "呼伦贝尔", "葫芦岛", "呼和浩特", "黄石", "黄山", "黄南", "黄冈", "淮南", "怀化", "淮北", "淮安", "红河", "贺州",
+  "菏泽", "河源", "和田地", "衡阳", "衡水", "怀远", "怀宁", "怀集", "桦甸", "华安", "洪泽", "和县", "鹤山", "和平", "横县",
+  "横峰", "合川", "含山", "海阳", "海盐", "海宁", "海门", "海丰", "海安", "湖州", "户县", "霍山", "霍邱", "呼兰", "湖口",
+  "惠民", "惠来", "惠东", "会昌", "惠安", "化州", "桓台"] },
+
+
+{
+  "letter": "J",
+  "list": [
+  "鸡西", "酒泉", "九江", "锦州", "晋中", "济宁", "金华", "荆州", "荆门", "景德镇", "晋城", "金昌", "揭阳", "嘉峪关", "吉安",
+  "江门", "佳木斯", "济南", "吉林", "嘉兴", "焦作", "井冈山", "旌德", "靖安", "即墨", "揭西", "界首", "揭东", "嘉祥", "嘉善",
+  "胶州", "胶南", "蕉岭", "蛟河", "吉安", "建阳", "建瓯", "建宁", "建湖", "江阴", "姜堰", "江山", "将乐", "江津", "江都", "建德",
+  "九台", "九江", "吉水", "晋州", "金寨", "缙云", "金乡", "金溪", "进贤", "金堂", "金坛", "晋宁", "金门", "晋江", "金湖", "井陉",
+  "泾县", "景宁", "靖江", "巨野", "莒县", "句容", "莒南", "鄄城", "济源", "济阳", "绩溪"] },
+
+
+{
+  "letter": "K",
+  "list": [
+  "昆明", "开封", "喀什地", "克拉玛依", "克孜勒", "开化", "开平", "开县", "开阳", "康平", "垦利", "昆山"] },
+
+
+{
+  "letter": "L",
+  "list": [
+  "连云港", "凉山", "乐山", "拉萨", "廊坊", "莱芜", "来宾", "洛阳", "柳州", "兰州", "六盘水", "六安", "丽水", "林芝", "临沂", "临夏",
+  "临汾", "临沧", "丽江", "辽源", "辽阳", "聊城", "乐亭", "乐清", "乐平", "乐陵", "雷州", "乐昌", "乐安", "兰溪", "蓝田", "郎溪",
+  "莱州", "莱阳", "莱西", "来安", "吕梁", "泸州", "漯河", "娄底", "龙岩", "陇南", "临邑", "临沭", "临朐", "临泉", "临清", "临海",
+  "陵县", "灵寿", "灵璧", "临安", "利津", "黎川", "辽中", "连州", "涟水", "连山", "连平", "连南", "廉江", "连江", "莲花", "梁山",
+  "梁平", "连城", "鹿寨", "芦溪", "禄劝", "鹿泉", "罗源", "洛宁", "罗定", "庐江", "陆河", "陆丰", "滦县", "滦南", "栾川", "栾城",
+  "龙游", "龙泉", "龙南", "龙门", "龙口", "龙海", "龙川", "隆安", "溧阳", "利辛", "浏阳", "柳江", "柳城", "溧水"] },
+
+
+{
+  "letter": "M",
+  "list": [
+  "马鞍山", "茂名", "眉山", "梅州", "绵阳", "牡丹江", "马山", "梅县", "蒙城", "孟津", "蒙阴", "孟州", "明光", "明溪", "闽侯", "闽清",
+  "木兰"] },
+
+
+{
+  "letter": "N",
+  "list": [
+  "南昌", "南京", "南宁", "南通", "宁波", "南充", "南平", "南阳", "那曲", "内江", "宁德", "怒江", "南安", "南澳", "南城", "南川", "南丰",
+  "南靖", "南康", "南陵", "南雄", "宁都", "宁国", "宁海", "宁化", "宁津", "宁乡", "宁阳", "农安"] },
+
+
+{
+  "letter": "P",
+  "list": [
+  "盘锦", "攀枝花", "平顶山", "平凉", "萍乡", "普洱", "莆田", "濮阳", "磐安", "磐石", "沛县", "蓬莱", "彭水", "彭泽", "彭州", "平度",
+  "平和", "平湖", "屏南", "平山", "平潭", "平阳", "平阴", "平邑", "平原", "平远", "郫县", "邳州", "鄱阳", "浦城", "浦江", "蒲江", "普兰店",
+  "普宁"] },
+
+
+{
+  "letter": "Q",
+  "list": [
+  "青岛", "泉州", "黔东", "黔南", "黔西南", "庆阳", "清远", "秦皇岛", "钦州", "齐齐哈尔", "七台河", "曲靖", "衢州", "迁安", "潜山", "铅山",
+  "迁西", "启东", "齐河", "綦江", "祁门", "清流", "青田", "清新", "青阳", "庆元", "庆云", "清镇", "青州", "沁阳", "邛崃", "栖霞", "全椒",
+  "曲江", "曲阜", "全南"] },
+
+
+{
+  "letter": "R",
+  "list": [
+  "日喀则", "日照", "饶平", "仁化", "融安", "荣昌", "荣成", "融水", "如东", "如皋", "瑞安", "瑞昌", "瑞金", "乳山", "汝阳", "乳源"] },
+
+
+{
+  "letter": "S",
+  "list": [
+  "上海", "沈阳", "深圳", "石家庄", "苏州", "三门峡", "三明", "三亚", "商丘", "商洛", "上饶", "汕尾", "汕头", "绍兴", "韶关", "山南", "邵阳",
+  "十堰", "双鸭山", "石嘴山", "绥化", "松原", "四平", "朔州", "泗阳", "泗县", "泗水", "四会", "泗洪", "沭阳", "顺昌", "舒兰", "舒城", "双流",
+  "双城", "寿县", "寿宁", "寿光", "石柱", "始兴", "石台", "石狮", "石林", "石城", "射阳", "歙县", "深泽", "莘县", "嵊州", "嵊泗", "沙县", "绍兴",
+  "邵武", "尚志", "上虞", "上犹", "上饶", "上林", "上栗", "商河", "上杭", "上高", "诏安", "三门", "三江", "松阳", "嵩县", "松溪", "嵩明", "宿州",
+  "宿迁", "随州", "遂宁", "宿松", "遂溪", "濉溪", "睢宁", "遂川", "遂昌", "宿豫"] },
+
+
+{
+  "letter": "T",
+  "list": [
+  "天津", "台州", "唐山", "塔城地", "泰安", "太原", "泰州", "天水", "铁岭", "铜川", "通化", "通辽", "铜陵", "铜仁", "通州", "桐乡", "铜山", "潼南",
+  "桐庐", "铜陵", "铜梁", "通河", "铜鼓", "桐城", "天台", "天长", "滕州", "唐海", "郯城", "泰兴", "泰顺", "台山", "泰宁", "太湖", "泰和", "太和", "太仓",
+  "吐鲁番"] },
+
+
+{
+  "letter": "W",
+  "list": [
+  "潍坊", "威海", "武汉", "无锡", "渭南", "文山", "温州", "乌海", "芜湖", "乌兰察布", "乌鲁木齐", "武威", "吴忠", "武陟", "婺源", "武夷山", "武义", "巫溪",
+  "无为", "巫山", "武平", "武宁", "武鸣", "武隆", "五莲", "吴江", "无极", "五华", "芜湖", "五河", "无棣", "吴川", "武城", "五常", "涡阳", "温县", "汶上",
+  "温岭", "翁源", "文登", "文成", "微山", "万载", "万年", "望江", "望城", "万安", "瓦房店", "梧州"] },
+
+
+{
+  "letter": "X",
+  "list": [
+  "厦门", "西安", "许昌", "徐州", "襄樊", "湘潭", "湘西", "咸宁", "咸阳", "孝感", "锡林郭勒盟", "兴安盟", "邢台", "西宁", "新乡", "信阳", "新余", "忻州",
+  "西双版纳", "宣城", "峡江", "夏津", "象山", "响水", "仙居", "仙游", "萧县", "霞浦", "息烽", "新安", "新昌", "信丰", "新丰", "新干", "兴国", "兴化", "兴宁",
+  "行唐", "荥阳", "星子", "辛集", "新建", "新津", "新乐", "新民", "新密", "新泰", "新兴", "新沂", "信宜", "新郑", "休宁", "秀山", "修水", "修文", "修武",
+  "寻甸", "盱眙", "徐闻", "寻乌"] },
+
+
+{
+  "letter": "Y",
+  "list": [
+  "扬州", "烟台", "雅安", "延安", "延边", "盐城", "阳江", "阳泉", "宜宾", "宜昌", "伊春", "宜春", "伊犁哈萨克", "银川", "营口", "鹰潭", "益阳", "永州", "岳阳",
+  "玉林", "榆林", "运城", "云浮", "玉树", "玉溪", "阳春", "阳东", "阳谷", "阳山", "阳信", "阳西", "扬中", "偃师", "延寿", "兖州", "伊川", "宜丰", "宜黄", "依兰",
+  "宜良", "沂南", "英德", "颍上", "沂水", "义乌", "黟县", "宜兴", "弋阳", "宜阳", "沂源", "仪征", "永安", "永川", "永春", "永登", "永定", "永丰", "永吉", "永嘉",
+  "永康", "邕宁", "永泰", "永新", "永修", "尤溪", "酉阳", "元氏", "禹城", "于都", "岳西", "余干", "玉环", "余江", "郁南", "云安", "郓城", "云和", "云霄", "云阳",
+  "玉山", "榆树", "鱼台", "玉田", "余姚", "榆中"] },
+
+
+{
+  "letter": "Z",
+  "list": [
+  "漳州", "遵化", "郑州", "中山", "珠海", "枣庄", "张家界", "张家口", "张掖", "湛江", "肇庆", "昭通", "镇江", "中卫", "周口", "舟山", "驻马店", "株洲", "淄博",
+  "自贡", "资阳", "遵义", "赞皇", "增城", "张家港", "漳平", "漳浦", "章丘", "樟树", "沾化", "赵县", "招远", "正定", "政和", "柘荣", "中牟", "忠县", "周宁",
+  "周至", "庄河", "诸城", "诸暨", "紫金", "资溪", "邹城", "邹平"] }];var _default =
+
+
+
+
+citys;exports.default = _default;
 
 /***/ }),
 
-/***/ 214:
-/*!********************************************************************************************************************!*\
-  !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/components/uParse/src/libs/htmlparser.js ***!
-  \********************************************************************************************************************/
+/***/ 339:
+/*!*********************************************************************************************************!*\
+  !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/components/uni-icons/icons.js ***!
+  \*********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /**
-                                                                                                      *
-                                                                                                      * htmlParser改造自: https://github.com/blowsie/Pure-JavaScript-HTML5-Parser
-                                                                                                      *
-                                                                                                      * author: Di (微信小程序开发工程师)
-                                                                                                      * organization: WeAppDev(微信小程序开发论坛)(http://weappdev.com)
-                                                                                                      *               垂直微信小程序开发交流社区
-                                                                                                      *
-                                                                                                      * github地址: https://github.com/icindy/wxParse
-                                                                                                      *
-                                                                                                      * for: 微信小程序富文本解析
-                                                                                                      * detail : http://weappdev.com/t/wxparse-alpha0-1-html-markdown/184
-                                                                                                      */
-// Regular Expressions for parsing tags and attributes
-
-var startTag = /^<([-A-Za-z0-9_]+)((?:\s+[a-zA-Z0-9_:][-a-zA-Z0-9_:.]*(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>/;
-var endTag = /^<\/([-A-Za-z0-9_]+)[^>]*>/;
-var attr = /([a-zA-Z0-9_:][-a-zA-Z0-9_:.]*)(?:\s*=\s*(?:(?:"((?:\\.|[^"])*)")|(?:'((?:\\.|[^'])*)')|([^>\s]+)))?/g;
-
-function makeMap(str) {
-  var obj = {};
-  var items = str.split(',');
-  for (var i = 0; i < items.length; i += 1) {obj[items[i]] = true;}
-  return obj;
-}
-
-// Empty Elements - HTML 5
-var empty = makeMap('area,base,basefont,br,col,frame,hr,img,input,link,meta,param,embed,command,keygen,source,track,wbr');
-
-// Block Elements - HTML 5
-var block = makeMap('address,code,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
-
-// Inline Elements - HTML 5
-var inline = makeMap('a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
-
-// Elements that you can, intentionally, leave open
-// (and which close themselves)
-var closeSelf = makeMap('colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr');
-
-// Attributes that have their values filled in disabled="disabled"
-var fillAttrs = makeMap('checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected');
-
-function HTMLParser(html, handler) {
-  var index;
-  var chars;
-  var match;
-  var last = html;
-  var stack = [];
-
-  stack.last = function () {return stack[stack.length - 1];};
-
-  function parseEndTag(tag, tagName) {
-    // If no tag name is provided, clean shop
-    var pos;
-    if (!tagName) {
-      pos = 0;
-    } else {
-      // Find the closest opened tag of the same type
-      tagName = tagName.toLowerCase();
-      for (pos = stack.length - 1; pos >= 0; pos -= 1) {
-        if (stack[pos] === tagName) break;
-      }
-    }
-    if (pos >= 0) {
-      // Close all the open elements, up the stack
-      for (var i = stack.length - 1; i >= pos; i -= 1) {
-        if (handler.end) handler.end(stack[i]);
-      }
-
-      // Remove the open elements from the stack
-      stack.length = pos;
-    }
-  }
-
-  function parseStartTag(tag, tagName, rest, unary) {
-    tagName = tagName.toLowerCase();
-
-    if (block[tagName]) {
-      while (stack.last() && inline[stack.last()]) {
-        parseEndTag('', stack.last());
-      }
-    }
-
-    if (closeSelf[tagName] && stack.last() === tagName) {
-      parseEndTag('', tagName);
-    }
-
-    unary = empty[tagName] || !!unary;
-
-    if (!unary) stack.push(tagName);
-
-    if (handler.start) {
-      var attrs = [];
-
-      rest.replace(attr, function genAttr(matches, name) {
-        var value = arguments[2] || arguments[3] || arguments[4] || (fillAttrs[name] ? name : '');
-
-        attrs.push({
-          name: name,
-          value: value,
-          escaped: value.replace(/(^|[^\\])"/g, '$1\\"') // "
-        });
-      });
-
-      if (handler.start) {
-        handler.start(tagName, attrs, unary);
-      }
-    }
-  }
-
-  while (html) {
-    chars = true;
-
-    if (html.indexOf('</') === 0) {
-      match = html.match(endTag);
-
-      if (match) {
-        html = html.substring(match[0].length);
-        match[0].replace(endTag, parseEndTag);
-        chars = false;
-      }
-
-      // start tag
-    } else if (html.indexOf('<') === 0) {
-      match = html.match(startTag);
-
-      if (match) {
-        html = html.substring(match[0].length);
-        match[0].replace(startTag, parseStartTag);
-        chars = false;
-      }
-    }
-
-    if (chars) {
-      index = html.indexOf('<');
-      var text = '';
-      while (index === 0) {
-        text += '<';
-        html = html.substring(1);
-        index = html.indexOf('<');
-      }
-      text += index < 0 ? html : html.substring(0, index);
-      html = index < 0 ? '' : html.substring(index);
-
-      if (handler.chars) handler.chars(text);
-    }
-
-    if (html === last) throw new Error("Parse Error: ".concat(html));
-    last = html;
-  }
-
-  // Clean up any remaining tags
-  parseEndTag();
-}var _default =
-
-HTMLParser;exports.default = _default;
-
-/***/ }),
-
-/***/ 220:
-/*!**********************************************************!*\
-  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! regenerator-runtime */ 221);
-
-
-/***/ }),
-
-/***/ 221:
-/*!************************************************************!*\
-  !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-// This method of obtaining a reference to the global object needs to be
-// kept identical to the way it is obtained in runtime.js
-var g = (function() {
-  return this || (typeof self === "object" && self);
-})() || Function("return this")();
-
-// Use `getOwnPropertyNames` because not all browsers support calling
-// `hasOwnProperty` on the global `self` object in a worker. See #183.
-var hadRuntime = g.regeneratorRuntime &&
-  Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
-
-// Save the old regeneratorRuntime in case it needs to be restored later.
-var oldRuntime = hadRuntime && g.regeneratorRuntime;
-
-// Force reevalutation of runtime.js.
-g.regeneratorRuntime = undefined;
-
-module.exports = __webpack_require__(/*! ./runtime */ 222);
-
-if (hadRuntime) {
-  // Restore the original runtime.
-  g.regeneratorRuntime = oldRuntime;
-} else {
-  // Remove the global property added by runtime.js.
-  try {
-    delete g.regeneratorRuntime;
-  } catch(e) {
-    g.regeneratorRuntime = undefined;
-  }
-}
-
-
-/***/ }),
-
-/***/ 222:
-/*!*****************************************************!*\
-  !*** ./node_modules/regenerator-runtime/runtime.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-!(function(global) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  var inModule = typeof module === "object";
-  var runtime = global.regeneratorRuntime;
-  if (runtime) {
-    if (inModule) {
-      // If regeneratorRuntime is defined globally and we're in a module,
-      // make the exports object identical to regeneratorRuntime.
-      module.exports = runtime;
-    }
-    // Don't bother evaluating the rest of this file if the runtime was
-    // already defined globally.
-    return;
-  }
-
-  // Define the runtime globally (as expected by generated code) as either
-  // module.exports (if we're in a module) or a new, empty object.
-  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  runtime.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  IteratorPrototype[iteratorSymbol] = function () {
-    return this;
-  };
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-  GeneratorFunctionPrototype[toStringTagSymbol] =
-    GeneratorFunction.displayName = "GeneratorFunction";
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      prototype[method] = function(arg) {
-        return this._invoke(method, arg);
-      };
-    });
-  }
-
-  runtime.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  runtime.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      if (!(toStringTagSymbol in genFun)) {
-        genFun[toStringTagSymbol] = "GeneratorFunction";
-      }
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  runtime.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return Promise.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function(error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new Promise(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-    return this;
-  };
-  runtime.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList)
-    );
-
-    return runtime.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        if (delegate.iterator.return) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  Gp[toStringTagSymbol] = "Generator";
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  Gp[iteratorSymbol] = function() {
-    return this;
-  };
-
-  Gp.toString = function() {
-    return "[object Generator]";
-  };
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  runtime.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  runtime.values = values;
-
-  function doneResult() {
-    return { value: undefined, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-})(
-  // In sloppy mode, unbound `this` refers to the global object, fallback to
-  // Function constructor if we're in global strict mode. That is sadly a form
-  // of indirect eval which violates Content Security Policy.
-  (function() {
-    return this || (typeof self === "object" && self);
-  })() || Function("return this")()
-);
-
-
-/***/ }),
-
-/***/ 29:
-/*!*************************************************************************************************!*\
-  !*** F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/common/SDK/amap-wx.js ***!
-  \*************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-function AMapWX(a) {this.key = a.key, this.requestConfig = { key: a.key, s: "rsx", platform: "WXJS", appname: a.key, sdkversion: "1.2.0", logversion: "2.0" };}AMapWX.prototype.getWxLocation = function (a, b) {wx.getLocation({ type: "gcj02", success: function success(a) {var c = a.longitude + "," + a.latitude;wx.setStorage({ key: "userLocation", data: c }), b(c);}, fail: function fail(c) {wx.getStorage({ key: "userLocation", success: function success(a) {a.data && b(a.data);} }), a.fail({ errCode: "0", errMsg: c.errMsg || "" });} });}, AMapWX.prototype.getRegeo = function (a) {function c(c) {var d = b.requestConfig;wx.request({ url: "https://restapi.amap.com/v3/geocode/regeo", data: { key: b.key, location: c, extensions: "all", s: d.s, platform: d.platform, appname: b.key, sdkversion: d.sdkversion, logversion: d.logversion }, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {var d, e, f, g, h, i, j, k, l;b.data.status && "1" == b.data.status ? (d = b.data.regeocode, e = d.addressComponent, f = [], g = "", d && d.roads[0] && d.roads[0].name && (g = d.roads[0].name + "附近"), h = c.split(",")[0], i = c.split(",")[1], d.pois && d.pois[0] && (g = d.pois[0].name + "附近", j = d.pois[0].location, j && (h = parseFloat(j.split(",")[0]), i = parseFloat(j.split(",")[1]))), e.provice && f.push(e.provice), e.city && f.push(e.city), e.district && f.push(e.district), e.streetNumber && e.streetNumber.street && e.streetNumber.number ? (f.push(e.streetNumber.street), f.push(e.streetNumber.number)) : (k = "", d && d.roads[0] && d.roads[0].name && (k = d.roads[0].name), f.push(k)), f = f.join(""), l = [{ iconPath: a.iconPath, width: a.iconWidth, height: a.iconHeight, name: f, desc: g, longitude: h, latitude: i, id: 0, regeocodeData: d }], a.success(l)) : a.fail({ errCode: b.data.infocode, errMsg: b.data.info });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}var b = this;a.location ? c(a.location) : b.getWxLocation(a, function (a) {c(a);});}, AMapWX.prototype.getWeather = function (a) {function d(d) {var e = "base";a.type && "forecast" == a.type && (e = "all"), wx.request({ url: "https://restapi.amap.com/v3/weather/weatherInfo", data: { key: b.key, city: d, extensions: e, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion }, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {function c(a) {var b = { city: { text: "城市", data: a.city }, weather: { text: "天气", data: a.weather }, temperature: { text: "温度", data: a.temperature }, winddirection: { text: "风向", data: a.winddirection + "风" }, windpower: { text: "风力", data: a.windpower + "级" }, humidity: { text: "湿度", data: a.humidity + "%" } };return b;}var d, e;b.data.status && "1" == b.data.status ? b.data.lives ? (d = b.data.lives, d && d.length > 0 && (d = d[0], e = c(d), e["liveData"] = d, a.success(e))) : b.data.forecasts && b.data.forecasts[0] && a.success({ forecast: b.data.forecasts[0] }) : a.fail({ errCode: b.data.infocode, errMsg: b.data.info });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}function e(e) {wx.request({ url: "https://restapi.amap.com/v3/geocode/regeo", data: { key: b.key, location: e, extensions: "all", s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion }, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {var c, e;b.data.status && "1" == b.data.status ? (e = b.data.regeocode, e.addressComponent ? c = e.addressComponent.adcode : e.aois && e.aois.length > 0 && (c = e.aois[0].adcode), d(c)) : a.fail({ errCode: b.data.infocode, errMsg: b.data.info });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}var b = this,c = b.requestConfig;a.city ? d(a.city) : b.getWxLocation(a, function (a) {e(a);});}, AMapWX.prototype.getPoiAround = function (a) {function d(d) {var e = { key: b.key, location: d, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.querytypes && (e["types"] = a.querytypes), a.querykeywords && (e["keywords"] = a.querykeywords), wx.request({ url: "https://restapi.amap.com/v3/place/around", data: e, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {var c, d, e, f;if (b.data.status && "1" == b.data.status) {if (b = b.data, b && b.pois) {for (c = [], d = 0; d < b.pois.length; d++) {e = 0 == d ? a.iconPathSelected : a.iconPath, c.push({ latitude: parseFloat(b.pois[d].location.split(",")[1]), longitude: parseFloat(b.pois[d].location.split(",")[0]), iconPath: e, width: 22, height: 32, id: d, name: b.pois[d].name, address: b.pois[d].address });}f = { markers: c, poisData: b.pois }, a.success(f);}} else a.fail({ errCode: b.data.infocode, errMsg: b.data.info });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}var b = this,c = b.requestConfig;a.location ? d(a.location) : b.getWxLocation(a, function (a) {d(a);});}, AMapWX.prototype.getStaticmap = function (a) {function f(b) {c.push("location=" + b), a.zoom && c.push("zoom=" + a.zoom), a.size && c.push("size=" + a.size), a.scale && c.push("scale=" + a.scale), a.markers && c.push("markers=" + a.markers), a.labels && c.push("labels=" + a.labels), a.paths && c.push("paths=" + a.paths), a.traffic && c.push("traffic=" + a.traffic);var e = d + c.join("&");a.success({ url: e });}var e,b = this,c = [],d = "https://restapi.amap.com/v3/staticmap?";c.push("key=" + b.key), e = b.requestConfig, c.push("s=" + e.s), c.push("platform=" + e.platform), c.push("appname=" + e.appname), c.push("sdkversion=" + e.sdkversion), c.push("logversion=" + e.logversion), a.location ? f(a.location) : b.getWxLocation(a, function (a) {f(a);});}, AMapWX.prototype.getInputtips = function (a) {var b = this,c = b.requestConfig,d = { key: b.key, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.location && (d["location"] = a.location), a.keywords && (d["keywords"] = a.keywords), a.type && (d["type"] = a.type), a.city && (d["city"] = a.city), a.citylimit && (d["citylimit"] = a.citylimit), wx.request({ url: "https://restapi.amap.com/v3/assistant/inputtips", data: d, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {b && b.data && b.data.tips && a.success({ tips: b.data.tips });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}, AMapWX.prototype.getDrivingRoute = function (a) {var b = this,c = b.requestConfig,d = { key: b.key, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.origin && (d["origin"] = a.origin), a.destination && (d["destination"] = a.destination), a.strategy && (d["strategy"] = a.strategy), a.waypoints && (d["waypoints"] = a.waypoints), a.avoidpolygons && (d["avoidpolygons"] = a.avoidpolygons), a.avoidroad && (d["avoidroad"] = a.avoidroad), wx.request({ url: "https://restapi.amap.com/v3/direction/driving", data: d, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {b && b.data && b.data.route && a.success({ paths: b.data.route.paths, taxi_cost: b.data.route.taxi_cost || "" });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}, AMapWX.prototype.getWalkingRoute = function (a) {var b = this,c = b.requestConfig,d = { key: b.key, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.origin && (d["origin"] = a.origin), a.destination && (d["destination"] = a.destination), wx.request({ url: "https://restapi.amap.com/v3/direction/walking", data: d, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {b && b.data && b.data.route && a.success({ paths: b.data.route.paths });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}, AMapWX.prototype.getTransitRoute = function (a) {var b = this,c = b.requestConfig,d = { key: b.key, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.origin && (d["origin"] = a.origin), a.destination && (d["destination"] = a.destination), a.strategy && (d["strategy"] = a.strategy), a.city && (d["city"] = a.city), a.cityd && (d["cityd"] = a.cityd), wx.request({ url: "https://restapi.amap.com/v3/direction/transit/integrated", data: d, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {if (b && b.data && b.data.route) {var c = b.data.route;a.success({ distance: c.distance || "", taxi_cost: c.taxi_cost || "", transits: c.transits });}}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}, AMapWX.prototype.getRidingRoute = function (a) {var b = this,c = b.requestConfig,d = { key: b.key, s: c.s, platform: c.platform, appname: b.key, sdkversion: c.sdkversion, logversion: c.logversion };a.origin && (d["origin"] = a.origin), a.destination && (d["destination"] = a.destination), wx.request({ url: "https://restapi.amap.com/v4/direction/bicycling", data: d, method: "GET", header: { "content-type": "application/json" }, success: function success(b) {b && b.data && b.data.data && a.success({ paths: b.data.data.paths });}, fail: function fail(b) {a.fail({ errCode: "0", errMsg: b.errMsg || "" });} });}, module.exports.AMapWX = AMapWX;
-
-/***/ }),
-
-/***/ 3:
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  'contact': "\uE100",
+  'person': "\uE101",
+  'personadd': "\uE102",
+  'contact-filled': "\uE130",
+  'person-filled': "\uE131",
+  'personadd-filled': "\uE132",
+  'phone': "\uE200",
+  'email': "\uE201",
+  'chatbubble': "\uE202",
+  'chatboxes': "\uE203",
+  'phone-filled': "\uE230",
+  'email-filled': "\uE231",
+  'chatbubble-filled': "\uE232",
+  'chatboxes-filled': "\uE233",
+  'weibo': "\uE260",
+  'weixin': "\uE261",
+  'pengyouquan': "\uE262",
+  'chat': "\uE263",
+  'qq': "\uE264",
+  'videocam': "\uE300",
+  'camera': "\uE301",
+  'mic': "\uE302",
+  'location': "\uE303",
+  'mic-filled': "\uE332",
+  'speech': "\uE332",
+  'location-filled': "\uE333",
+  'micoff': "\uE360",
+  'image': "\uE363",
+  'map': "\uE364",
+  'compose': "\uE400",
+  'trash': "\uE401",
+  'upload': "\uE402",
+  'download': "\uE403",
+  'close': "\uE404",
+  'redo': "\uE405",
+  'undo': "\uE406",
+  'refresh': "\uE407",
+  'star': "\uE408",
+  'plus': "\uE409",
+  'minus': "\uE410",
+  'circle': "\uE411",
+  'checkbox': "\uE411",
+  'close-filled': "\uE434",
+  'clear': "\uE434",
+  'refresh-filled': "\uE437",
+  'star-filled': "\uE438",
+  'plus-filled': "\uE439",
+  'minus-filled': "\uE440",
+  'circle-filled': "\uE441",
+  'checkbox-filled': "\uE442",
+  'closeempty': "\uE460",
+  'refreshempty': "\uE461",
+  'reload': "\uE462",
+  'starhalf': "\uE463",
+  'spinner': "\uE464",
+  'spinner-cycle': "\uE465",
+  'search': "\uE466",
+  'plusempty': "\uE468",
+  'forward': "\uE470",
+  'back': "\uE471",
+  'left-nav': "\uE471",
+  'checkmarkempty': "\uE472",
+  'home': "\uE500",
+  'navigate': "\uE501",
+  'gear': "\uE502",
+  'paperplane': "\uE503",
+  'info': "\uE504",
+  'help': "\uE505",
+  'locked': "\uE506",
+  'more': "\uE507",
+  'flag': "\uE508",
+  'home-filled': "\uE530",
+  'gear-filled': "\uE532",
+  'info-filled': "\uE534",
+  'help-filled': "\uE535",
+  'more-filled': "\uE537",
+  'settings': "\uE560",
+  'list': "\uE562",
+  'bars': "\uE563",
+  'loop': "\uE565",
+  'paperclip': "\uE567",
+  'eye': "\uE568",
+  'arrowup': "\uE580",
+  'arrowdown': "\uE581",
+  'arrowleft': "\uE582",
+  'arrowright': "\uE583",
+  'arrowthinup': "\uE584",
+  'arrowthindown': "\uE585",
+  'arrowthinleft': "\uE586",
+  'arrowthinright': "\uE587",
+  'pulldown': "\uE588",
+  'closefill': "\uE589",
+  'sound': "\uE590",
+  'scan': "\uE612" };exports.default = _default;
 
 /***/ }),
 
@@ -25729,7 +24614,7 @@ var index_esm = {
 /*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, deprecated, description, devDependencies, files, gitHead, homepage, license, main, name, repository, scripts, version, default */
 /***/ (function(module) {
 
-module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.0.0-24220191115004","_inBundle":false,"_integrity":"sha512-UKnpiHSP7h9c5IFpJFkWkpm1KyWz9iHj1hchrQSUxPhChx+KPOmunnQcKGiQvvBz9CeSi7Se/eauJYha5ch0kw==","_location":"/@dcloudio/uni-stat","_phantomChildren":{},"_requested":{"type":"tag","registry":true,"raw":"@dcloudio/uni-stat@next","name":"@dcloudio/uni-stat","escapedName":"@dcloudio%2funi-stat","scope":"@dcloudio","rawSpec":"next","saveSpec":null,"fetchSpec":"next"},"_requiredBy":["#USER","/","/@dcloudio/vue-cli-plugin-uni"],"_resolved":"https://registry.npmjs.org/@dcloudio/uni-stat/-/uni-stat-2.0.0-24220191115004.tgz","_shasum":"5848f2204f37daaf8c340fb27d9f76b16fcbfdeb","_spec":"@dcloudio/uni-stat@next","_where":"/Users/guoshengqiang/Documents/dcloud-plugins/release/uniapp-cli","author":"","bugs":{"url":"https://github.com/dcloudio/uni-app/issues"},"bundleDependencies":false,"deprecated":false,"description":"","devDependencies":{"@babel/core":"^7.5.5","@babel/preset-env":"^7.5.5","eslint":"^6.1.0","rollup":"^1.19.3","rollup-plugin-babel":"^4.3.3","rollup-plugin-clear":"^2.0.7","rollup-plugin-commonjs":"^10.0.2","rollup-plugin-copy":"^3.1.0","rollup-plugin-eslint":"^7.0.0","rollup-plugin-json":"^4.0.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-replace":"^2.2.0","rollup-plugin-uglify":"^6.0.2"},"files":["dist","package.json","LICENSE"],"gitHead":"bcf65737c5111d47398695d3db8ed87305df346e","homepage":"https://github.com/dcloudio/uni-app#readme","license":"Apache-2.0","main":"dist/index.js","name":"@dcloudio/uni-stat","repository":{"type":"git","url":"git+https://github.com/dcloudio/uni-app.git","directory":"packages/uni-stat"},"scripts":{"build":"NODE_ENV=production rollup -c rollup.config.js","dev":"NODE_ENV=development rollup -w -c rollup.config.js"},"version":"2.0.0-24220191115004"};
+module.exports = {"_from":"@dcloudio/uni-stat@^2.0.0-alpha-24420191128001","_id":"@dcloudio/uni-stat@2.0.0-v3-24020191018001","_inBundle":false,"_integrity":"sha512-nYBm5pRrYzrj2dKMqucWSF2PwInUMnn3MLHM/ik3gnLUEKSW61rzcY1RPlUwaH7c+Snm6N+bAJzmj3GvlrlVXA==","_location":"/@dcloudio/uni-stat","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"@dcloudio/uni-stat@^2.0.0-alpha-24420191128001","name":"@dcloudio/uni-stat","escapedName":"@dcloudio%2funi-stat","scope":"@dcloudio","rawSpec":"^2.0.0-alpha-24420191128001","saveSpec":null,"fetchSpec":"^2.0.0-alpha-24420191128001"},"_requiredBy":["/","/@dcloudio/vue-cli-plugin-uni"],"_resolved":"https://registry.npmjs.org/@dcloudio/uni-stat/-/uni-stat-2.0.0-v3-24020191018001.tgz","_shasum":"6ef04326cc0b945726413eebe442ab8f47c7536c","_spec":"@dcloudio/uni-stat@^2.0.0-alpha-24420191128001","_where":"/Users/guoshengqiang/Documents/dcloud-plugins/alpha/uniapp-cli","author":"","bugs":{"url":"https://github.com/dcloudio/uni-app/issues"},"bundleDependencies":false,"deprecated":false,"description":"","devDependencies":{"@babel/core":"^7.5.5","@babel/preset-env":"^7.5.5","eslint":"^6.1.0","rollup":"^1.19.3","rollup-plugin-babel":"^4.3.3","rollup-plugin-clear":"^2.0.7","rollup-plugin-commonjs":"^10.0.2","rollup-plugin-copy":"^3.1.0","rollup-plugin-eslint":"^7.0.0","rollup-plugin-json":"^4.0.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-replace":"^2.2.0","rollup-plugin-uglify":"^6.0.2"},"files":["dist","package.json","LICENSE"],"gitHead":"197e8df53cc9d4c3f6eb722b918ccf51672b5cfe","homepage":"https://github.com/dcloudio/uni-app#readme","license":"Apache-2.0","main":"dist/index.js","name":"@dcloudio/uni-stat","repository":{"type":"git","url":"git+https://github.com/dcloudio/uni-app.git","directory":"packages/uni-stat"},"scripts":{"build":"NODE_ENV=production rollup -c rollup.config.js","dev":"NODE_ENV=development rollup -w -c rollup.config.js"},"version":"2.0.0-v3-24020191018001"};
 
 /***/ }),
 
@@ -25741,7 +24626,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/tabbar/tabbar-1/tabbar-1": { "navigationBarTitleText": "熊猫约拍" }, "pages/tabbar/tabbar-2/tabbar-2": { "navigationBarTitleText": "约拍" }, "pages/tabbar/tabbar-3/tabbar-3": {}, "pages/tabbar/tabbar-4/tabbar-4": { "navigationBarTitleText": "发现" }, "pages/tabbar/tabbar-5/tabbar-5": { "navigationBarTitleText": "我的" }, "pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release": {}, "pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video": {}, "pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa": {}, "pages/user/login": {}, "pages/user/register": {}, "pages/user/forget": {}, "pages/user/personal": {}, "pages/select/select": {}, "pages/publish/publish-appointment": { "navigationBarTitleText": "发布约拍" }, "pages/publish/publish-works": { "navigationBarTitleText": "发布作品" }, "pages/publish/publish-passage": {}, "pages/test/test": {}, "pages/test/my": {}, "pages/appointment/appointment-detail": {}, "pages/test/test2": {}, "pages/test/test3": {} }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#FbFbFb", "backgroundColor": "#FbFbFb" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/tabbar/tabbar-1/tabbar-1": { "navigationBarTitleText": "熊猫约拍" }, "pages/tabbar/tabbar-2/tabbar-2": { "navigationBarTitleText": "约拍" }, "pages/tabbar/tabbar-3/tabbar-3": {}, "pages/tabbar/tabbar-4/tabbar-4": { "navigationBarTitleText": "发现" }, "pages/tabbar/tabbar-5/tabbar-5": { "navigationBarTitleText": "我的" }, "pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release": {}, "pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video": {}, "pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa": {}, "pages/user/login": {}, "pages/user/register": {}, "pages/user/forget": {}, "pages/user/personal": {}, "pages/user/info": {}, "pages/user/modify-pw": {}, "pages/user/forgot-pw": {}, "pages/select/select": {}, "pages/publish/publish-appointment": { "navigationBarTitleText": "发布约拍" }, "pages/publish/publish-works": { "navigationBarTitleText": "发布作品" }, "pages/test/test": {}, "pages/test/my": {}, "pages/appointment/appointment-detail": { "navigationBarTitleText": "约拍详情" }, "pages/test/test2": {}, "pages/test/test3": {}, "pages/order/order": {}, "pages/user/my-order": {}, "pages/appointment/appointment-personal": {}, "pages/test/uni-feedback": {}, "pages/commons/select-city": { "navigationStyle": "custom" }, "pages/user/profile": {} }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#FbFbFb", "backgroundColor": "#FbFbFb" } };exports.default = _default;
 
 /***/ }),
 

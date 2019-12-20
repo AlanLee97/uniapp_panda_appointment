@@ -33,10 +33,32 @@ _vue.default.prototype.checkLogin = function (backpage, backtype) {
 };
 
 var domain = 'localhost';
-var port = '8080';
+// let domain = '47.103.204.62';
+var port = '8083';
 
 _vue.default.prototype.createApiUrl = function (reqUrl) {
   return 'http://' + domain + ':' + port + '/' + reqUrl;
+};
+
+_vue.default.prototype.getUserInfo = function () {
+  var userinfo = uni.getStorageSync('userinfo');
+  console.log('main.js -> userinfo:');
+  console.log(userinfo);
+  return userinfo;
+};
+
+_vue.default.prototype.gotoPage = function (pageUrl) {
+  uni.navigateTo({
+    url: pageUrl });
+
+};
+
+_vue.default.prototype.previewImage = function (index, urls) {
+  uni.previewImage({
+    current: index,
+    urls: urls,
+    indicator: "default" });
+
 };
 
 _App.default.mpType = 'app';
@@ -120,16 +142,7 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
 
-
-
   onLaunch: function onLaunch() {
-    console.log('App Launch');
-
-
-    // uni.clearStorageSync();
-    // uni.removeStorageSync('userinfo');
-
-
     setTimeout(function () {
       uni.setTabBarBadge({
         index: 1,
@@ -143,18 +156,11 @@ __webpack_require__.r(__webpack_exports__);
   onShow: function onShow() {
     console.log('App Show');
     getApp().globalData = true;
-
-    uni.getStorage({
-      key: 'userinfo',
-      success: function success(res) {
-        console.log('app ======== getStorage:');
-        console.log(res);
-      } });
-
   },
   onHide: function onHide() {
-    console.log('App Hide');
-  } };exports.default = _default;
+    // console.log('App Hide');
+  },
+  methods: {} };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

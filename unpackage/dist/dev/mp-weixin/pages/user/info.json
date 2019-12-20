@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "cmd-nav-bar": "/components/cmd/cmd-nav-bar/cmd-nav-bar",
+    "cmd-page-body": "/components/cmd/cmd-page-body/cmd-page-body",
+    "cmd-transition": "/components/cmd/cmd-transition/cmd-transition",
+    "cmd-cel-item": "/components/cmd/cmd-cell-item/cmd-cell-item",
+    "cmd-avatar": "/components/cmd/cmd-avatar/cmd-avatar"
+  }
+}

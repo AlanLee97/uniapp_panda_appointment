@@ -936,16 +936,13 @@
 .content {
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	-webkit-box-pack:center;
 	-webkit-justify-content:center;
-	    -ms-flex-pack:center;
 	        justify-content:center;
 	/* margin-top: 128upx; */
 }
@@ -954,8 +951,7 @@
 .header {
 	width:161rpx;
 	height:161rpx;
-	-webkit-box-shadow:0rpx 0rpx 60rpx 0rpx rgba(0,0,0,0.1);
-	        box-shadow:0rpx 0rpx 60rpx 0rpx rgba(0,0,0,0.1);
+	box-shadow:0rpx 0rpx 60rpx 0rpx rgba(0,0,0,0.1);
 	border-radius:50%;
 	background-color: #000000; 
 	margin-top: 128rpx;
@@ -973,12 +969,10 @@
 .main {
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	padding-left: 70rpx;
 	padding-right: 70rpx;
@@ -994,20 +988,16 @@
 .other_login{
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
 	        flex-direction: row;
 	-webkit-box-pack: center;
 	-webkit-justify-content: center;
-	    -ms-flex-pack: center;
 	        justify-content: center;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 	margin-top: 256rpx;
 	text-align: center;
@@ -1032,20 +1022,16 @@
 .footer{
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
 	        flex-direction: row;
 	-webkit-box-pack: center;
 	-webkit-justify-content: center;
-	    -ms-flex-pack: center;
 	        justify-content: center;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 	font-size: 28rpx;
 	margin-top: 64rpx;

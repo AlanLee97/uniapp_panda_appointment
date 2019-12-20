@@ -7,10 +7,7 @@
 		<view class="p-20upx">
 			<!-- 标题 -->
 			<view class="">
-				<text class=" 
-					fontsize-80upx 
-					font-color-light-black 
-					font-weight-200">
+				<text class="fontsize-80upx font-color-light-black font-weight-200">
 					
 					{{aptDetail.title}}
 				</text>
@@ -26,7 +23,7 @@
 			
 			<!-- 要求 -->
 			<view class="p-top-20upx p-bottom-20upx">
-				<image class="icon-size-50upx" src="../../static/icon/说明.png" mode="aspectFill"></image>
+				<image class="icon-size-50upx" src="../../static/icon/statement.png" mode="aspectFill"></image>
 				<text class="p-20upx">要求</text>
 				<text>{{aptDetail.ask}}</text>
 			</view>
@@ -36,21 +33,21 @@
 			
 			<!-- 约拍时间 -->
 			<view class="p-top-20upx p-bottom-20upx">
-				<image class="icon-size-50upx" src="../../static/icon/时间.png" mode="aspectFill"></image>
+				<image class="icon-size-50upx" src="../../static/icon/time.png" mode="aspectFill"></image>
 				<text class="p-20upx">时间</text>
 				<text>{{aptDetail.startDatetime}}</text>
 			</view>
 			
 			<!-- 地点 -->
 			<view class="p-top-20upx p-bottom-20upx">
-				<image class="icon-size-50upx" src="../../static/icon/位置.png" mode="aspectFill"></image>
+				<image class="icon-size-50upx" src="../../static/icon/location.png" mode="aspectFill"></image>
 				<text class="p-20upx">地点</text>
 				<text>{{aptDetail.address}}</text>
 			</view>
 			
 			<!-- 约拍类型 -->
 			<view class="p-top-20upx p-bottom-20upx">
-				<image class="icon-size-50upx" src="../../static/icon/分类.png" mode="aspectFill"></image>
+				<image class="icon-size-50upx" src="../../static/icon/sort.png" mode="aspectFill"></image>
 				<text class="p-20upx">类型</text>
 				<text>{{aptDetail.aptTypeId}}</text>
 			</view>

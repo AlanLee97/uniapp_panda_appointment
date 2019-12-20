@@ -225,12 +225,10 @@
 	position: relative;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 }
 .bg-img {
@@ -243,16 +241,13 @@
 	height: 36rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
 	        flex-direction: row;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 	margin: 42rpx 0 24rpx 32rpx;
 	position: relative;
@@ -271,11 +266,9 @@
 .user-wrapper {
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-pack: center;
 	-webkit-justify-content: center;
-	    -ms-flex-pack: center;
 	        justify-content: center;
 	position: relative;
 	z-index: 2;
@@ -283,16 +276,13 @@
 .user {
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	-webkit-box-pack: center;
 	-webkit-justify-content: center;
-	    -ms-flex-pack: center;
 	        justify-content: center;
 	position: relative;
 	z-index: 2;
@@ -302,23 +292,19 @@
 	height: 160rpx;
 	border-radius: 50%;
 	-webkit-align-self: center;
-	    -ms-flex-item-align: center;
 	        align-self: center;
 }
 .user-info {
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
 	        flex-direction: row;
 	margin-top: 30rpx;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 }
 .user-info-mobile {
@@ -328,7 +314,6 @@
 	color: #FEFEFE;
 	line-height: 28rpx;
 	-webkit-align-self: center;
-	    -ms-flex-item-align: center;
 	        align-self: center;
 	padding: 0 50rpx;
 }
@@ -348,22 +333,18 @@
 	height: 138rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
 	        flex-direction: row;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 	border-radius: 10rpx;
 	background-color: #FFFFFF;
 	margin: -30rpx 30rpx 26rpx 30rpx;
-	-webkit-box-shadow: 0 15rpx 10rpx -15rpx #efefef;
-	        box-shadow: 0 15rpx 10rpx -15rpx #efefef;
+	box-shadow: 0 15rpx 10rpx -15rpx #efefef;
 	position: relative;
 	z-index: 2;
 }
@@ -371,16 +352,13 @@
 	height: 100%;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
 	        flex-direction: row;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 }
 .ticket-img {
@@ -404,54 +382,43 @@
 	height: 334rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	-webkit-box-pack: justify;
 	-webkit-justify-content: space-between;
-	    -ms-flex-pack: justify;
 	        justify-content: space-between;
 	padding: 40rpx 74rpx 40rpx 95rpx;
 	margin: 0 30rpx;
 	background-color: #FFFFFF;
 	border-radius: 10rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
-	-webkit-box-shadow: 0 0 10rpx #efefef;
-	        box-shadow: 0 0 10rpx #efefef
+	box-sizing: border-box;
+	box-shadow: 0 0 10rpx #efefef
 }
 .ul-item {
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
 	        flex-direction: row;
 	-webkit-box-pack: justify;
 	-webkit-justify-content: space-between;
-	    -ms-flex-pack: justify;
 	        justify-content: space-between;
 }
 .item {
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 	position: relative;
 }

@@ -13,36 +13,30 @@
 .index {
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
-	    -ms-flex: 1;
 	        flex: 1;
     width: 750rpx;
     min-height: 100vh;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	-webkit-box-pack: center;
 	-webkit-justify-content: center;
-	    -ms-flex-pack: center;
 	        justify-content: center;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 }
 .row {
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
 	        flex-direction: row;
 }
 .column {
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 }
 .card {
@@ -54,7 +48,6 @@
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	background-color: #FFFFFF;
 }
@@ -77,11 +70,9 @@
     text-align: center;
 	-webkit-box-pack: center;
 	-webkit-justify-content: center;
-	    -ms-flex-pack: center;
 	        justify-content: center;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
 	border-radius: 15px;
 	position: absolute;
@@ -91,21 +82,17 @@
 .card-bottm {
 	-webkit-box-pack: center;
 	-webkit-justify-content: center;
-	    -ms-flex-pack: center;
 	        justify-content: center;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 }
 .card-share-view {
 	-webkit-box-pack: center;
 	-webkit-justify-content: center;
-	    -ms-flex-pack: center;
 	        justify-content: center;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 	padding: 14rpx 0;
 	color: #FF80AB;
@@ -119,20 +106,17 @@
 .car-title-view {
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
-	    -ms-flex: 1;
 	        flex: 1;
 	padding: 14rpx 0rpx 14rpx 20rpx;
 }
 .card-title {
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
-	    -ms-flex: 1;
 	        flex: 1;
 	font-size: 30rpx;
 	text-align: left;
 	color: #555555;
-	-o-text-overflow: ellipsis;
-	   text-overflow: ellipsis;
+	text-overflow: ellipsis;
 	lines: 2;
 	display: -webkit-box;
 	white-space: normal;
@@ -154,10 +138,8 @@
 }
 .card-list2-num-view {
 	-webkit-transform: scale(0.8);
-	    -ms-transform: scale(0.8);
 	        transform: scale(0.8);
     -webkit-transform-origin: right;
-        -ms-transform-origin: right;
             transform-origin: right;
 }
 .card-list2-num {
@@ -187,12 +169,10 @@
 .scroll-items{
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	width: 100%;
 	/* padding: 40rpx; */
@@ -205,38 +185,31 @@
 	width: 100%;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
-	    -ms-flex-direction: row;
 	        flex-direction: row;
 	border: 1px solid #f8f8f8;
 }
 .scroll-item-image-box{
 	-webkit-box-flex: 0;
 	-webkit-flex-grow: 0;
-	    -ms-flex-positive: 0;
 	        flex-grow: 0;
 }
 .scroll-item-text-box{
 	-webkit-box-flex: 1;
 	-webkit-flex-grow: 1;
-	    -ms-flex-positive: 1;
 	        flex-grow: 1;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	    -ms-flex-direction: column;
 	        flex-direction: column;
 	-webkit-box-pack: justify;
 	-webkit-justify-content: space-between;
-	    -ms-flex-pack: justify;
 	        justify-content: space-between;
 	font-size: 28rpx;
 	font-weight: bold;

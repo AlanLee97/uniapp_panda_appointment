@@ -66,19 +66,19 @@ component.options.__file = "F:/Code/MyCode/Web/uniapp/study/panda_appointment/pa
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_hbuilderx_packages_webpack_uni_nvue_loader_lib_templateLoader_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_17_0_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_template_js_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_custom_block_loader_index_js_ref_0_1_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_tabbar_5_vue_vue_type_template_id_871734ca___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!./node_modules/@dcloudio/vue-cli-plugin-hbuilderx/packages/webpack-uni-nvue-loader/lib/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--17-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-custom-block-loader??ref--0-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!./tabbar-5.vue?vue&type=template&id=871734ca& */ 51);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_hbuilderx_packages_webpack_uni_nvue_loader_lib_templateLoader_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_17_0_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_template_js_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_custom_block_loader_index_js_ref_0_1_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_tabbar_5_vue_vue_type_template_id_871734ca___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_16_0_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_template_js_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_custom_block_loader_index_js_ref_0_1_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_tabbar_5_vue_vue_type_template_id_871734ca___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-custom-block-loader??ref--0-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!./tabbar-5.vue?vue&type=template&id=871734ca& */ 51);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_16_0_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_template_js_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_custom_block_loader_index_js_ref_0_1_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_tabbar_5_vue_vue_type_template_id_871734ca___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_hbuilderx_packages_webpack_uni_nvue_loader_lib_templateLoader_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_17_0_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_template_js_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_custom_block_loader_index_js_ref_0_1_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_tabbar_5_vue_vue_type_template_id_871734ca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_16_0_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_template_js_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_vue_loader_lib_index_js_vue_loader_options_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_custom_block_loader_index_js_ref_0_1_D_program_files_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_tabbar_5_vue_vue_type_template_id_871734ca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
 /***/ }),
 
 /***/ 51:
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-hbuilderx/packages/webpack-uni-nvue-loader/lib/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--17-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-custom-block-loader??ref--0-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/pages/tabbar/tabbar-5/tabbar-5.vue?vue&type=template&id=871734ca& ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-custom-block-loader??ref--0-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!F:/Code/MyCode/Web/uniapp/study/panda_appointment/panda_appointment/pages/tabbar/tabbar-5/tabbar-5.vue?vue&type=template&id=871734ca& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -90,6 +90,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  if (!_vm._isMounted) {
+    _vm.e0 = function($event) {
+      return this.gotoPage("/pages/user/my-order")
+    }
+  }
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -291,38 +296,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _vuex = __webpack_require__(/*! vuex */ 54);var QSTabs = function QSTabs() {return __webpack_require__.e(/*! import() | components/QS-tabs/QS-tabs */ "components/QS-tabs/QS-tabs").then(__webpack_require__.bind(null, /*! ../../../components/QS-tabs/QS-tabs.vue */ 175));};
+var _vuex = __webpack_require__(/*! vuex */ 54);var QSTabs = function QSTabs() {return __webpack_require__.e(/*! import() | components/QS-tabs/QS-tabs */ "components/QS-tabs/QS-tabs").then(__webpack_require__.bind(null, /*! ../../../components/QS-tabs/QS-tabs.vue */ 231));};
 
 
 
 var _this = void 0;
 var loginResult;var _default =
+
 {
+
+
   components: {
     QSTabs: QSTabs },
 
@@ -330,20 +313,25 @@ var loginResult;var _default =
     return {
       title: 'Hello',
       br: '\n',
-      tabs: ['动态', '作品', '文章'],
+      tabs: ['作品', '相册', '文章'],
       current: 0,
       tabsHeight: 0,
       dx: 0,
       nickname: '昵称',
-      face: ''
+      face: '',
+      uid: '',
       // isLogin1:false,
-    };
+
+      works: {},
+      images: [] };
+
 
 
   },
 
   onLoad: function onLoad() {
-
+    loginResult = this.checkLogin('/pages/tabbar-5/tabbar-5', 0);
+    if (!loginResult) {return;}
   },
 
   onShow: function onShow() {
@@ -351,12 +339,22 @@ var loginResult;var _default =
     console.log('userinfo:');
     console.log(userinfo);
 
-    this.nickname = userinfo.data.nickname;
-    this.face = userinfo.data.headPortraitImg;
+    this.nickname = userinfo.nickname;
+    this.face = userinfo.headPortraitImg;
+    this.uid = userinfo.id;
+
+    this.getWorksByUserId();
+    this.getImagesByUserId();
+
+
 
   },
 
   methods: {
+
+    _gotoPage: function _gotoPage(pageUrl) {
+      this.gotoPage(pageUrl);
+    },
     change: function change(index) {
       this.current = index;
     },
@@ -377,69 +375,32 @@ var loginResult;var _default =
         return false;
       }
     },
+    getWorksByUserId: function getWorksByUserId() {var _this2 = this;
+      uni.request({
+        url: this.createApiUrl('/works/get/uid'),
+        data: {
+          uid: this.uid },
 
-
-
-
-    logout: function logout() {
-      uni.showModal({
-        title: '提示',
-        content: '确定退出登录？',
-        confirmColor: '#5677FC',
         success: function success(res) {
-          if (res.confirm) {
-            uni.clearStorage();
-            uni.reLaunch({
-              url: '/pages/user/login' });
-
-          }
+          _this2.works = res.data.data;
+          console.log(_this2.works);
         } });
 
     },
-    edit: function edit() {
-      this.tui.toast("功能开发中~");
-    },
-    tapEvent: function tapEvent(e) {
-      var index = e.currentTarget.dataset.index;
-      var url = "";
-      if (index == 1) {
-        url = '../about/about';
-      } else if (index == 2) {
-        var key = e.currentTarget.dataset.key;
-        url = '../maps/maps?key=' + key;
 
 
+    getImagesByUserId: function getImagesByUserId() {var _this3 = this;
+      uni.request({
+        url: this.createApiUrl('user/images'),
+        data: {
+          uid: this.uid },
 
+        success: function success(res) {
+          console.log(res);
+          _this3.images = res.data.data;
+          console.log(_this3.images);
 
-      } else {
-        url = '../log/log';
-      }
-      uni.navigateTo({
-        url: url });
-
-    },
-    github: function github(type) {
-      if (type == 1) {
-        var that = this;
-        uni.setClipboardData({
-          data: 'https://github.com/dingyong0214/ThorUI-uniapp',
-          success: function success(res) {
-            uni.getClipboardData({
-              success: function success(res) {
-                that.tui.toast("链接已复制", 2000, true);
-              } });
-
-          } });
-
-      } else {
-
-
-
-      }
-    },
-    previewReward: function previewReward() {
-      uni.previewImage({
-        urls: ["https://thorui.cn/img/reward.jpg"] });
+        } });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

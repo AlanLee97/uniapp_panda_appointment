@@ -191,6 +191,41 @@ export default {
 .width-100{
 	width: 100%;
 }
+
+/* ----- 高度 -----*/
+.height-10{
+	height: 10%;
+}
+.height-20{
+	height: 20%;
+}
+.height-30{
+	height: 30%;
+}
+.height-100{
+	height: 100%;
+}.height-40{
+	height: 40%;
+}
+.height-50{
+	height: 50%;
+}.height-60{
+	height: 60%;
+}
+.height-70{
+	height: 70%;
+}
+.heght-80{
+	height: 80%;
+}
+.height-90{
+	height: 90%;
+}
+.height-100{
+	height: 100%;
+}
+
+
 /*================END 宽度================*/
 
 
@@ -206,6 +241,75 @@ export default {
 .mt-20upx{
 	margin-top: 20upx;
 }
+.m-top--30upx{
+	margin-top: 10upx;
+}
+.m-top--20upx{
+	margin-top: 10upx;
+}
+.m-top--10upx{
+	margin-top: 10upx;
+}
+
+.m-top-10upx{
+	margin-top: 10upx;
+}
+.m-top-20upx{
+	margin-top: 20upx;
+}
+.m-top-30upx{
+	margin-top: 30upx;
+}
+.m-top-40upx{
+	margin-top: 40upx;
+}
+.m-top-10upx{
+	margin-top: 10upx;
+}
+.m-top-50upx{
+	margin-top: 50upx;
+}
+
+
+
+/* 距离底部upx */
+.m-bottom-10upx{
+	margin-bottom: 10upx;
+}
+.m-bottom-20upx{
+	margin-bottom: 20upx;
+}
+.m-bottom-30upx{
+	margin-bottom: 20upx;
+}
+.m-bottom-20upx{
+	margin-bottom: 30upx;
+}
+.m-bottom-40upx{
+	margin-bottom: 40upx;
+}
+.m-bottom-20upx{
+	margin-bottom: 20upx;
+}
+.m-bottom-50upx{
+	margin-bottom: 50upx;
+}
+.m-bottom-60upx{
+	margin-bottom: 60upx;
+}
+.m-bottom-70upx{
+	margin-bottom: 70upx;
+}
+.m-bottom-80upx{
+	margin-bottom: 80upx;
+}
+.m-bottom-90upx{
+	margin-bottom: 90upx;
+}
+.m-bottom-100upx{
+	margin-bottom: 100upx;
+}
+
 
 /* 外边距10upx */
 .m-10upx{
@@ -432,7 +536,7 @@ export default {
 }
 
 .font-color-light-black{
-	color: #212121;
+	color: #5f5f5f;
 }
 
 .font-color-light-green{
@@ -455,5 +559,136 @@ export default {
 	height: 100upx;
 }
 
+.icon-size-150upx{
+	width: 150upx;
+	height: 150upx;
+}
+
+.icon-size-200upx{
+	width: 200upx;
+	height: 200upx;
+}
+
 /*================END 图标================*/
+
+
+
+
+	/*滑动tab栏的样式*/
+	.QS-tabs-box{
+		width: 100%;
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		background-color: white;
+	}
+	.swiper-item{
+		background-color: #fff;
+	}
+	.scroll-items{
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		padding: 40rpx;
+	}
+	.scroll-item{
+		margin-top: 15rpx;
+		padding: 25rpx;
+		background-color: white;
+		border-radius: 8rpx;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		border: 1px solid #f8f8f8;
+	}
+	.scroll-item-image-box{
+		flex-grow: 0;
+	}
+	.scroll-item-text-box{
+		flex-grow: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		font-size: 28rpx;
+		/* font-weight: bold; */
+		margin-left: 15rpx;
+	}
+	.scroll-item-image{
+		border-radius: 4rpx;
+		width: 180rpx;
+		height: 150rpx;
+	}
+	
+	
+	
+	.vbox {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	
+	.top_back_img {
+		z-index: -1;
+		position: absolute;
+		top: 0upx;
+		width: 100%;
+		height: 420upx;
+	
+	}
+	
+	.top {
+		display: flex;
+		width: 100%;
+		height: 420upx;
+		align-items: center;
+	}
+	
+	.circle {
+		margin-left: 100upx;
+		width: 120upx;
+		height: 120upx;
+		border: 10upx solid #a4f4f6;
+		border-radius: 150upx;
+		overflow: hidden;
+	}
+	
+	.head {
+		width: 120upx;
+		height: 120upx;
+		border-radius: 150upx;
+	}
+	
+	.top-texts {
+		display: flex;
+		flex-direction: column;
+		margin-left: 15upx;
+		color: white;
+	}
+	
+	.name {
+		font-size: 36upx;
+		font-weight: 500;
+	}
+	
+	.set-top-hr {
+		width: 210upx;
+		height: 6upx;
+	}
+	
+	.top-changeInfo {
+		margin-top: 250upx;
+		width: 120upx;
+		height: 28upx;
+		line-height: 28upx;
+		background-color: #FFFFFF;
+		border-radius: 15upx;
+		padding: 10upx;
+		color: #33dce8;
+	}
+	
+	.box-content-align-center{
+		display: flex;
+		align-items: center; /*定义body的元素垂直居中*/
+		justify-content: center; /*定义body的里的元素水平居中*/
+	}
 </style>

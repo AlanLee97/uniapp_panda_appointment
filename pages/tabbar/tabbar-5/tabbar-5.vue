@@ -4,10 +4,11 @@
 			<view class='top-container'>
 				<image class='bg-img' src='https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/2LtQ2KZEDOUFAcWfLEzL49EKXsDPVjeOv2NtsWFLbZP.jpg'></image>
 
+				<br><br><br>
 				<view v-show="!isLogin" class='user-wrapper'>
 					<navigator url='/pages/user/login' hover-class="opcity" :hover-stay-time="150" class='user'>
 						<!-- 头像：未登录 -->
-						<image class='avatar-img' :src='face'></image>
+						<image class='avatar-img' src='../staic/icon/登录.png'></image>
 						<text class='user-info-mobile'>请登录</text>
 					</navigator>
 				</view>
@@ -44,23 +45,7 @@
 				<!-- #endif -->
 			</view>
 			
-			<view class='bottom-container'>
-				<view class='ul-item'>
-					<view @tap='tapEvent' data-index="2" data-key='粉丝' class='item' hover-class="opcity" :hover-stay-time="150">
-						<image class='item-img' src='../../static/images/my/mine_icon_jiayouzhan_3x.png'></image>
-						<text class='item-name'>粉丝</text>
-					</view>
-					<view @tap='tapEvent' data-index="2" data-key='关注' class='item' hover-class="opcity" :hover-stay-time="150">
-						<image class='item-img' src='../../static/images/my/mine_icon_tingche_3x.png'></image>
-						<text class='item-name'>关注</text>
-					</view>
-					<view @tap='tapEvent' data-index="2" data-key='相册' class='item' hover-class="opcity" :hover-stay-time="150">
-						<image class='item-img' src='../../static/images/my/mine_icon_chongdian_3x.png'></image>
-						<text class='item-name'>相册</text>
-					</view>
-				</view>
 
-			</view>
 		</view>
 
 		<text>{{br}}</text>
@@ -90,7 +75,54 @@
 					<scroll-view scroll-y style="height: 100%;width: 100%;" >
 						<view class="scroll-items">
 		
-							<view class="scroll-item" v-for="(item, windex) in works" :key='windex'>
+							<view v-if="index == 0" class="scroll-item" v-for="(item, windex) in works" :key='windex'>
+								
+								<view class="scroll-item-text-box">
+									<view class="font-color-grey">
+										{{item.datetime}}
+										{{br}}
+									</view>
+									<view>
+										{{item.introduction}}
+									</view>
+									
+									<view class="grid flex-sub " :class="item.images.length > 1 ?'col-3 grid-square':'col-1'">
+										<view class="" v-for="(imgurl, img_index)  in item.images" :key="img_index">
+											<view class="scroll-item-image-box ">
+												<view class="test">
+													<image
+														:src="imgurl" 
+														@tap="previewImage(img_index, item.images)" 
+														mode="aspectFill" 
+														class="scroll-item-image ">
+													</image>
+												</view>
+											</view>
+										</view>
+									</view>
+									
+									
+								</view>
+							</view>
+						
+						
+							<view v-if="index == 1" class="" v-for="(x, y) in images" :key='y'>						
+									<view class="test col-3 grid-square">
+										<image
+											:src="x" 
+											@tap="previewImage(x, images)" 
+											mode="aspectFill" 
+											class="scroll-item-image ">
+										</image>
+									</view>
+								
+								<br>
+
+								
+							</view>
+													
+						
+							<view v-if="index == 2" class="scroll-item" v-for="(item, windex) in works" :key='windex'>
 								
 								<view class="scroll-item-text-box">
 									<view class="font-color-grey">
@@ -104,7 +136,12 @@
 									<view class="grid flex-sub " :class="item.images.length > 1 ?'col-3 grid-square':'col-1'">
 										<view class="" v-for="(imgurl, img_index)  in item.images" :key="img_index">
 											<view class="scroll-item-image-box">
-												<image :src="imgurl" @tap="previewImage(img_index, item.images)" mode="aspectFill" class="scroll-item-image"></image>
+												<image 
+													:src="imgurl" 
+													@tap="previewImage(img_index, item.images)" 
+													mode="aspectFill" 
+													class="scroll-item-image">
+												</image>
 											</view>
 										</view>
 									</view>
@@ -112,6 +149,7 @@
 									
 								</view>
 							</view>
+						
 						</view>
 					</scroll-view>
 					
@@ -127,13 +165,18 @@
 
 <script>
 	import QSTabs from '../../../components/QS-tabs/QS-tabs.vue';
+	
+	
 	import {
 		mapState
 	} from 'vuex'
 	
 	let _this = this;
 	let loginResult;
+	
 	export default {
+		
+		
 		components: {
 			QSTabs
 		},
@@ -141,7 +184,7 @@
 			return {
 				title: 'Hello',
 				br:'\n',
-				tabs: ['动态','作品','文章'],
+				tabs: ['作品','相册','文章'],
 				current: 0,
 				tabsHeight: 0,
 				dx: 0,
@@ -151,13 +194,15 @@
 				// isLogin1:false,
 				
 				works:{},
+				images:[]
 				
 				
 			}
 		},
 		
 		onLoad() {
-			
+			loginResult = this.checkLogin('/pages/tabbar-5/tabbar-5', 0);
+			if(!loginResult){return;}
 		},
 		
 		onShow() {
@@ -170,6 +215,7 @@
 			this.uid = userinfo.id;
 			
 			this.getWorksByUserId();
+			this.getImagesByUserId();
 			
 			
 			
@@ -214,42 +260,31 @@
 			},
 			
 			
-			
-			
-			
-			edit() {
-				this.tui.toast("功能开发中~")
-			},
-			tapEvent: function(e) {
-				let index = e.currentTarget.dataset.index;
-				let url = "";
-				if (index == 1) {
-					url = '../about/about'
-				} else if (index == 2) {
-					let key = e.currentTarget.dataset.key;
-					url = '../maps/maps?key=' + key
-					// #ifdef MP-ALIPAY
-					 this.tui.toast("功能开发中~");
-					 return
-					// #endif
-				} else {
-					url = '../log/log'
-				}
-				uni.navigateTo({
-					url: url
+			getImagesByUserId:function(){
+				uni.request({
+					url:this.createApiUrl('user/images'),
+					data:{
+						uid:this.uid
+					},
+					success: (res) => {
+						console.log(res);
+						this.images = res.data.data;
+						console.log(this.images);
+						
+					}
 				})
 			},
 			
-			previewReward: function() {
-				uni.previewImage({
-					urls: ["https://thorui.cn/img/reward.jpg"]
-				})
-			}
+
 		}
 	}
 </script>
 
 <style>	
+	.test{
+		width: 200upx;
+		height: 200upx;
+	}
 	
 	/*上半部分*/
 	.user_top_box{
@@ -290,117 +325,7 @@
 	
 	
 	
-	/*滑动tab栏的样式*/
-	.QS-tabs-box{
-		width: 100%;
-		position: sticky;
-		top: 0;
-		z-index: 10;
-		background-color: white;
-	}
-	.swiper-item{
-		background-color: #fff;
-	}
-	.scroll-items{
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		padding: 40rpx;
-	}
-	.scroll-item{
-		margin-top: 15rpx;
-		padding: 25rpx;
-		background-color: white;
-		border-radius: 8rpx;
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-		border: 1px solid #f8f8f8;
-	}
-	.scroll-item-image-box{
-		flex-grow: 0;
-	}
-	.scroll-item-text-box{
-		flex-grow: 1;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		font-size: 28rpx;
-		/* font-weight: bold; */
-		margin-left: 15rpx;
-	}
-	.scroll-item-image{
-		border-radius: 4rpx;
-		width: 180rpx;
-		height: 150rpx;
-	}
-	
-	
-	
-	.vbox {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-	
-	.top_back_img {
-		z-index: -1;
-		position: absolute;
-		top: 0upx;
-		width: 100%;
-		height: 420upx;
-	
-	}
-	
-	.top {
-		display: flex;
-		width: 100%;
-		height: 420upx;
-		align-items: center;
-	}
-	
-	.circle {
-		margin-left: 100upx;
-		width: 120upx;
-		height: 120upx;
-		border: 10upx solid #a4f4f6;
-		border-radius: 150upx;
-		overflow: hidden;
-	}
-	
-	.head {
-		width: 120upx;
-		height: 120upx;
-		border-radius: 150upx;
-	}
-	
-	.top-texts {
-		display: flex;
-		flex-direction: column;
-		margin-left: 15upx;
-		color: white;
-	}
-	
-	.name {
-		font-size: 36upx;
-		font-weight: 500;
-	}
-	
-	.set-top-hr {
-		width: 210upx;
-		height: 6upx;
-	}
-	
-	.top-changeInfo {
-		margin-top: 250upx;
-		width: 120upx;
-		height: 28upx;
-		line-height: 28upx;
-		background-color: #FFFFFF;
-		border-radius: 15upx;
-		padding: 10upx;
-		color: #33dce8;
-	}
+
 	
 	
 	

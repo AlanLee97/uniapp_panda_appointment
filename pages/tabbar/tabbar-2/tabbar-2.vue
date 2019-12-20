@@ -2,25 +2,48 @@
 	<view class="index">
 
 		
-		<!-- 顶部导航栏 -->
-		<view >
+		<!-- 定位与天气信息 -->
+		<view class="box-shadow-raduis m-20upx p-20upx uni-flex uni-row box-content-align-center" >
 			<!-- 定位城市 -->
-			<view class="box-shadow-raduis m-20upx p-20upx" @tap="goPage('/pages/commons/select-city')">
-				<view class="m-20upx p-20upx">
+			<span 
+			class="uni-flex-item  " 
+			@tap="goPage('/pages/commons/select-city')">
+				<image src="../../../static/icon/location.png" mode="" class="icon-size-50upx"></image>
+				<text class="p-10upx fontsize-40upx" >
 					{{ city }}
-				</view>
+				</text>
+			</span>
+			
+			
+			<!-- 占位符 -->
+			<text class="uni-flex-item text-center fontsize-50upx ">
 				
+			</text>
+			
+			<!-- 天气信息 -->
+			<view class="uni-flex-item text-center fontsize-80upx font-color-light-black  p-20upx">
+				{{weather.temp}}
+				<text class="fontsize-50upx p-left-10upx">℃</text>
+				<view class="fontsize-30upx">{{weather.weather}}</view>
 			</view>
-		
+			
+			<!-- 天气图片 -->
+			<span class="uni-flex-item">
+				<image 
+				:src="this.getWeatherImg(this.weather.img)" 
+				mode="" 
+				class="icon-size-150upx  p-20upx"></image>
+			</span>
+			
 		</view>
+				
 		
 		
 		
 		<!-- 发布的约拍 -->
-		<view class="card-container cu-card case no-card mb-10"  v-for="(item, index) in jsonArr" v-bind:key="index" >
-			
+		<view class="box-shadow-raduis bg-white cu-card case no-card m-20upx p-10upx"  
+			v-for="(item, index) in jsonArr" v-bind:key="index" >
 			<view class=" cu-item shadow" @click="goPage('/pages/appointment/appointment-detail?apid=' + item.id)">
-				
 				<view class="cu-list menu-avatar">
 					<view class="cu-item">
 						<image class="cu-avatar round lg" :src="item.tuser.headPortraitImg"></image>
@@ -28,25 +51,18 @@
 							<view class="text-grey">{{item.tuser.nickname}}</view>
 							<view class="text-gray text-sm flex justify-between">
 								{{item.date}}
-								
 							</view>
 						</view>
 					</view>
-				</view>
-							
-							
+				</view>	
 				<view class="image">
 					<image :src="item.image"
 					 mode="widthFix"></image>
 					<view class="cu-tag bg-blue">标签</view>
 					<view class="cu-bar bg-shadeBottom"> <text class="text-cut">{{item.title}}</text></view>
 				</view>
-				
 				<text>{{br}}</text>
-				
 			</view>
-		
-		
 		</view>
 		
 		
@@ -87,24 +103,12 @@
 				title: '加载数据中...',
 				mask: false
 			});
-			uni.request({
-				url: this.createApiUrl('appointment/get/apt-user'),
-				method: 'GET',
-				data: {},
-				success: res => {
-					console.log(res);
-					this.jsonArr = res.data.data;
-					uni.hideLoading();
-				},
-				fail: () => {
-					uni.hideLoading();
-				},
-				complete: () => {}
-			});
-			
-			let city = uni.getStorageSync('apt-city');
-			console.log(city);
-			this.city = city;
+			//获取城市
+			this.getCity();
+			//获取约拍信息
+			this.getAppointmentUser();
+			//获取天气信息
+			this.getWeatherInfo(this.city);
 		},
 		
 		onPullDownRefresh() {
@@ -134,6 +138,7 @@
 				currentSwiper: 0,
 				
 				jsonArr:[],
+				weather:{}
 				
 				
 			}
@@ -152,7 +157,55 @@
 				});
 			},
 			
+			//获取约拍信息
+			getAppointmentUser:function(){
+				uni.request({
+					url: this.createApiUrl('appointment/get/apt-user'),
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log(res);
+						this.jsonArr = res.data.data;
+						uni.hideLoading();
+					},
+					fail: () => {
+						uni.hideLoading();
+					},
+					complete: () => {}
+				});
+			},
 			
+			//获取城市
+			getCity:function(){
+				let city = uni.getStorageSync('apt-city');
+				console.log(city);
+				this.city = city;
+			},
+			
+			//获取天气信息
+			getWeatherInfo:function(city){
+				uni.request({
+					url: 'http://jisutqybmf.market.alicloudapi.com/weather/query',
+					method: 'GET',
+					header:{
+						Authorization: "APPCODE 22d4a321bdaf4eefbe6709bd7d4e2ed1"
+					},
+					data: {
+						city:city
+					},
+					success: res => {
+						console.log(res);
+						this.weather = res.data.result;
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			
+			//获取天气图片：传入天气图片文件名
+			getWeatherImg:function(imgName){
+				return '/static/icon/weathercn/' + imgName + '.png';
+			}
 			
 		}
 	}
@@ -176,97 +229,6 @@
 	background-color: #fcfcfc;
 }
 
-.row {
-	flex-direction: row;
-}
-
-.column {
-	flex-direction: column;
-}
-
-.card {
-	position: relative;
-	width: 710upx;
-	margin: 20upx 20upx 20upx 20upx;
-	border-radius: 10upx;
-	overflow: hidden;
-	flex-direction: column;
-	background-color: #FFFFFF;
-}
-
-.card-container{
-	margin: 20upx;
-	border-radius: 10upx;
-	box-shadow: 1px 1px 8px #c1c1c1;
-	
-	
-}
-
-.card-img {
-	width: 710upx;
-	height: 1065upx;
-}
-
-.card-num {
-	color: #FFFFFF;
-	font-size: 13px;
-	text-align: center;
-}
-
-.card-num-view {
-	background-color: #FF80AB;
-    line-height: 1;
-    display: inline-block;
-	padding: 3px 6px;
-    color: #FFFFFF;
-    font-size: 12px;
-    text-align: center;
-	justify-content: center;
-    align-items: center;
-	border-radius: 15px;
-	position: absolute;
-	top: 20upx;
-	right: 20upx;
-}
-
-.card-bottm {
-	justify-content: center;
-	align-items: center;
-}
-
-.card-share-view {
-	justify-content: center;
-	align-items: center;
-	padding: 14upx 0;
-	color: #FF80AB;
-	margin: 20upx 20upx 20upx;
-	font-size: 30upx;
-	font-family: texticons;
-}
-
-.card-share-view:before {
-	content: '\e62d';
-}
-
-.car-title-view {
-	flex: 1;
-	padding: 14upx 0upx 14upx 20upx;
-}
-
-.card-title {
-	flex: 1;
-	font-size: 30upx;
-	text-align: left;
-	color: #555555;
-	text-overflow: ellipsis;
-	lines: 2;
-	display: -webkit-box;
-	white-space: normal;
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	overflow: hidden;
-}
 
 
 
