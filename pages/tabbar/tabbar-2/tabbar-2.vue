@@ -41,9 +41,10 @@
 		
 		
 		<!-- 发布的约拍 -->
-		<view class="box-shadow-raduis bg-white cu-card case no-card m-20upx p-10upx"  
+		<view class="box-shadow-raduis show-bg-red cu-card case no-card m-20upx "  
 			v-for="(item, index) in jsonArr" v-bind:key="index" >
 			<view class=" cu-item shadow" @click="goPage('/pages/appointment/appointment-detail?apid=' + item.id)">
+				<!-- 用户信息 -->
 				<view class="cu-list menu-avatar">
 					<view class="cu-item">
 						<image class="cu-avatar round lg" :src="item.tuser.headPortraitImg"></image>
@@ -55,10 +56,17 @@
 						</view>
 					</view>
 				</view>	
+				
+				<!-- 封面图 -->
 				<view class="image">
 					<image :src="item.image"
 					 mode="widthFix"></image>
-					<view class="cu-tag bg-blue">标签</view>
+					 <!-- 标签 -->
+					<view class="cu-tag bg-blue" v-if="item.aptType == 1">普通拍照</view>
+					<view class="cu-tag bg-blue" v-if="item.aptType == 2">毕业照</view>
+					<view class="cu-tag bg-blue" v-if="item.aptType == 3">婚纱照</view>
+					<view class="cu-tag bg-blue" v-if="item.aptType == 4">电商模特</view>
+					
 					<view class="cu-bar bg-shadeBottom"> <text class="text-cut">{{item.title}}</text></view>
 				</view>
 				<text>{{br}}</text>

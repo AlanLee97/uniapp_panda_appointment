@@ -159,7 +159,7 @@
 					that.sendData.imgIds = that.imgId;
 					console.log(that.sendData);
 					that.sendRequest();
-				},2000);
+				},10000);
 				
 				
 			}

@@ -264,6 +264,9 @@
             },
 			
 			uploadImage:function(){
+				uni.showLoading({
+					title:'发布中...'
+				})
 				uni.uploadFile({
 					url:this.createApiUrl('/upload/return-url'),
 					filePath: this.imageList[0],
@@ -272,6 +275,7 @@
 						uid:this.sendData.userId
 					},
 					success:res => {
+						
 						console.log("上传成功的回调函数");
 						console.log(res);
 						this.sendData.apt_image = res.data;
@@ -279,6 +283,16 @@
 						//发送请求
 						this.sendRequest();
 						
+					},
+					fail:err => {
+						console.log(err);
+						uni.showToast({
+							title:'发表失败，原因：图片上传失败。'
+						});
+						return;
+					},
+					complete() {
+						uni.hideLoading();
 					}
 				});
 			},
@@ -291,6 +305,7 @@
 			
 			publishAppointment:function(){
 				this.uploadImage();
+				// this.sendRequest();
 			},
 			
             sendRequest:function() { //发送请求
@@ -309,11 +324,18 @@
 					data: this.sendData,
 					success: res => {
 						console.log(res);
-						
+						uni.hideLoading();
 						if(res.data.code == 200){
-							uni.hideLoading();
+							
 							uni.showToast({
 								title:'发布成功'
+							})
+							uni.switchTab({
+								url:'/pages/tabbar/tabbar-1/tabbar-1'
+							})
+						}else{
+							uni.showToast({
+								title:'发布失败，请稍候再试！'
 							})
 						}
 					},

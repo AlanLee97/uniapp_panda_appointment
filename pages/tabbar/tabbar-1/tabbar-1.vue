@@ -158,16 +158,28 @@
 						</view>
 						
 						<!-- 发布的内容 -->
-						<view class="text-content m-20upx ">
+						<view class="text-content m-20upx fontsize-30upx">
 							{{item.introduction}}
 						</view>
 						
 						<!-- 配图 -->
-						<view class="grid flex-sub padding-lr" :class="item.images.length > 1 ?'col-3 grid-square':'col-1'">		
-							<view v-for="(imgurl, img_index)  in item.images" :key="img_index">
-								<image @tap="previewImage(img_index, item.images)" :src="imgurl" mode="aspectFill"></image>
-							</view>
-							
+						<view class="p-20upx" v-if="item.images.length == 1">
+							<image @tap="previewImage(img_index, item.images)"
+								:src="item.images[0]" 
+								class="text-center"
+								mode="widthFix"></image>
+								
+						</view>
+						<view v-else class="p-20upx">
+							<uni-grid :column="3">
+								<view v-for="(imgurl, img_index)  in item.images" :key="img_index">
+									<uni-grid-item class="width-90">
+										<image @tap="previewImage(img_index, item.images)" 
+											:src="imgurl" 
+											mode="aspectFill"></image>
+									</uni-grid-item>
+								</view>
+							</uni-grid>
 						</view>
 					</view>		
 				</view>	
@@ -178,7 +190,15 @@
 </template>
 
 <script>
+	import uniGrid from '../../../components/uni-grid/uni-grid.vue';
+	import uniGridItem from '../../../components/uni-grid-item/uni-grid-item.vue';
+	
+	
 	export default {
+		components:{
+			uniGrid,
+			uniGridItem
+		},
 		data() {
 			return {
 				background: ['color1', 'color2', 'color3'],

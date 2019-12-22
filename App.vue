@@ -1,15 +1,18 @@
 <script>
+
+	
 export default {
+	
 
 	onLaunch: function() {
 		setTimeout(() => {
-			uni.setTabBarBadge({
-				index: 1,
-				text: ''
-			});
-			uni.showTabBarRedDot({
-				index: 3
-			});
+			// uni.setTabBarBadge({
+			// 	index: 1,
+			// 	text: ''
+			// });
+			// uni.showTabBarRedDot({
+			// 	index: 3
+			// });
 		}, 1000);
 	},
 	onShow: function() {
@@ -91,6 +94,21 @@ export default {
 /* 显示边框-蓝色：查看元素位置时使用 */
 .show-border-blue{
 	border: #0081FF 1px solid;
+}
+
+/* 显示背景颜色-红色：查看元素位置时使用 */
+.show-bg-red{
+	background-color: #E54D42;
+}
+
+/* 显示背景颜色-绿色：查看元素位置时使用 */
+.show-bg-blue{
+	background-color:#39B54A;
+}
+
+/* 显示背景颜色-蓝色：查看元素位置时使用 */
+.show-bg-blue{
+	background-color: #0081FF;
 }
 
 /*----------- 位置 ----------*/
@@ -589,7 +607,6 @@ export default {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		padding: 40rpx;
 	}
 	.scroll-item{
 		margin-top: 15rpx;

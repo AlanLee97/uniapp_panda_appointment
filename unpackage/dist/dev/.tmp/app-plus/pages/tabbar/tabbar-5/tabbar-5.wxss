@@ -257,14 +257,7 @@
 	min-width: 80rpx;
 	text-align: center;
 }
-.btn-feedback {
-	background: transparent !important;
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	left: 0;
-	top: 0;
-}
+
 
 
 

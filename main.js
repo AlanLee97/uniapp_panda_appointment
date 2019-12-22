@@ -32,8 +32,8 @@ Vue.prototype.createApiUrl = function(reqUrl){
 
 Vue.prototype.getUserInfo = function(){
 	let userinfo = uni.getStorageSync('userinfo');
-	console.log('main.js -> userinfo:');
-	console.log(userinfo);
+	// console.log('main.js -> userinfo:');
+	// console.log(userinfo);
 	return userinfo;
 }
 

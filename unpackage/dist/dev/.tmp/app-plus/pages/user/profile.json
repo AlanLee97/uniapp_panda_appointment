@@ -1,5 +1,7 @@
 {
   "usingComponents": {
-    "q-s-tabs": "/components/QS-tabs/QS-tabs"
+    "q-s-tabs": "/components/QS-tabs/QS-tabs",
+    "uni-grid": "/components/uni-grid/uni-grid",
+    "uni-grid-item": "/components/uni-grid-item/uni-grid-item"
   }
 }

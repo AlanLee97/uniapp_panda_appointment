@@ -9,7 +9,8 @@
         "usingComponents" : true,
         /* 5+App特有相关 */
         "modules" : {
-            "Payment" : {}
+            "Payment" : {},
+            "Speech" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -48,6 +49,13 @@
             "sdkConfigs" : {
                 "payment" : {
                     "alipay" : {}
+                },
+                "speech" : {
+                    "baidu" : {
+                        "appid" : "18082661",
+                        "apikey" : "ERrTemREGuhaOwGYYGzPO9VR",
+                        "secretkey" : "5fePoworQrtAThZECZHFC00uCuu70wkH"
+                    }
                 }
             }
         }
