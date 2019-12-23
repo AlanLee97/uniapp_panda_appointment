@@ -90,11 +90,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  if (!_vm._isMounted) {
-    _vm.e0 = function($event) {
-      return this.gotoPage("/pages/user/my-order")
-    }
-  }
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -281,22 +276,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _vuex = __webpack_require__(/*! vuex */ 54);var QSTabs = function QSTabs() {return __webpack_require__.e(/*! import() | components/QS-tabs/QS-tabs */ "components/QS-tabs/QS-tabs").then(__webpack_require__.bind(null, /*! ../../../components/QS-tabs/QS-tabs.vue */ 231));};
+var _vuex = __webpack_require__(/*! vuex */ 54);var QSTabs = function QSTabs() {return __webpack_require__.e(/*! import() | components/QS-tabs/QS-tabs */ "components/QS-tabs/QS-tabs").then(__webpack_require__.bind(null, /*! ../../../components/QS-tabs/QS-tabs.vue */ 211));};var uniGrid = function uniGrid() {return __webpack_require__.e(/*! import() | components/uni-grid/uni-grid */ "components/uni-grid/uni-grid").then(__webpack_require__.bind(null, /*! ../../../components/uni-grid/uni-grid.vue */ 197));};var uniGridItem = function uniGridItem() {return __webpack_require__.e(/*! import() | components/uni-grid-item/uni-grid-item */ "components/uni-grid-item/uni-grid-item").then(__webpack_require__.bind(null, /*! ../../../components/uni-grid-item/uni-grid-item.vue */ 204));};
 
 
 
@@ -307,7 +287,9 @@ var loginResult;var _default =
 
 
   components: {
-    QSTabs: QSTabs },
+    QSTabs: QSTabs,
+    uniGrid: uniGrid,
+    uniGridItem: uniGridItem },
 
   data: function data() {
     return {
@@ -346,8 +328,13 @@ var loginResult;var _default =
     this.getWorksByUserId();
     this.getImagesByUserId();
 
+  },
 
-
+  onPullDownRefresh: function onPullDownRefresh() {
+    this.getWorksByUserId();
+    setTimeout(function () {
+      uni.stopPullDownRefresh();
+    }, 1000);
   },
 
   methods: {
@@ -375,6 +362,8 @@ var loginResult;var _default =
         return false;
       }
     },
+
+    //获取作品：通过用户ID
     getWorksByUserId: function getWorksByUserId() {var _this2 = this;
       uni.request({
         url: this.createApiUrl('/works/get/uid'),
@@ -388,7 +377,7 @@ var loginResult;var _default =
 
     },
 
-
+    //获取相册图片
     getImagesByUserId: function getImagesByUserId() {var _this3 = this;
       uni.request({
         url: this.createApiUrl('user/images'),
@@ -399,6 +388,78 @@ var loginResult;var _default =
           console.log(res);
           _this3.images = res.data.data;
           console.log(_this3.images);
+
+        } });
+
+    },
+
+    //删除作品
+    deleteWorks: function deleteWorks(worksId) {
+      console.log(worksId);
+      uni.request({
+        url: this.createApiUrl('works/delete'),
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded' },
+
+        data: {
+          worksId: worksId },
+
+        success: function success(res) {
+          console.log(res);
+          if (res.data.code == 200) {
+            uni.showToast({
+              title: '删除成功' });
+
+          } else {
+            uni.showToast({
+              title: '删除失败' });
+
+          }
+        },
+        fail: function fail() {},
+        complete: function complete() {} });
+
+    },
+
+    //预览图片
+    previewImg: function previewImg(index, urls) {
+      uni.previewImage({
+        current: index,
+        urls: urls,
+        indicator: "default",
+        success: function success(res) {
+          console.log(res);
+        },
+        fail: function fail(err) {
+          console.log(err);
+        } });
+
+    },
+
+    confirmDelete: function confirmDelete(worksId) {var _this4 = this;
+      uni.showModal({
+        title: '删除作品',
+        content: '您是否要删除作品？',
+        showCancel: true,
+        cancelText: '算了',
+        confirmText: '是的',
+        success: function success(res) {
+          if (res.confirm) {
+            _this4.deleteWorks(worksId);
+          } else if (res.cancel) {
+            console.log('用户点击取消');
+          }
+
+        },
+        fail: function fail() {},
+        complete: function complete() {
+          uni.startPullDownRefresh({
+            success: function success() {
+              setTimeout(function () {
+                uni.stopPullDownRefresh();
+              }, 1000);
+            } });
 
         } });
 

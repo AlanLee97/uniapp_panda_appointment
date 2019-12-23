@@ -90,6 +90,15 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var g0 = this.getWeatherImg(this.weather.img)
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        g0: g0
+      }
+    }
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -123,6 +132,42 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -236,44 +281,112 @@ var _amapWx = _interopRequireDefault(__webpack_require__(/*! @/common/SDK/amap-w
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //高德SDK
 var loginResult;var _default = { onLoad: function onLoad(options) {var _this = this;loginResult = this.checkLogin('/pages/tabbar-2/tabbar-2', 0);if (!loginResult) {return;} //高德地图
     this.amapPlugin = new _amapWx.default.AMapWX({ //高德地图KEY，随时失效，请务必替换为自己的KEY，参考：http://ask.dcloud.net.cn/article/35070
       key: 'c08443fc8d0bf377d98806a2f30d565a' }); //定位地址
     this.amapPlugin.getRegeo({ success: function success(data) {_this.city = data[0].regeocodeData.addressComponent.city.replace(/市/g, ''); //把"市"去掉
-      } });console.log(options);}, onShow: function onShow() {var _this2 = this;uni.showLoading({ title: '加载数据中...', mask: false });uni.request({ url: this.createApiUrl('appointment/get/apt-user'), method: 'GET', data: {}, success: function success(res) {console.log(res);_this2.jsonArr = res.data.data;uni.hideLoading();}, fail: function fail() {uni.hideLoading();}, complete: function complete() {} });var city = uni.getStorageSync('apt-city');console.log(city);this.city = city;}, onPullDownRefresh: function onPullDownRefresh() {console.log("下拉刷新");this.refreshing = true;}, onReachBottom: function onReachBottom() {}, data: function data() {return {
-      br: '\n',
-      refreshing: false,
-      lists: [],
-      fetchPageNum: 1,
+      } });console.log(options);}, onShow: function onShow() {uni.showLoading({ title: '加载数据中...', mask: false }); //获取城市
+    this.getCity(); //获取约拍信息
+    this.getAppointmentAndUserByCity(this.city); //this.getAppointmentUser();
+    //获取天气信息
+    this.getWeatherInfo(this.city);}, onPullDownRefresh: function onPullDownRefresh() {this.getAppointmentAndUserByCity(this.city);setTimeout(function () {uni.stopPullDownRefresh();}, 1000);}, onReachBottom: function onReachBottom() {}, data: function data() {return { br: '\n', refreshing: false, lists: [], fetchPageNum: 1, showHeader: true, afterHeaderOpacity: 1, //不透明度
+      headerPosition: '', statusTop: null, nVueTitle: null, city: '北京', currentSwiper: 0, appointmentData: {}, weather: {}, empty: true };}, methods: { goPage: function goPage(url) {uni.navigateTo({ url: url, success: function success(res) {console.log('navigateTo-->url:');console.log(url);}, fail: function fail() {}, complete: function complete() {} });}, //获取约拍信息
+    getAppointmentUser: function getAppointmentUser() {var _this2 = this;uni.request({ url: this.createApiUrl('appointment/get/apt-user'), method: 'GET', data: {}, success: function success(res) {console.log(res);_this2.appointmentData = res.data.data;}, fail: function fail() {}, complete: function complete() {
+          uni.hideLoading();
+        } });
 
-      showHeader: true,
-      afterHeaderOpacity: 1, //不透明度
-      headerPosition: '',
+    },
 
+    //通过城市获取约拍信息
+    getAppointmentAndUserByCity: function getAppointmentAndUserByCity(city) {var _this3 = this;
+      uni.request({
+        url: this.createApiUrl('appointment/get/apt-city'),
+        method: 'GET',
+        data: {
+          city: city },
 
-      statusTop: null,
-      nVueTitle: null,
-      city: '北京',
-      currentSwiper: 0,
-
-      jsonArr: [] };
-
-
-
-  },
-
-  methods: {
-    goPage: function goPage(url) {
-      uni.navigateTo({
-        url: url,
         success: function success(res) {
-          console.log('navigateTo-->url:');
-          console.log(url);
+          console.log(res);
+          _this3.empty = true;
+          if (res.data.data.length != 0) {
+            _this3.empty = false;
+          }
+          _this3.appointmentData = res.data.data;
+        },
+        fail: function fail() {},
+        complete: function complete() {
+          uni.hideLoading();
+        } });
+
+    },
+
+    //获取城市
+    getCity: function getCity() {
+      var city = uni.getStorageSync('apt-city');
+      console.log(city);
+      this.city = city;
+    },
+
+    //获取天气信息
+    getWeatherInfo: function getWeatherInfo(city) {var _this4 = this;
+      uni.request({
+        url: 'http://jisutqybmf.market.alicloudapi.com/weather/query',
+        method: 'GET',
+        header: {
+          Authorization: "APPCODE 22d4a321bdaf4eefbe6709bd7d4e2ed1" },
+
+        data: {
+          city: city },
+
+        success: function success(res) {
+          console.log(res);
+          _this4.weather = res.data.result;
         },
         fail: function fail() {},
         complete: function complete() {} });
 
+    },
+
+    //获取天气图片：传入天气图片文件名
+    getWeatherImg: function getWeatherImg(imgName) {
+      return '/static/icon/weathercn/' + imgName + '.png';
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

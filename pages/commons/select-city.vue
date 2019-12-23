@@ -1,6 +1,9 @@
 <template>
 	<view>
+		<view class="icon-size-100upx"></view>
+
 		<uni-nav-bar 
+			class=""
 			left-icon="back" 
 			left-text="返回" 
 			right-text="确定" 

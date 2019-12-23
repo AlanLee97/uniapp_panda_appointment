@@ -15,26 +15,22 @@
     "pages/user/info",
     "pages/user/modify-pw",
     "pages/user/forgot-pw",
-    "pages/select/select",
     "pages/publish/publish-appointment",
     "pages/publish/publish-works",
-    "pages/test/test",
-    "pages/test/my",
     "pages/appointment/appointment-detail",
-    "pages/test/test2",
-    "pages/test/test3",
     "pages/order/order",
     "pages/user/my-order",
     "pages/appointment/appointment-personal",
-    "pages/test/uni-feedback",
     "pages/commons/select-city",
-    "pages/user/profile"
+    "pages/user/profile",
+    "pages/works/works-detail"
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#FbFbFb",
-    "backgroundColor": "#FbFbFb"
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF",
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "borderStyle": "black",
@@ -79,7 +75,7 @@
     "alwaysShowBeforeRender": true,
     "autoclose": false
   },
-  "appname": "熊猫约拍test",
-  "compilerVersion": "2.4.5",
+  "appname": "熊猫约拍",
+  "compilerVersion": "2.4.6",
   "usingComponents": {}
 }

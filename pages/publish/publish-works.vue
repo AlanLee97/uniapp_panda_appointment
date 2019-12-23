@@ -87,7 +87,7 @@
 				this.sendData.uid = userinfo.id;
 				
 				uni.uploadFile({
-				    url: 'http://localhost:8083/upload/image/return-id', //上传地址
+				    url: this.createApiUrl('upload/image/return-id'), //上传地址
 				    filePath: this.imageList[index],
 				    name: 'file',
 					formData:{

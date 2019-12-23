@@ -257,7 +257,9 @@
 	min-width: 80rpx;
 	text-align: center;
 }
-
+.empty-box{
+	background-image: url('/static/img/no.png');
+}
 
 
 

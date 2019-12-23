@@ -1,0 +1,10 @@
+(global["webpackJsonp"]=global["webpackJsonp"]||[]).push([["components/cmd/cmd-page-body/cmd-page-body"],{"013a":function(t,o,e){"use strict";var n=e("a44a"),a=e.n(n);a.a},"075b":function(t,o,e){"use strict";e.r(o);var n=e("be07"),a=e.n(n);for(var u in n)"default"!==u&&function(t){e.d(o,t,function(){return n[t]})}(u);o["default"]=a.a},a44a:function(t,o,e){},be07:function(t,o,e){"use strict";(function(t){Object.defineProperty(o,"__esModule",{value:!0}),o.default=void 0;var e={name:"cmd-page-body",props:{type:{type:String,default:"top"},backgroundColor:{type:String,default:""}},data:function(){return{bodyHeight:0}},computed:{setBodyClass:function(){var t=["cmd-page-body","cmd-page-body-top-bottom"];return"top"==this.type&&(t.splice(1),t.push("cmd-page-body-top")),"bottom"==this.type&&(t.splice(1),t.push("cmd-page-body-bottom")),t},setBackgroundColor:function(){var t="background: #ffffff;";return this.backgroundColor&&(t="background: ".concat(this.backgroundColor,";")),t}},mounted:function(){var o=t.getSystemInfoSync().windowHeight;o-=t.getSystemInfoSync().statusBarHeight,"top"==this.type&&(o-=t.upx2px(88)),"bottom"==this.type&&(o-=t.upx2px(118)),"top-bottom"==this.type&&(o-=t.upx2px(206)),this.bodyHeight="min-height:".concat(o,"px")}};o.default=e}).call(this,e("6e42")["default"])},d13e:function(t,o,e){"use strict";e.r(o);var n=e("f0a4"),a=e("075b");for(var u in a)"default"!==u&&function(t){e.d(o,t,function(){return a[t]})}(u);e("013a");var c=e("2877"),r=Object(c["a"])(a["default"],n["a"],n["b"],!1,null,null,null);o["default"]=r.exports},f0a4:function(t,o,e){"use strict";var n=function(){var t=this,o=t.$createElement;t._self._c},a=[];e.d(o,"a",function(){return n}),e.d(o,"b",function(){return a})}}]);
+;(global["webpackJsonp"] = global["webpackJsonp"] || []).push([
+    'components/cmd/cmd-page-body/cmd-page-body-create-component',
+    {
+        'components/cmd/cmd-page-body/cmd-page-body-create-component':(function(module, exports, __webpack_require__){
+            __webpack_require__('6e42')['createComponent'](__webpack_require__("d13e"))
+        })
+    },
+    [['components/cmd/cmd-page-body/cmd-page-body-create-component']]
+]);

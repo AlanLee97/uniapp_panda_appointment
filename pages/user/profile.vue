@@ -2,22 +2,28 @@
 	<view class="bgcolor-grey-fcfcfc">
 		<!-- 背景图 -->
 		<view class="">
-			<image class="width-100" mode="aspectFill" src="../../static/top_bg.jpg"></image>
+			<image class="width-100" mode="aspectFill" 
+			@tap="previewImage(1, test.images)"
+			src="https://alanlee-panda-appointment.oss-cn-shenzhen.aliyuncs.com/images/isux/BioLWLH8ttBH9S6vMFl6ZpR86jWsKpOWpa6XhrVOYAP.jpg"></image>
 		</view>
 		<!-- 头像 -->
 		<view class="box-shadow-raduis p-20upx m-top--20upx m-bottom-20upx">
-			<center>
-				<image class="cu-avatar round icon-size-200upx"
-				:src="userinfo.headPortraitImg"></image><br>
+			
+				<view class="box-content-align-center">
+					<image class="cu-avatar round icon-size-200upx"
+					:src="userinfo.headPortraitImg"></image>
+				</view>
 				
-				<text>{{userinfo.nickname}}</text><br>
-			</center>
+				<view class="box-content-align-center mt-20upx">
+					<text>{{userinfo.nickname}}</text>
+				</view>
+			
 				
-				<center>
+				
 				<view class="uni-flex uni-row box-content-align-center ">
 					
 				</view>
-				</center>
+				
 				
 				<!-- 身份 -->
 				<view class="uni-flex uni-row box-content-align-center">
@@ -25,10 +31,10 @@
 					<text class="uni-flex-item p-10upx">{{userinfo.city}}</text>
 					<br>
 					<image src="/static/icon/status.png" mode="" class="icon-size-50upx p-10upx"></image>
-					<text v-if="userinfo.identity == 0">管理员</text><br>
-					<text v-if="userinfo.identity == 1">摄影师</text><br>
-					<text v-if="userinfo.identity == 2">模特</text><br>
-					<text v-if="userinfo.identity == 3">普通用户</text><br>
+					<text v-if="userinfo.identity == 0">管理员</text>
+					<text v-if="userinfo.identity == 1">摄影师</text>
+					<text v-if="userinfo.identity == 2">模特</text>
+					<text v-if="userinfo.identity == 3">普通用户</text>
 				</view>
 			
 			
@@ -64,7 +70,11 @@
 						<view class="scroll-items">
 		
 							<!-- 滑动tab1：作品 -->
-							<view v-if="index == 0" class=" scroll-item" v-for="(item, windex) in works" :key='windex'>
+							<view v-if="index == 0" 
+							class=" scroll-item" 
+							v-for="(item, windex) in works" 
+							:key='windex'
+							>
 								
 								<view class="scroll-item-text-box ">
 									<!-- 时间 -->
@@ -79,8 +89,10 @@
 									</view>
 									
 									<!-- 配图 -->
-									<view class=" " v-if="item.images.length == 1">
-										<image @tap="previewImage(img_index, item.images)"
+									<view class=""
+									@tap="previewImage(0, item.images)"
+									 v-if="item.images.length == 1">
+										<image 
 											:src="item.images[0]" 
 											class="text-center"
 											mode="widthFix"></image>
@@ -88,15 +100,23 @@
 									</view>
 									<view v-else>
 										<uni-grid :column="3">
-											<view v-for="(imgurl, img_index)  in item.images" :key="img_index">
-												<uni-grid-item>
-													<image @tap="previewImage(img_index, item.images)" 
+											<view 
+											v-for="(imgurl, img_index)  in item.images" 
+											:key="img_index"
+											@tap="previewImage(imgurl, item.images)"
+											>
+												<uni-grid-item >
+							
+													<image
 														:src="imgurl" 
 														mode="aspectFill"></image>
+													
 												</uni-grid-item>
 											</view>
 										</uni-grid>
 									</view>
+								
+								
 								</view>
 							</view>
 						
@@ -105,11 +125,14 @@
 									<view class="">
 										
 										<uni-grid :column="3" >
-										    <view  v-for="(url, img_index) in images" :key='img_index'>
+										    <view  
+											@tap="previewImage(img_index, images)" 
+											v-for="(url, img_index) in images" 
+											:key='img_index'>
 												<uni-grid-item>
 												    <image
 												    	:src="url" 
-												    	@tap="previewImg(img_index, images)" 
+												    	
 												    	mode="aspectFill" 
 												    	class="scroll-item-image ">
 												    </image>
@@ -172,7 +195,10 @@
 				tabsHeight: 0,
 				dx: 0,
 				works:{},
-				images:[]
+				images:[],
+				test:{
+					images:['https://alanlee-panda-appointment.oss-cn-shenzhen.aliyuncs.com/images/isux/BioLWLH8ttBH9S6vMFl6ZpR86jWsKpOWpa6XhrVOYAP.jpg']
+				},
 			}
 		},
 		methods: {
@@ -228,6 +254,21 @@
 					}
 				})
 			},
+			
+			//预览图片
+			previewImage:function(index, urls){
+				console.log("预览图片");
+				uni.previewImage({
+					current:index,
+					urls:urls,
+					indicator:"default"
+				})
+			},
+			
+			testPre:function(){
+				console.log("预览图片");
+			}
+			
 		}
 	}
 </script>

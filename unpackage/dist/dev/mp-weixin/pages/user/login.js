@@ -175,7 +175,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
-var _this;var wInput = function wInput() {return __webpack_require__.e(/*! import() | components/watch-login/watch-input */ "components/watch-login/watch-input").then(__webpack_require__.bind(null, /*! ../../components/watch-login/watch-input.vue */ 238));};var wButton = function wButton() {return __webpack_require__.e(/*! import() | components/watch-login/watch-button */ "components/watch-login/watch-button").then(__webpack_require__.bind(null, /*! ../../components/watch-login/watch-button.vue */ 245));};
+var _this;var wInput = function wInput() {return __webpack_require__.e(/*! import() | components/watch-login/watch-input */ "components/watch-login/watch-input").then(__webpack_require__.bind(null, /*! ../../components/watch-login/watch-input.vue */ 218));};var wButton = function wButton() {return __webpack_require__.e(/*! import() | components/watch-login/watch-button */ "components/watch-login/watch-button").then(__webpack_require__.bind(null, /*! ../../components/watch-login/watch-button.vue */ 225));};
 
 //button
 
@@ -197,76 +197,12 @@ var loginResult;var _default =
     wInput: wInput,
     wButton: wButton },
 
-  mounted: function mounted() {
-    _this = this;
-    //this.isLogin();
-  },
+
   onLoad: function onLoad(options) {
-
-    _this = this;
-    console.log(options);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   },
   methods: {
-    isLogin: function isLogin() {
-      //判断缓存中是否登录过，直接登录
-      // try {
-      // 	const value = uni.getStorageSync('setUserData');
-      // 	if (value) {
-      // 		//有登录信息
-      // 		console.log("已登录用户：",value);
-      // 		_this.$store.dispatch("setUserData",value); //存入状态
-      // 		uni.reLaunch({
-      // 			url: '../../../pages/index',
-      // 		});
-      // 	}
-      // } catch (e) {
-      // 	// error
-      // }
-    },
-
     getLogin: function getLogin() {
       uni.showLoading({
         title: '正在登录' });
@@ -292,119 +228,31 @@ var loginResult;var _default =
 
           console.log(res);
           if (res.code == 200) {
+            uni.showToast({
+              title: '登录成功' });
+
             uni.setStorageSync('SUID', res.data.id + '');
             uni.setStorageSync('SRAND', Math.random(10) + '');
             uni.setStorageSync('SNAME', res.data.username + '');
             uni.setStorageSync('SFACE', res.data.nickname + '');
             console.log('nickname:' + res.data.nickname);
           } else {
+            uni.showToast({
+              title: '登录失败' });
 
           }
 
-          uni.hideToast();
+          setTimeout(function () {
+            uni.switchTab({
+              url: '/pages/tabbar/tabbar-1/tabbar-1' });
 
-          uni.switchTab({
-            url: '/pages/tabbar/tabbar-1/tabbar-1' });
-
+          }, 1000);
         },
         fail: function fail() {},
         complete: function complete() {} });
 
     },
-    startLogin: function startLogin() {
-      //登录
-      if (this.isRotate) {
-        //判断是否加载中，避免重复点击请求
-        return false;
-      }
-      if (this.phoneData.length == "") {
-        uni.showToast({
-          icon: 'none',
-          position: 'bottom',
-          title: '用户名不能为空' });
 
-        return;
-      }
-      if (this.passData.length < 5) {
-        uni.showToast({
-          icon: 'none',
-          position: 'bottom',
-          title: '密码不正确' });
-
-        return;
-      }
-
-      // console.log("登录成功")
-
-      _this.isRotate = true;
-      setTimeout(function () {
-        _this.isRotate = false;
-      }, 3000);
-      uni.showLoading({
-        title: '登录中' });
-
-      this.getLogin().then(function (res) {
-        //console.log(res)
-        //简单验证下登录（不安全）
-        if (_this.phoneData == res.data.username && _this.passData == res.data.password) {
-          var userdata = {
-            "username": res.data.username,
-            "nickname": res.data.nickname,
-            "accesstoken": res.data.accesstoken
-            //保存用户信息和accesstoken
-          };_this.$store.dispatch("setUserData", userdata); //存入状态
-          try {
-            uni.setStorageSync('setUserData', userdata); //存入缓存
-          } catch (e) {
-            // error
-          }
-          uni.showToast({
-            icon: 'success',
-            position: 'bottom',
-            title: '登录成功' });
-
-          uni.reLaunch({
-            url: '/pages/tabbar-1/tabbar-1' });
-
-        } else {
-          _this.passData = "";
-          uni.showToast({
-            icon: 'error',
-            position: 'bottom',
-            title: '账号或密码错误，账号admin密码admin' });
-
-        }
-        uni.hideLoading();
-      }).catch(function (err) {
-        uni.hideLoading();
-      });
-
-    },
-
-    login_weixin: function login_weixin() {
-      //微信登录
-      uni.showToast({
-        icon: 'none',
-        position: 'bottom',
-        title: '...' });
-
-    },
-    login_weibo: function login_weibo() {
-      //微博登录
-      uni.showToast({
-        icon: 'none',
-        position: 'bottom',
-        title: '...' });
-
-    },
-    login_github: function login_github() {
-      //github登录
-      uni.showToast({
-        icon: 'none',
-        position: 'bottom',
-        title: '...' });
-
-    },
 
 
     getLoginState: function getLoginState() {

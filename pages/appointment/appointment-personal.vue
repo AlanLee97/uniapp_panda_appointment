@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view v-for="(item, index) in aptData" :key="index"
-			class="box-shadow-raduis p-10upx m-10upx">
-			<view class="">
+			class="box-shadow-raduis p-20upx mt-20upx box-shadow box-raduis">
+			<view class="text-lg" @tap="gotoPage('/pages/appointment/appointment-detail?apid=' + item.id)">
 				
 				<text>标题：</text>
 				<text>{{item.title}}</text>
@@ -19,16 +19,28 @@
 			
 			<view class="divide-line-grey m-10upx"></view>
 			
-			<view class="btn">
+			<view class=" uni-flex uni-row m-top-20upx">
+				<view class="uni-flex-item">
+					 
+				</view>
+				<view class="uni-flex-item">
+					 
+				</view>
+				<view class="uni-flex-item">
+					 
+				</view>
+				<view class="uni-flex-item">
+					<button
+						@tap="confirmDelete(item.id)"
+						class="m-left-20upx mini-btn " 
+						plain="true" 
+						type="primary" 
+						size="mini">
+						取消
+					</button>
+				</view>
 				
-				<button 
-					@tap="confirmDelete(item.id)"
-					class="m-left-20upx mini-btn" 
-					plain="true" 
-					type="primary" 
-					size="mini">
-					取消
-				</button>
+				
 			</view>
 		</view>
 	</view>
@@ -53,6 +65,11 @@
 			}
 		},
 		methods: {
+			gotoPage:function(pageUrl){
+				uni.navigateTo({
+					url: pageUrl
+				});
+			},
 			
 		},
 		onShow:function(){
@@ -131,5 +148,8 @@
 </script>
 
 <style>
+	.position-right{
+		right: 0px;
+	}
 
 </style>

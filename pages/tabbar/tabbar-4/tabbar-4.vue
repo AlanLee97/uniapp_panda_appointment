@@ -1,7 +1,7 @@
 <template>
 	<view>
 		
-		<!-- #ifndef MP-ALIPAY -->
+		
 		
 		<swiper class="card-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
 		 :autoplay="true" interval="5000" duration="500" @change="cardSwiper" indicator-color="#8799a3"
@@ -14,7 +14,7 @@
 			</swiper-item>
 		</swiper>
 		
-		<!-- #endif -->
+		
 		
 		
 		<view>
@@ -42,16 +42,29 @@
 							
 							<!-- 作品展示 -->
 							<block v-if="swindex === 0" v-for="(list, index) in 1" :key="index">
-								<view class="row">
-									<view class="card card-list2" v-for="(item,key) in 10" @click="goDetail(item)" :key="key">
-										<image class="card-img card-list2-img" :src="imgurl"></image>
-										<text class="card-num-view card-list2-num-view">{{key + 1}}P</text>
-										<view class="card-bottm row">
-											<view class="car-title-view row">
-												<text class="card-title card-list2-title">拍照</text>
+								<view class="row bgcolor-grey-fcfcfc">
+									<view class="card card-list2 box-shadow" 
+									v-for="(item,key) in worksData" 
+									@click="goPage('/pages/works/works-detail?worksId=' + item.id)" 
+									v-if="item.images.length != 0"
+									:key="key">
+										<view class="" >
+											<image class="card-img card-list2-img"
+											  :src="item.images[0]"
+											  mode="widthFix"></image>
+											<text class="card-num-view card-list2-num-view">{{item.images.length}}P</text>
+											<view class="card-bottm row">
+												<view class="car-title-view row">
+													<image :src="item.tuser.headPortraitImg" mode="" class="icon-size-100upx"></image>
+													<text class="card-title card-list2-title">
+														{{item.tuser.nickname}}
+													</text>
+												</view>
+												
 											</view>
-											<view @click.stop="share(item)" class="card-share-view"></view>
 										</view>
+										
+										
 									</view>
 								</view>
 							</block>
@@ -59,58 +72,28 @@
 							
 							
 							<!-- 摄影技巧 -->
-							<view class="cu-card case no-card mb-10" v-if="swindex === 1" v-for="item in 10" v-bind:key="item">
-								<view class="cu-item shadow">
-									<view class="image">
-										<image src="https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/2M9HRolQpJpPfWGeqgmajGkbbUF9kJUCDh3Bq58MUTH.jpg"
-										 mode="widthFix"></image>
-										<view class="cu-tag bg-blue">标签</view>
-										<view class="cu-bar bg-shadeBottom"> <text class="text-cut">文字描述</text></view>
+							<view class="cu-card case no-card mb-10" v-if="swindex === 1" v-bind:key="item">
+								<view class="">
+									<br>
+									<view class="box-content-align-center">
+										这里空空如也
 									</view>
-									<view class="cu-list menu-avatar">
-										<view class="cu-item">
-											<view class="cu-avatar round lg" style="background-image:url(https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/2M9HRolQpJpPfWGeqgmajGkbbUF9kJUCDh3Bq58MUTH.jpg);"></view>
-											<view class="content flex-sub">
-												<view class="text-grey">昵称</view>
-												<view class="text-gray text-sm flex justify-between">
-													十天前
-													<view class="text-gray text-sm">
-														<text class="cuIcon-attentionfill margin-lr-xs"></text> 10
-														<text class="cuIcon-appreciatefill margin-lr-xs"></text> 20
-														<text class="cuIcon-messagefill margin-lr-xs"></text> 30
-													</view>
-												</view>
-											</view>
-										</view>
+									<view class="p-40upx" >
+										<image src="/static/img/no.png" class="icon-size-200upx" mode="widthFix"></image>
 									</view>
 								</view>
 							</view>
 							
 							
 							<!-- tab3 -->
-							<view class="cu-card case no-card mb-10" v-if="swindex === 2" v-for="item in 10" v-bind:key="item">
-								<view class="cu-item shadow">
-									<view class="image">
-										<image src="https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/2M9HRolQpJpPfWGeqgmajGkbbUF9kJUCDh3Bq58MUTH.jpg"
-										 mode="widthFix"></image>
-										<view class="cu-tag bg-blue">标签</view>
-										<view class="cu-bar bg-shadeBottom"> <text class="text-cut">文字描述</text></view>
+							<view class="cu-card case no-card mb-10" v-if="swindex === 2" v-bind:key="item">
+								<view class="">
+									<br>
+									<view class="box-content-align-center">
+										这里空空如也
 									</view>
-									<view class="cu-list menu-avatar">
-										<view class="cu-item">
-											<view class="cu-avatar round lg" style="background-image:url(https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/2M9HRolQpJpPfWGeqgmajGkbbUF9kJUCDh3Bq58MUTH.jpg);"></view>
-											<view class="content flex-sub">
-												<view class="text-grey">昵称</view>
-												<view class="text-gray text-sm flex justify-between">
-													十天前
-													<view class="text-gray text-sm">
-														<text class="cuIcon-attentionfill margin-lr-xs"></text> 10
-														<text class="cuIcon-appreciatefill margin-lr-xs"></text> 20
-														<text class="cuIcon-messagefill margin-lr-xs"></text> 30
-													</view>
-												</view>
-											</view>
-										</view>
+									<view class="p-40upx" >
+										<image src="/static/img/no.png" class="icon-size-200upx" mode="widthFix"></image>
 									</view>
 								</view>
 							</view>
@@ -189,10 +172,25 @@
 				
 				refreshing: false,
 				lists: [],
-				fetchPageNum: 1
+				fetchPageNum: 1,
+				
+				
+				worksData:{},
 			};
 		},
+		onShow() {
+			this.getWorksAndUser();
+		},
+		onPullDownRefresh() {
+			this.getWorksAndUser();
+			setTimeout(function(){
+				uni.stopPullDownRefresh();
+			}, 1000);
+		},
 		methods: {
+			goPage:function(pagePath){
+				this.gotoPage(pagePath);
+			},
 			IsCard(e) {
 				this.isCard = e.detail.value
 			},
@@ -203,8 +201,6 @@
 			cardSwiper(e) {
 				this.cardCur = e.detail.current
 			},
-			
-
 			
 			//滑动tab栏的方法
 			change(index) {
@@ -218,6 +214,21 @@
 			},
 			animationfinish({detail: { current }}) {
 				this.$refs.tabs.setFinishCurrent(current);
+			},
+			
+			
+			getWorksAndUser:function(){
+				uni.request({
+					url: this.createApiUrl('works/get/all-user'),
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.worksData = res.data.data;
+						console.log(res);
+					},
+					fail: () => {},
+					complete: () => {}
+				});
 			}
 		}
 	}
@@ -275,7 +286,7 @@
 	}
 	
 	.card-num-view {
-		background-color: #FF80AB;
+		background-color: #888888;
 	    line-height: 1;
 	    display: inline-block;
 		padding: 3px 6px;

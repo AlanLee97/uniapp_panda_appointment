@@ -32,6 +32,11 @@ export default {
 	onHide() {
 		this.active = false;
 	},
+	onPullDownRefresh() {
+		setTimeout(function(){
+			uni.stopPullDownRefresh();
+		}, 1000);
+	},
 	methods: {
 		goToPage(url) {
 			if (!url) return;

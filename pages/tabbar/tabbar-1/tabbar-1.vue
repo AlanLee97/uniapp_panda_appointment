@@ -126,7 +126,8 @@
 							<view class="cu-item ">
 								<!-- 头像 -->
 								<view class="cu-avatar round lg" >
-									<image class="cu-avatar round lg" :src="item.tuser.headPortraitImg" @tap="gotoPage('/pages/user/profile?uid=' + item.tuser.id)"></image>
+									<image class="cu-avatar round lg" :src="item.tuser.headPortraitImg" 
+									@tap="gotoPage('/pages/user/profile?uid=' + item.tuser.id)"></image>
 								</view>
 								<!-- 昵称与时间 -->
 								<view class="content flex-sub">
@@ -148,8 +149,11 @@
 										<view v-if="item.tuser.identity == 0" class="text-gray text-sm flex justify-between">
 											摄影师
 										</view>
-										<view v-if="item.tuser.identity == 1" class="text-gray text-sm flex justify-between">
+										<view v-else-if="item.tuser.identity == 1" class="text-gray text-sm flex justify-between">
 											模特
+										</view>
+										<view v-else class="text-gray text-sm flex justify-between">
+											未设置身份
 										</view>
 									</view>
 									
@@ -166,7 +170,7 @@
 						<view class="p-20upx" v-if="item.images.length == 1">
 							<image @tap="previewImage(img_index, item.images)"
 								:src="item.images[0]" 
-								class="text-center"
+								class="text-center width-100"
 								mode="widthFix"></image>
 								
 						</view>
@@ -174,7 +178,9 @@
 							<uni-grid :column="3">
 								<view v-for="(imgurl, img_index)  in item.images" :key="img_index">
 									<uni-grid-item class="width-90">
-										<image @tap="previewImage(img_index, item.images)" 
+										<image 
+											class="width-100"
+											@tap="previewImage(img_index, item.images)" 
 											:src="imgurl" 
 											mode="aspectFill"></image>
 									</uni-grid-item>
@@ -263,6 +269,11 @@
 			
 			//获取推荐摄影师
 			this.getRecomendPhotographer();
+		},
+		onPullDownRefresh() {
+			setTimeout(function(){
+				uni.stopPullDownRefresh();
+			}, 1000);
 		},
 		methods: {
 			IsCard(e) {

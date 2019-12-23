@@ -26,6 +26,9 @@
 
 
 
+
+
+
 /*每个页面公共css */ 
 /*
   ColorUi for uniApp  v2.1.6 | by 文晓港 2019-05-31 10:44:24
@@ -6225,6 +6228,18 @@ checkbox-group label {
 .show-border-blue{
 	border: #0081FF 1px solid;
 } 
+/* 显示背景颜色-红色：查看元素位置时使用 */
+.show-bg-red{
+	background-color: #E54D42;
+} 
+/* 显示背景颜色-绿色：查看元素位置时使用 */
+.show-bg-blue{
+	background-color:#39B54A;
+} 
+/* 显示背景颜色-蓝色：查看元素位置时使用 */
+.show-bg-blue{
+	background-color: #0081FF;
+} 
 /*----------- 位置 ----------*/
 .position-abs{
 	position: absolute;
@@ -6297,6 +6312,40 @@ checkbox-group label {
 .width-100{
 	width: 100%;
 } 
+/* ----- 高度 -----*/
+.height-10{
+	height: 10%;
+}
+.height-20{
+	height: 20%;
+}
+.height-30{
+	height: 30%;
+}
+.height-100{
+	height: 100%;
+}
+.height-40{
+	height: 40%;
+}
+.height-50{
+	height: 50%;
+}
+.height-60{
+	height: 60%;
+}
+.height-70{
+	height: 70%;
+}
+.heght-80{
+	height: 80%;
+}
+.height-90{
+	height: 90%;
+}
+.height-100{
+	height: 100%;
+} 
 /*================END 宽度================*/ 
 /*================BEGIN 边距================*/ 
 /*---------- 外边距 ----------*/ 
@@ -6307,10 +6356,70 @@ checkbox-group label {
 /* 距离顶部20upx */
 .mt-20upx{
 	margin-top: 20rpx;
+}
+.m-top--30upx{
+	margin-top: 10rpx;
+}
+.m-top--20upx{
+	margin-top: 10rpx;
+}
+.m-top--10upx{
+	margin-top: 10rpx;
+}
+.m-top-10upx{
+	margin-top: 10rpx;
+}
+.m-top-20upx{
+	margin-top: 20rpx;
+}
+.m-top-30upx{
+	margin-top: 30rpx;
+}
+.m-top-40upx{
+	margin-top: 40rpx;
+}
+.m-top-10upx{
+	margin-top: 10rpx;
+}
+.m-top-50upx{
+	margin-top: 50rpx;
 } 
-/* 距离底部20upx */
-.mb-20upx{
+/* 距离底部upx */
+.m-bottom-10upx{
+	margin-bottom: 10rpx;
+}
+.m-bottom-20upx{
 	margin-bottom: 20rpx;
+}
+.m-bottom-30upx{
+	margin-bottom: 20rpx;
+}
+.m-bottom-20upx{
+	margin-bottom: 30rpx;
+}
+.m-bottom-40upx{
+	margin-bottom: 40rpx;
+}
+.m-bottom-20upx{
+	margin-bottom: 20rpx;
+}
+.m-bottom-50upx{
+	margin-bottom: 50rpx;
+}
+.m-bottom-60upx{
+	margin-bottom: 60rpx;
+}
+.m-bottom-70upx{
+	margin-bottom: 70rpx;
+}
+.m-bottom-80upx{
+	margin-bottom: 80rpx;
+}
+.m-bottom-90upx{
+	margin-bottom: 90rpx;
+}
+.m-bottom-100upx{
+	margin-bottom: 100rpx;
 } 
 /* 外边距10upx */
 .m-10upx{
@@ -6480,7 +6589,7 @@ checkbox-group label {
 	color: #f44336;
 }
 .font-color-light-black{
-	color: #212121;
+	color: #5f5f5f;
 }
 .font-color-light-green{
 	color: #1de9b6;
@@ -6494,6 +6603,14 @@ checkbox-group label {
 .icon-size-100upx{
 	width: 100rpx;
 	height: 100rpx;
+}
+.icon-size-150upx{
+	width: 150rpx;
+	height: 150rpx;
+}
+.icon-size-200upx{
+	width: 200rpx;
+	height: 200rpx;
 } 
 /*================END 图标================*/ 
 /*滑动tab栏的样式*/
@@ -6517,7 +6634,6 @@ checkbox-group label {
 		-webkit-flex-direction: column;
 		        flex-direction: column;
 		width: 100%;
-		padding: 40rpx;
 }
 .scroll-item{
 		margin-top: 15rpx;
@@ -6632,5 +6748,16 @@ checkbox-group label {
 		border-radius: 15rpx;
 		padding: 10rpx;
 		color: #33dce8;
+}
+.box-content-align-center{
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-align: center;
+		-webkit-align-items: center;
+		        align-items: center; /*定义body的元素垂直居中*/
+		-webkit-box-pack: center;
+		-webkit-justify-content: center;
+		        justify-content: center; /*定义body的里的元素水平居中*/
 }
 

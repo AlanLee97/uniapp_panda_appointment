@@ -5,7 +5,7 @@
     "iPad"
   ],
   "id": "__UNI__5144600",
-  "name": "熊猫约拍test",
+  "name": "熊猫约拍",
   "version": {
     "name": "1.0.0",
     "code": "100"
@@ -19,6 +19,7 @@
   },
   "permissions": {
     "Payment": {},
+    "Speech": {},
     "UniNView": {
       "description": "UniNView原生渲染"
     }
@@ -43,7 +44,7 @@
     "statusbar": {
       "immersed": "supportedDevice",
       "style": "dark",
-      "background": "#FbFbFb"
+      "background": "#FFFFFF"
     },
     "usingComponents": true,
     "distribute": {
@@ -80,6 +81,13 @@
         "payment": {
           "alipay": {}
         },
+        "speech": {
+          "baidu": {
+            "appid": "18082661",
+            "apikey": "ERrTemREGuhaOwGYYGzPO9VR",
+            "secretkey": "5fePoworQrtAThZECZHFC00uCuu70wkH"
+          }
+        },
         "audio": {
           "mp3": {
             "description": "Android平台录音支持MP3格式文件"
@@ -95,7 +103,7 @@
       }
     },
     "uni-app": {
-      "compilerVersion": "2.4.5",
+      "compilerVersion": "2.4.6",
       "control": "v8",
       "nvueCompiler": "uni-app",
       "renderer": "auto",

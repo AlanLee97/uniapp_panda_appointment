@@ -156,6 +156,11 @@ var _default =
   onHide: function onHide() {
     this.active = false;
   },
+  onPullDownRefresh: function onPullDownRefresh() {
+    setTimeout(function () {
+      uni.stopPullDownRefresh();
+    }, 1000);
+  },
   methods: {
     goToPage: function goToPage(url) {
       if (!url) return;

@@ -1,1 +1,0 @@
-<view><view><button type="primary" data-event-opts="{{[['tap',[['goToPage',['/pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release']]]]]}}" bindtap="__e">我要找摄影师</button><button type="primary">我要找模特</button></view></view>

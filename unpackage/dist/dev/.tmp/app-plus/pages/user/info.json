@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "TA的信息",
   "usingComponents": {
     "cmd-nav-bar": "/components/cmd/cmd-nav-bar/cmd-nav-bar",
     "cmd-page-body": "/components/cmd/cmd-page-body/cmd-page-body",

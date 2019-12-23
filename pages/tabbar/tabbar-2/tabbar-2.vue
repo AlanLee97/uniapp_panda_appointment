@@ -38,11 +38,23 @@
 		</view>
 				
 		
-		
+		<view v-if="empty">
+			<br>
+			<view class="box-content-align-center">
+				<view>该城市没有人发布约拍</view>
+			</view>
+			<view class="box-content-align-center">
+				<image src="/static/img/oh.png" mode=""></image>
+			</view>
+			<view class="box-content-align-center">
+				<view class="font-color-light-blue" @tap="goPage('/pages/publish/publish-works')">现在去发布一个约拍吧</view>
+			</view>
+		</view>
 		
 		<!-- 发布的约拍 -->
-		<view class="box-shadow-raduis show-bg-red cu-card case no-card m-20upx "  
-			v-for="(item, index) in jsonArr" v-bind:key="index" >
+		<view v-else class="box-shadow-raduis show-bg-red cu-card case no-card m-20upx "  
+			v-for="(item, index) in appointmentData" v-bind:key="index" >
+
 			<view class=" cu-item shadow" @click="goPage('/pages/appointment/appointment-detail?apid=' + item.id)">
 				<!-- 用户信息 -->
 				<view class="cu-list menu-avatar">
@@ -114,14 +126,17 @@
 			//获取城市
 			this.getCity();
 			//获取约拍信息
-			this.getAppointmentUser();
+			this.getAppointmentAndUserByCity(this.city);
+			//this.getAppointmentUser();
 			//获取天气信息
 			this.getWeatherInfo(this.city);
 		},
 		
 		onPullDownRefresh() {
-			console.log("下拉刷新");
-			this.refreshing = true;
+			this.getAppointmentAndUserByCity(this.city);
+			setTimeout(function(){
+				uni.stopPullDownRefresh();
+			}, 1000);
 			
 		},
 		onReachBottom() {
@@ -145,8 +160,9 @@
 				city: '北京',
 				currentSwiper: 0,
 				
-				jsonArr:[],
-				weather:{}
+				appointmentData:{},
+				weather:{},
+				empty:true,
 				
 				
 			}
@@ -173,13 +189,38 @@
 					data: {},
 					success: res => {
 						console.log(res);
-						this.jsonArr = res.data.data;
-						uni.hideLoading();
+						this.appointmentData = res.data.data;
+						
 					},
 					fail: () => {
-						uni.hideLoading();
+						
 					},
-					complete: () => {}
+					complete: () => {
+						uni.hideLoading();
+					}
+				});
+			},
+			
+			//通过城市获取约拍信息
+			getAppointmentAndUserByCity:function(city){
+				uni.request({
+					url: this.createApiUrl('appointment/get/apt-city'),
+					method: 'GET',
+					data: {
+						city:city
+					},
+					success: res => {
+						console.log(res);
+						this.empty = true;
+						if(res.data.data.length != 0){
+							this.empty = false;
+						}
+						this.appointmentData = res.data.data;
+					},
+					fail: () => {},
+					complete: () => {
+						uni.hideLoading();
+					}
 				});
 			},
 			

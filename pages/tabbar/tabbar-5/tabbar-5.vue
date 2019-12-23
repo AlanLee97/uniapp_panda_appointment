@@ -4,19 +4,14 @@
 			<!-- 上半部分 -->
 			<view class='top-container'>
 				<!-- 背景图 -->
-				<image class='bg-img' src='https://isuxdesign-1251263993.file.myqcloud.com/upload/detail/2LtQ2KZEDOUFAcWfLEzL49EKXsDPVjeOv2NtsWFLbZP.jpg'></image>
+				<image class='bg-img' src='https://alanlee-panda-appointment.oss-cn-shenzhen.aliyuncs.com/images/isux/2LtQ2KZEDOUFAcWfLEzL49EKXsDPVjeOv2NtsWFLbZP.jpg'></image>
 
-				<br><br><br>
-				<!-- 头像部分 -->
-				<view v-show="!isLogin" class='user-wrapper'>
-					<navigator url='/pages/user/login' hover-class="opcity" :hover-stay-time="150" class='user'>
-						<!-- 头像：未登录 -->
-						<image class='avatar-img' src='../staic/icon/login.png'></image>
-						<text class='user-info-mobile'>请登录</text>
-					</navigator>
+				<view class="icon-size-100upx">
+					
 				</view>
-				<view v-show='isLogin' class='user'>
-					<!-- 头像：已登录 -->
+				<!-- 头像部分 -->
+				<view class='user'>
+					<!-- 头像 -->
 					<image @tap="_gotoPage('/pages/user/info')" class='avatar-img' :src='face'></image>
 					<view class='user-info-mobile'>
 						<text>{{nickname}}</text>
@@ -35,24 +30,17 @@
 					<image class='ticket-img' src='../../static/images/my/thorui.png'></image>
 					<text class='middle-tag'>约拍</text>
 				</view>
-				<!-- #ifdef APP-PLUS || MP -->
-				<view @tap="this.gotoPage('/pages/user/my-order')" class='middle-item' hover-class="opcity" :hover-stay-time="150">
-					<image class='car-img' src='../../static/images/my/github_3x.png'></image>
-					<text class='middle-tag'>订单</text>
-				</view>
-				<!-- #endif -->
-			
-				<!-- #ifdef H5 -->
 				<view @tap="_gotoPage('/pages/user/my-order')" class='middle-item' hover-class="opcity" :hover-stay-time="150">
 					<image class='car-img' src='../../static/images/my/github_3x.png'></image>
 					<text class='middle-tag'>订单</text>
 				</view>
-				<!-- #endif -->
 			</view>
 		
 		</view>
 		
 		<text>{{br}}</text>
+		
+		
 		
 		
 		<!-- 下半部分 -->
@@ -84,8 +72,8 @@
 								<view class="scroll-item-text-box ">
 									<!-- 时间 -->
 									<view class="font-color-grey">
-										{{item.datetime}}
-										{{br}}
+										<text>{{item.datetime}}</text>
+										<text class="float-right" @tap="confirmDelete(item.id)">删除</text>
 									</view>
 									
 									<!-- 内容 -->
@@ -94,8 +82,10 @@
 									</view>
 									
 									<!-- 配图 -->
-									<view class=" " v-if="item.images.length == 1">
-										<image @tap="previewImage(img_index, item.images)"
+									<view class=""
+									@tap="previewImage(0, item.images)"
+									 v-if="item.images.length == 1">
+										<image 
 											:src="item.images[0]" 
 											class="text-center"
 											mode="widthFix"></image>
@@ -103,15 +93,24 @@
 									</view>
 									<view v-else>
 										<uni-grid :column="3">
-											<view v-for="(imgurl, img_index)  in item.images" :key="img_index">
-												<uni-grid-item>
-													<image @tap="previewImage(img_index, item.images)" 
+											<view 
+											v-for="(imgurl, img_index)  in item.images" 
+											:key="img_index"
+											@tap="previewImage(imgurl, item.images)"
+											>
+												<uni-grid-item >
+							
+													<image
 														:src="imgurl" 
 														mode="aspectFill"></image>
+													
 												</uni-grid-item>
 											</view>
 										</uni-grid>
 									</view>
+								
+								
+								
 								</view>
 							</view>
 						
@@ -120,11 +119,14 @@
 									<view class="">
 										
 										<uni-grid :column="3" >
-										    <view  v-for="(url, img_index) in images" :key='img_index'>
+										    <view  
+											v-for="(url, img_index) in images" 
+											:key='img_index'
+											@tap="previewImage(img_index, images)" 
+											>
 												<uni-grid-item>
 												    <image
 												    	:src="url" 
-												    	@tap="previewImg(img_index, images)" 
 												    	mode="aspectFill" 
 												    	class="scroll-item-image ">
 												    </image>
@@ -138,10 +140,16 @@
 													
 							<!-- 滑动tab3：文章 -->
 							<view v-if="index == 2" class="">
-								<br>
 								<view class="">
-									<center>暂无文章</center>
+									<br>
+									<view class="box-content-align-center">
+										这里空空如也
+									</view>
+									<view class="p-40upx" >
+										<image src="/static/img/no.png" class="icon-size-200upx" mode="widthFix"></image>
+									</view>
 								</view>
+								
 							</view>
 						
 						</view>
@@ -213,6 +221,13 @@
 			
 		},
 		
+		onPullDownRefresh:function(){
+			this.getWorksByUserId();
+			setTimeout(function(){
+				uni.stopPullDownRefresh();
+			}, 1000);
+		},
+		
 		methods: {
 			
 			_gotoPage:function(pageUrl){
@@ -238,6 +253,8 @@
 					return false;
 				}
 			},
+			
+			//获取作品：通过用户ID
 			getWorksByUserId:function(){
 				uni.request({
 					url:this.createApiUrl('/works/get/uid'),
@@ -267,6 +284,36 @@
 				})
 			},
 			
+			//删除作品
+			deleteWorks:function(worksId){
+				console.log(worksId);
+				uni.request({
+					url: this.createApiUrl('works/delete'),
+					method: 'POST',
+					header: {
+					        'content-type': 'application/x-www-form-urlencoded'  
+					},
+					data: {
+						worksId: worksId
+					},
+					success: res => {
+						console.log(res);
+						if(res.data.code == 200){
+							uni.showToast({
+								title:'删除成功'
+							})
+						}else{
+							uni.showToast({
+								title:'删除失败'
+							})
+						}
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			
+			//预览图片
 			previewImg:function(index, urls){
 				uni.previewImage({
 					current:index,
@@ -279,6 +326,34 @@
 						console.log(err);
 					}
 				})
+			},
+			
+			confirmDelete:function(worksId){
+				uni.showModal({
+					title: '删除作品',
+					content: '您是否要删除作品？',
+					showCancel: true,
+					cancelText: '算了',
+					confirmText: '是的',
+					success: res => {
+						if(res.confirm){
+							this.deleteWorks(worksId);
+						}else if(res.cancel){
+							console.log('用户点击取消');
+						}
+						
+					},
+					fail: () => {},
+					complete: () => {
+						uni.startPullDownRefresh({
+							success() {
+								setTimeout(function(){
+									uni.stopPullDownRefresh();
+								}, 1000);
+							}
+						})
+					}
+				});
 			}
 			
 
@@ -516,6 +591,9 @@
 		text-align: center;
 	}
 
+	.empty-box{
+		background-image: url('/static/img/no.png');
+	}
 	
 	
 </style>

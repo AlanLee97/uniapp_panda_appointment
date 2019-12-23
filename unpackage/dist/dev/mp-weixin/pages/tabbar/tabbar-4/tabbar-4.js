@@ -122,28 +122,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var QSTabs = function QSTabs() {return __webpack_require__.e(/*! import() | components/QS-tabs/QS-tabs */ "components/QS-tabs/QS-tabs").then(__webpack_require__.bind(null, /*! ../../../components/QS-tabs/QS-tabs.vue */ 231));};var _default =
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var QSTabs = function QSTabs() {return __webpack_require__.e(/*! import() | components/QS-tabs/QS-tabs */ "components/QS-tabs/QS-tabs").then(__webpack_require__.bind(null, /*! ../../../components/QS-tabs/QS-tabs.vue */ 211));};var _default =
 
 
 
@@ -313,10 +292,25 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
       refreshing: false,
       lists: [],
-      fetchPageNum: 1 };
+      fetchPageNum: 1,
+
+
+      worksData: {} };
 
   },
+  onShow: function onShow() {
+    this.getWorksAndUser();
+  },
+  onPullDownRefresh: function onPullDownRefresh() {
+    this.getWorksAndUser();
+    setTimeout(function () {
+      uni.stopPullDownRefresh();
+    }, 1000);
+  },
   methods: {
+    goPage: function goPage(pagePath) {
+      this.gotoPage(pagePath);
+    },
     IsCard: function IsCard(e) {
       this.isCard = e.detail.value;
     },
@@ -327,8 +321,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     cardSwiper: function cardSwiper(e) {
       this.cardCur = e.detail.current;
     },
-
-
 
     //滑动tab栏的方法
     change: function change(index) {
@@ -342,7 +334,23 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     },
     animationfinish: function animationfinish(_ref3) {var current = _ref3.detail.current;
       this.$refs.tabs.setFinishCurrent(current);
+    },
+
+
+    getWorksAndUser: function getWorksAndUser() {var _this = this;
+      uni.request({
+        url: this.createApiUrl('works/get/all-user'),
+        method: 'GET',
+        data: {},
+        success: function success(res) {
+          _this.worksData = res.data.data;
+          console.log(res);
+        },
+        fail: function fail() {},
+        complete: function complete() {} });
+
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

@@ -32,8 +32,8 @@ _vue.default.prototype.checkLogin = function (backpage, backtype) {
 
 };
 
-var domain = 'localhost';
-// let domain = '47.103.204.62';
+// let domain = 'localhost';
+var domain = '47.103.204.62';
 var port = '8083';
 
 _vue.default.prototype.createApiUrl = function (reqUrl) {
@@ -42,8 +42,8 @@ _vue.default.prototype.createApiUrl = function (reqUrl) {
 
 _vue.default.prototype.getUserInfo = function () {
   var userinfo = uni.getStorageSync('userinfo');
-  console.log('main.js -> userinfo:');
-  console.log(userinfo);
+  // console.log('main.js -> userinfo:');
+  // console.log(userinfo);
   return userinfo;
 };
 
@@ -139,18 +139,21 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
+
+
 {
+
 
   onLaunch: function onLaunch() {
     setTimeout(function () {
-      uni.setTabBarBadge({
-        index: 1,
-        text: '' });
-
-      uni.showTabBarRedDot({
-        index: 3 });
-
+      // uni.setTabBarBadge({
+      // 	index: 1,
+      // 	text: ''
+      // });
+      // uni.showTabBarRedDot({
+      // 	index: 3
+      // });
     }, 1000);
   },
   onShow: function onShow() {
@@ -161,7 +164,6 @@ __webpack_require__.r(__webpack_exports__);
     // console.log('App Hide');
   },
   methods: {} };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 12 */

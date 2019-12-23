@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "ss-select-city": "/components/ss-select-city/ss-select-city",
+    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar"
+  }
+}

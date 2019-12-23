@@ -5,8 +5,48 @@
 		</view>
 			
 		<view class="p-20upx">
-			<!-- 标题 -->
+			
 			<view class="">
+				<!-- 用户信息 -->
+				<view class="box-shadow-raduis bgcolor-white-ffffff">
+
+					<!-- 用户信息部分 -->
+					<view class="cu-list menu-avatar">
+						<view class="cu-item ">
+							<!-- 头像 -->
+							<view class="cu-avatar round lg" >
+								<image 
+								class="cu-avatar round lg" 
+								:src="userinfo.headPortraitImg" 
+								@tap="gotoPage('/pages/user/profile?uid=' + userinfo.id)"></image>
+							</view>
+							<!-- 昵称与时间 -->
+							<view class="content flex-sub">
+								<view>
+									<!-- 昵称 -->
+									<view class="width-50">
+										{{userinfo.nickname}}
+									</view>
+									
+								</view>
+								<view>
+									<view v-if="userinfo.identity == 0" class="text-gray text-sm flex justify-between">
+										摄影师
+									</view>
+									<view v-if="userinfo.identity == 1" class="text-gray text-sm flex justify-between">
+										模特
+									</view>
+								</view>
+								
+							</view>
+						</view>
+					</view>
+					
+
+				
+				</view>
+				
+				<!-- 标题 -->
 				<text class="fontsize-80upx font-color-light-black font-weight-200">
 					
 					{{aptDetail.title}}
@@ -77,6 +117,8 @@
 					aptTypeId:'',
 					image:''
 				},
+				
+				userinfo:{},
 
 				
 				btnDisable:false
@@ -90,6 +132,7 @@
 			});
 			this.aptId = option.apid;
 			this.getAppointmentDetail();
+			// this.getUserInfo(this.aptDetail.userId);
 			
 		},
 		onShow:function(options){
@@ -117,6 +160,24 @@
 						this.aptDetail.aptTypeId = res.aptTypeId;
 						this.aptDetail.pub_uid = res.userId;
 						this.aptDetail.image = res.image;
+						
+						this.getUserInfo(this.aptDetail.pub_uid);
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			
+			getUserInfo:function(uid){
+				uni.request({
+					url: this.createApiUrl('user/get/user'),
+					method: 'GET',
+					data: {
+						uid:uid
+					},
+					success: res => {
+						console.log(res);
+						this.userinfo = res.data.data;
 					},
 					fail: () => {},
 					complete: () => {}
@@ -143,6 +204,9 @@
 				uni.request({
 					url: this.createApiUrl('/order/add'),
 					method: 'POST',
+					header: {
+					        'content-type': 'application/x-www-form-urlencoded'  
+					},
 					data: sendData,
 					success: res => {
 						res = res.data;

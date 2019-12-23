@@ -34,11 +34,15 @@
 		},
 		{
 			"path": "pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release",
-			"style": {}
+			"style": {
+				
+			}
 		},
 		{
 			"path": "pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"发布约拍"
+			}
 		},
 		{
 			"path": "pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa",
@@ -46,11 +50,15 @@
 		},
 		{
 			"path": "pages/user/login",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"登录"
+			}
 		},
 		{
 			"path": "pages/user/register",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"注册"
+			}
 		},
 		{
 			"path": "pages/user/forget",
@@ -58,11 +66,15 @@
 		},
 		{
 			"path": "pages/user/personal",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"个人信息"
+			}
 		},
 		{
 			"path": "pages/user/info",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"TA的信息"
+			}
 		},
 		{
 			"path": "pages/user/modify-pw",
@@ -72,10 +84,6 @@
 			"path": "pages/user/forgot-pw",
 			"style": {}
 		},
-		{
-            "path" : "pages/select/select",
-            "style" : {}
-        },
 		{
 		    "path" : "pages/publish/publish-appointment",
 		    "style" : {
@@ -87,14 +95,6 @@
 		    "style" : {
 				"navigationBarTitleText":"发布作品"
 			}
-		},
-        {
-            "path" : "pages/test/test",
-            "style" : {}
-        },
-		{
-		    "path" : "pages/test/my",
-		    "style" : {}
 		}
         ,{
             "path" : "pages/appointment/appointment-detail",
@@ -103,46 +103,48 @@
 			}
         }
         ,{
-            "path" : "pages/test/test2",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/test/test3",
-            "style" : {}
-        }
-        ,{
             "path" : "pages/order/order",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText":"订单"
+			}
         }
         ,{
             "path" : "pages/user/my-order",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText":"我的订单"
+			}
         }
         ,{
             "path" : "pages/appointment/appointment-personal",
             "style" : {
-				"enablePullDownRefresh":true
+				"navigationBarTitleText":"我的约拍"
 			}
-        },{
-            "path" : "pages/test/uni-feedback",
-            "style" : {}
-        }
-        ,{
+        },
+        {
             "path" : "pages/commons/select-city",
             "style" : {
-				"navigationStyle":"custom"
+				"navigationStyle":"custom"	
 			}
         }
         ,{
             "path" : "pages/user/profile",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText":"个人信息"
+			}
+        }
+        ,{
+            "path" : "pages/works/works-detail",
+            "style" : {
+				"navigationBarTitleText":"作品详情"
+			}
         }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#FbFbFb",
-		"backgroundColor": "#FbFbFb"
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF",
+		"enablePullDownRefresh":true
 	},
 	"tabBar": {
 		"borderStyle": "black",

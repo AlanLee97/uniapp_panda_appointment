@@ -22,8 +22,8 @@ Vue.prototype.checkLogin = function(backpage, backtype){
 	}
 }
 
-let domain = 'localhost';
-// let domain = '47.103.204.62';
+// let domain = 'localhost';
+let domain = '47.103.204.62';
 let port = '8083';
 
 Vue.prototype.createApiUrl = function(reqUrl){
